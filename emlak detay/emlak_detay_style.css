@@ -1,0 +1,2 @@
+ :where([class^="ri-"])::before { content: "\f3c2"; }
+    .gallery-thumb.active { border-color: #0EA5E9; }
