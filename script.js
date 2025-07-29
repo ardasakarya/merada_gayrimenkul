@@ -37,23 +37,40 @@
   
   });
 
- const popupOverlay = document.getElementById("popup-overlay");
-const filterForm = document.getElementById("filter-form");
-const startButtons = document.getElementById("popup-start-buttons");
-
 function openPopup() {
-  popupOverlay.classList.remove("hidden");
-  document.body.style.overflow = "hidden"; // Arka plan kaymasını engelle
+  const overlay = document.getElementById('popup-overlay');
+  const box = document.getElementById('popup-box');
+  document.body.classList.add('overflow-hidden'); // Arka plan scroll kilitleniyor
+  overlay.classList.remove('hidden');
+  box.classList.remove('h-[90vh]', 'md:h-[90vh]');
+  box.classList.add('h-[45vh]', 'md:h-[40vh]');
 }
 
-function showFilterForm() {
-  filterForm.classList.remove("hidden");
-  startButtons.classList.add("hidden");
+function openPopupFilter() {
+  const box = document.getElementById('popup-box');
+  const buttons = document.getElementById("popup-start-buttons");
+  const form = document.getElementById("filter-form");
+
+  box.classList.remove('h-[45vh]', 'md:h-[50vh]');
+  box.classList.add('h-[80vh]', 'md:h-[70vh]');
+
+  form.classList.remove("hidden");
+  buttons.classList.add("hidden");
 }
 
 function closePopup() {
-  popupOverlay.classList.add("hidden");
-  filterForm.classList.add("hidden");
-  startButtons.classList.remove("hidden");
-  document.body.style.overflow = ""; // Arka plan kaydırmayı tekrar aç
+  const overlay = document.getElementById('popup-overlay');
+  const box = document.getElementById('popup-box');
+  const buttons = document.getElementById("popup-start-buttons");
+  const form = document.getElementById("filter-form");
+
+  document.body.classList.remove('overflow-hidden'); // Scroll kilidi kaldırılıyor
+  box.classList.remove('h-[90vh]', 'md:h-[90vh]');
+  box.classList.add('h-[45vh]', 'md:h-[50vh]');
+
+  form.classList.add("hidden");
+  buttons.classList.remove("hidden");
+
+  overlay.classList.add('hidden');
 }
+
