@@ -180,139 +180,145 @@
             </div>
 
         </div>
-        <!-- Masaüstü Görünüm -->
-  <!-- Sağ alt sabit buton -->
-<!-- Sağ alt sabit buton -->
-<div class="fixed bottom-6 right-6 z-50 group">
-  <a href="https://meradagayrimenkul.sahibinden.com/" target="_blank" rel="noopener noreferrer"
-     class="w-14 h-14 bg-[#ffeb01] border border-yellow-300 rounded-lg shadow-md flex items-center justify-center transition hover:shadow-xl">
-    <img src="img/Sahibindenlogo.png" alt="Sahibinden" class="w-10 h-10 object-contain" />
-  </a>
 
-  <!-- Hover yazısı (tooltip) -->
-  <div class="absolute right-16 bottom-1/2 translate-y-1/2 bg-black text-white text-xs px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none whitespace-nowrap shadow">
-    Sahibinden ilanları gör
-  </div>
-</div>
+        <!-- Sağ alt sabit buton -->
+         
+        <div class="fixed bottom-6 right-6 z-50 group">
+            <a href="https://meradagayrimenkul.sahibinden.com/" target="_blank" rel="noopener noreferrer"
+                class="w-14 h-14 bg-[#ffeb01] border border-yellow-300 rounded-lg shadow-md flex items-center justify-center transition hover:shadow-xl">
+                <img src="img/Sahibindenlogo.png" alt="Sahibinden" class="w-10 h-10 object-contain" />
+            </a>
 
-
-
+            <!-- Hover yazısı (tooltip) -->
+            <div
+                class="absolute right-16 bottom-1/2 translate-y-1/2 bg-black text-white text-xs px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none whitespace-nowrap shadow">
+                Sahibinden ilanları gör
+            </div>
+        </div>
 
 
-    
+
+
+
+
 
     </section>
     <!-- Popup Overlay -->
-   
-<div id="popup-overlay"
-  class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/70 backdrop-blur-sm hidden">
 
-  <!-- Popup Kutusu -->
-  <div id="popup-box"
-    class="relative w-[90%] max-w-md sm:max-w-2xl md:max-w-3xl h-[35vh] sm:h-[40vh] overflow-y-auto rounded-2xl border-2 border-cyan-400 p-6 sm:p-8 bg-white/10 backdrop-blur-2xl shadow-2xl flex flex-col justify-start transition-all duration-500">
+    <div id="popup-overlay"
+        class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/70 backdrop-blur-sm hidden">
 
-    <!-- Kapat Butonu -->
-    <button onclick="closePopup()"
-      class="absolute top-4 right-4 text-white hover:text-red-500 text-3xl font-bold transition">&times;</button>
+        <!-- Popup Kutusu -->
+        <div id="popup-box"
+            class="relative w-[90%] max-w-md sm:max-w-2xl md:max-w-3xl h-[35vh] sm:h-[40vh] overflow-y-auto rounded-2xl border-2 border-cyan-400 p-6 sm:p-8 bg-white/10 backdrop-blur-2xl shadow-2xl flex flex-col justify-start transition-all duration-500">
 
-    <!-- Başlık -->
-    <div class="text-center mt-6 sm:mt-10">
-      <h2 class="text-2xl sm:text-3xl font-bold text-white">Hayalinizdeki Evi Bulun</h2>
-      <p class="text-sm sm:text-base text-gray-200 max-w-lg mx-auto mt-2">Filtreleyerek aradığınız gayrimenkulü kolayca
-        bulun.</p>
-    </div>
+            <!-- Kapat Butonu -->
+            <button onclick="closePopup()"
+                class="absolute top-4 right-4 text-white hover:text-red-500 text-3xl font-bold transition">&times;</button>
 
-    <!-- Filtre Formu -->
-    <form id="filter-form" class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 hidden text-white mt-8">
+            <!-- Başlık -->
+            <div class="text-center mt-6 sm:mt-10">
+                <h2 class="text-2xl sm:text-3xl font-bold text-white">Hayalinizdeki Evi Bulun</h2>
+                <p class="text-sm sm:text-base text-gray-200 max-w-lg mx-auto mt-2">Filtreleyerek aradığınız
+                    gayrimenkulü kolayca
+                    bulun.</p>
+            </div>
 
-      <!-- İlçe -->
-      <div>
-        <label class="block mb-1 font-medium text-sm">İlçe</label>
-        <select class="w-full bg-white text-black border border-gray-300 rounded-md p-2 text-sm">
-          <option selected disabled>Bir ilçe seçin...</option>
-          <option>Mezitli</option>
-          <option>Yenişehir</option>
-          <option>Toroslar</option>
-          <option>Akdeniz</option>
-        </select>
-      </div>
+            <!-- Filtre Formu -->
+            <form id="filter-form" class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 hidden text-white mt-8">
 
-      <!-- Mahalle -->
-      <div>
-        <label class="block mb-1 font-medium text-sm">Mahalle</label>
-        <select class="w-full bg-white text-black border border-gray-300 rounded-md p-2 text-sm">
-          <option selected disabled>Bir mahalle seçin...</option>
-          <option>Mahalle 1</option>
-          <option>Mahalle 2</option>
-          <option>Mahalle 3</option>
-        </select>
-      </div>
+                <!-- İlçe -->
+                <div>
+                    <label class="block mb-1 font-medium text-sm">İlçe</label>
+                    <select class="w-full bg-white text-black border border-gray-300 rounded-md p-2 text-sm">
+                        <option selected disabled>Bir ilçe seçin...</option>
+                        <option>Mezitli</option>
+                        <option>Yenişehir</option>
+                        <option>Toroslar</option>
+                        <option>Akdeniz</option>
+                    </select>
+                </div>
 
-      <!-- Bütçe -->
-      <div>
-        <label class="block mb-1 font-medium text-sm">Bütçe Aralığı (₺)</label>
-        <div class="flex gap-2">
-          <input type="number" class="w-1/2 bg-white text-black border border-gray-300 rounded-md p-2 text-sm"
-            placeholder="Min">
-          <input type="number" class="w-1/2 bg-white text-black border border-gray-300 rounded-md p-2 text-sm"
-            placeholder="Max">
+                <!-- Mahalle -->
+                <div>
+                    <label class="block mb-1 font-medium text-sm">Mahalle</label>
+                    <select class="w-full bg-white text-black border border-gray-300 rounded-md p-2 text-sm">
+                        <option selected disabled>Bir mahalle seçin...</option>
+                        <option>Mahalle 1</option>
+                        <option>Mahalle 2</option>
+                        <option>Mahalle 3</option>
+                    </select>
+                </div>
+
+                <!-- Bütçe -->
+                <div>
+                    <label class="block mb-1 font-medium text-sm">Bütçe Aralığı (₺)</label>
+                    <div class="flex gap-2">
+                        <input type="number"
+                            class="w-1/2 bg-white text-black border border-gray-300 rounded-md p-2 text-sm"
+                            placeholder="Min">
+                        <input type="number"
+                            class="w-1/2 bg-white text-black border border-gray-300 rounded-md p-2 text-sm"
+                            placeholder="Max">
+                    </div>
+                </div>
+
+                <!-- Metrekare -->
+                <div>
+                    <label class="block mb-1 font-medium text-sm">Metrekare (m²)</label>
+                    <div class="flex gap-2">
+                        <input type="number"
+                            class="w-1/2 bg-white text-black border border-gray-300 rounded-md p-2 text-sm"
+                            placeholder="Min">
+                        <input type="number"
+                            class="w-1/2 bg-white text-black border border-gray-300 rounded-md p-2 text-sm"
+                            placeholder="Max">
+                    </div>
+                </div>
+
+                <!-- Durum -->
+                <div>
+                    <label class="block mb-1 font-medium text-sm">Durum</label>
+                    <select class="w-full bg-white text-black border border-gray-300 rounded-md p-2 text-sm">
+                        <option>Satılık</option>
+                        <option>Kiralık</option>
+                    </select>
+                </div>
+
+                <!-- Tür -->
+                <div>
+                    <label class="block mb-1 font-medium text-sm">Tür</label>
+                    <select class="w-full bg-white text-black border border-gray-300 rounded-md p-2 text-sm">
+                        <option>Konut</option>
+                        <option>Arsa</option>
+                        <option>İşyeri</option>
+                    </select>
+                </div>
+
+                <!-- Ara Butonu -->
+                <div class="sm:col-span-2 text-center mt-4">
+                    <a href="emlak_urunler.html"
+                        class="bg-primary hover:bg-secondary text-white font-semibold py-3 px-8 rounded-lg transition inline-block">
+                        Ara
+                    </a>
+                </div>
+            </form>
+
+            <!-- Butonlar -->
+            <div id="popup-start-buttons"
+                class="flex flex-col sm:flex-row gap-3 justify-center items-center mt-6 sm:mt-10">
+                <button onclick="openPopupFilter()"
+                    class="bg-primary hover:bg-secondary text-white font-semibold py-2 sm:py-3 px-6 rounded-lg transition w-full sm:w-auto">
+                    Filtrele
+                </button>
+                <a href="emlak_urunler.html"
+                    class="border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold py-2 sm:py-3 px-6 rounded-lg text-center transition w-full sm:w-auto">
+                    Tüm İlanları Gör
+                </a>
+            </div>
+
         </div>
-      </div>
-
-      <!-- Metrekare -->
-      <div>
-        <label class="block mb-1 font-medium text-sm">Metrekare (m²)</label>
-        <div class="flex gap-2">
-          <input type="number" class="w-1/2 bg-white text-black border border-gray-300 rounded-md p-2 text-sm"
-            placeholder="Min">
-          <input type="number" class="w-1/2 bg-white text-black border border-gray-300 rounded-md p-2 text-sm"
-            placeholder="Max">
-        </div>
-      </div>
-
-      <!-- Durum -->
-      <div>
-        <label class="block mb-1 font-medium text-sm">Durum</label>
-        <select class="w-full bg-white text-black border border-gray-300 rounded-md p-2 text-sm">
-          <option>Satılık</option>
-          <option>Kiralık</option>
-        </select>
-      </div>
-
-      <!-- Tür -->
-      <div>
-        <label class="block mb-1 font-medium text-sm">Tür</label>
-        <select class="w-full bg-white text-black border border-gray-300 rounded-md p-2 text-sm">
-          <option>Konut</option>
-          <option>Arsa</option>
-          <option>İşyeri</option>
-        </select>
-      </div>
-
-      <!-- Ara Butonu -->
-      <div class="sm:col-span-2 text-center mt-4">
-        <a href="emlak_urunler.html"
-          class="bg-primary hover:bg-secondary text-white font-semibold py-3 px-8 rounded-lg transition inline-block">
-          Ara
-        </a>
-      </div>
-    </form>
-
-    <!-- Butonlar -->
-    <div id="popup-start-buttons"
-      class="flex flex-col sm:flex-row gap-3 justify-center items-center mt-6 sm:mt-10">
-      <button onclick="openPopupFilter()"
-        class="bg-primary hover:bg-secondary text-white font-semibold py-2 sm:py-3 px-6 rounded-lg transition w-full sm:w-auto">
-        Filtrele
-      </button>
-      <a href="emlak_urunler.html"
-        class="border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold py-2 sm:py-3 px-6 rounded-lg text-center transition w-full sm:w-auto">
-        Tüm İlanları Gör
-      </a>
     </div>
-
-  </div>
-</div>
 
 
 
@@ -437,7 +443,7 @@
                             <p class="text-gray-300">+1 (555) 123-4567</p>
                         </div>
                         <div class="flex items-center space-x-3">
-                           
+
                         </div>
                     </div>
                 </div>
