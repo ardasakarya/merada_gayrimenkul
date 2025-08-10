@@ -45,7 +45,7 @@
 </head>
 
 <body class="bg-white">
-    <header class="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
+   <header class="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
         <nav class="w-full border-b bg-white shadow-sm">
             <div class="container mx-auto px-4 py-3 flex items-center justify-between">
                 <!-- Logo -->
@@ -58,101 +58,23 @@
 
                 <!-- Menü (Desktop) -->
                 <div class="hidden md:flex justify-center items-center space-x-8 w-full max-w-2xl mx-auto">
-                    <a href="#" class="text-gray-700 hover:text-primary transition">Home</a>
+                    <a href="/index.html" class="text-gray-700 hover:text-primary transition">Home</a>
 
-                    <!-- Dropdown -->
-                    <div class="relative group">
-                        <button class="flex items-center gap-1 text-gray-700 hover:text-primary transition font-light">
-                            Gayrimenkuller
-                            <i
-                                class="ri-arrow-down-s-line transition-transform duration-300 group-hover:rotate-180"></i>
-                        </button>
-
-                        <!-- Ana Dropdown -->
-                        <div
-                            class="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-72 bg-white border border-gray-200 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-4 group-hover:translate-y-0 transition-all duration-300 z-50">
-                            <div class="p-5 space-y-4">
-                                <!-- Kiralık -->
-                                <div class="group/item relative">
-                                    <div
-                                        class="flex justify-between items-center px-5 py-3.5 rounded-md cursor-pointer transition hover:bg-gray-100 hover:text-primary text-gray-800 font-medium">
-                                        <span class="text-base">Kiralık</span>
-                                        <i
-                                            class="ri-arrow-right-s-line text-gray-500 group-hover/item:text-primary transition"></i>
-                                    </div>
-                                    <div
-                                        class="absolute top-0 left-full ml-3 w-48 bg-white rounded-md shadow-xl border border-gray-200 opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible translate-x-4 transition-all duration-300 z-50 p-2 space-y-2">
-                                        <a href="#"
-                                            class="block px-5 py-3 text-sm rounded-md font-medium text-gray-700 hover:bg-primary hover:text-white transition">Konut</a>
-                                        <a href="#"
-                                            class="block px-5 py-3 text-sm rounded-md font-medium text-gray-700 hover:bg-primary hover:text-white transition">İş
-                                            Yeri</a>
-                                        <a href="#"
-                                            class="block px-5 py-3 text-sm rounded-md font-medium text-gray-700 hover:bg-primary hover:text-white transition">Arsa</a>
-                                    </div>
-                                </div>
-
-                                <!-- Satılık -->
-                                <div class="group/item relative">
-                                    <div
-                                        class="flex justify-between items-center px-5 py-3.5 rounded-md cursor-pointer transition hover:bg-gray-100 hover:text-primary text-gray-800 font-medium">
-                                        <span class="text-base">Satılık</span>
-                                        <i
-                                            class="ri-arrow-right-s-line text-gray-500 group-hover/item:text-primary transition"></i>
-                                    </div>
-                                    <div
-                                        class="absolute top-0 left-full ml-3 w-48 bg-white rounded-md shadow-xl border border-gray-200 opacity-0 invisible group-hover/item:opacity-100 group-hover/item:visible translate-x-4 transition-all duration-300 z-50 p-2 space-y-2">
-                                        <a href="#"
-                                            class="block px-5 py-3 text-sm rounded-md font-medium text-gray-700 hover:bg-primary hover:text-white transition">Konut</a>
-                                        <a href="#"
-                                            class="block px-5 py-3 text-sm rounded-md font-medium text-gray-700 hover:bg-primary hover:text-white transition">İş
-                                            Yeri</a>
-                                        <a href="#"
-                                            class="block px-5 py-3 text-sm rounded-md font-medium text-gray-700 hover:bg-primary hover:text-white transition">Arsa</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <a href="#" class="text-gray-700 hover:text-primary transition">About</a>
+                    <a href="/about_us.html" class="text-gray-700 hover:text-primary transition">About</a>
                     <a href="#" class="text-gray-700 hover:text-primary transition">Contact</a>
                 </div>
             </div>
 
             <!-- Mobil Menü -->
             <div id="mobileMenu" class="md:hidden px-4 pb-4 space-y-2 hidden">
-                <a href="#" class="block text-gray-700 hover:text-primary transition">Home</a>
-                <details class="group">
-                    <summary
-                        class="cursor-pointer flex justify-between items-center py-2 text-gray-700 hover:text-primary">
-                        Gayrimenkuller
-                        <i class="ri-arrow-down-s-line group-open:rotate-180 transition-transform"></i>
-                    </summary>
-                    <div class="pl-4 mt-1 space-y-1">
-                        <details>
-                            <summary class="cursor-pointer text-sm font-semibold text-gray-800">Kiralık</summary>
-                            <div class="pl-4 mt-1 space-y-1 text-sm">
-                                <a href="#" class="block hover:text-primary">Konut</a>
-                                <a href="#" class="block hover:text-primary">İş Yeri</a>
-                                <a href="#" class="block hover:text-primary">Arsa</a>
-                            </div>
-                        </details>
-                        <details>
-                            <summary class="cursor-pointer text-sm font-semibold text-gray-800">Satılık</summary>
-                            <div class="pl-4 mt-1 space-y-1 text-sm">
-                                <a href="#" class="block hover:text-primary">Konut</a>
-                                <a href="#" class="block hover:text-primary">İş Yeri</a>
-                                <a href="#" class="block hover:text-primary">Arsa</a>
-                            </div>
-                        </details>
-                    </div>
-                </details>
-                <a href="#" class="block text-gray-700 hover:text-primary transition">About</a>
+                <a href="/index.html" class="block text-gray-700 hover:text-primary transition">Home</a>
+                
+                <a href="/about_us.html" class="block text-gray-700 hover:text-primary transition">About</a>
                 <a href="#" class="block text-gray-700 hover:text-primary transition">Contact</a>
             </div>
         </nav>
     </header>
+
 
 
     <!-- Hero Section -->
@@ -165,16 +87,16 @@
             <p class="text-xl md:text-2xl mb-12 font-light opacity-90">Discover Your Perfect Space in Premium Locations
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center px-4 max-w-xl w-full mx-auto">
-                <a href="#" class="w-full sm:w-1/2">
-                    <button onclick="openPopup()"
+                <a href="/emlak_urunler.html" class="w-full sm:w-1/2">
+                    <button
                         class="bg-primary hover:bg-secondary text-white font-semibold text-base sm:text-lg px-6 py-3 sm:py-4 rounded-md transition-colors w-full">
-                        İlanlarımızı Görüntüleyin
+                       Merada Gayrimenkul
                     </button>
                 </a>
                 <a href="#" class="w-full sm:w-1/2">
                     <button
                         class="border-2 border-white text-white hover:bg-white hover:text-gray-900 font-semibold text-base sm:text-lg px-6 py-3 sm:py-4 rounded-md transition-all w-full">
-                        Yönetim
+                        Merada Yönetim
                     </button>
                 </a>
             </div>
@@ -205,121 +127,7 @@
     </section>
     <!-- Popup Overlay -->
 
-    <div id="popup-overlay"
-        class="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/70 backdrop-blur-sm hidden">
-
-        <!-- Popup Kutusu -->
-        <div id="popup-box"
-            class="relative w-[90%] max-w-md sm:max-w-2xl md:max-w-3xl h-[35vh] sm:h-[40vh] overflow-y-auto rounded-2xl border-2 border-cyan-400 p-6 sm:p-8 bg-white/10 backdrop-blur-2xl shadow-2xl flex flex-col justify-start transition-all duration-500">
-
-            <!-- Kapat Butonu -->
-            <button onclick="closePopup()"
-                class="absolute top-4 right-4 text-white hover:text-red-500 text-3xl font-bold transition">&times;</button>
-
-            <!-- Başlık -->
-            <div class="text-center mt-6 sm:mt-10">
-                <h2 class="text-2xl sm:text-3xl font-bold text-white">Hayalinizdeki Evi Bulun</h2>
-                <p class="text-sm sm:text-base text-gray-200 max-w-lg mx-auto mt-2">Filtreleyerek aradığınız
-                    gayrimenkulü kolayca
-                    bulun.</p>
-            </div>
-
-            <!-- Filtre Formu -->
-            <form id="filter-form" class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 hidden text-white mt-8">
-
-                <!-- İlçe -->
-                <div>
-                    <label class="block mb-1 font-medium text-sm">İlçe</label>
-                    <select class="w-full bg-white text-black border border-gray-300 rounded-md p-2 text-sm">
-                        <option selected disabled>Bir ilçe seçin...</option>
-                        <option>Mezitli</option>
-                        <option>Yenişehir</option>
-                        <option>Toroslar</option>
-                        <option>Akdeniz</option>
-                    </select>
-                </div>
-
-                <!-- Mahalle -->
-                <div>
-                    <label class="block mb-1 font-medium text-sm">Mahalle</label>
-                    <select class="w-full bg-white text-black border border-gray-300 rounded-md p-2 text-sm">
-                        <option selected disabled>Bir mahalle seçin...</option>
-                        <option>Mahalle 1</option>
-                        <option>Mahalle 2</option>
-                        <option>Mahalle 3</option>
-                    </select>
-                </div>
-
-                <!-- Bütçe -->
-                <div>
-                    <label class="block mb-1 font-medium text-sm">Bütçe Aralığı (₺)</label>
-                    <div class="flex gap-2">
-                        <input type="number"
-                            class="w-1/2 bg-white text-black border border-gray-300 rounded-md p-2 text-sm"
-                            placeholder="Min">
-                        <input type="number"
-                            class="w-1/2 bg-white text-black border border-gray-300 rounded-md p-2 text-sm"
-                            placeholder="Max">
-                    </div>
-                </div>
-
-                <!-- Metrekare -->
-                <div>
-                    <label class="block mb-1 font-medium text-sm">Metrekare (m²)</label>
-                    <div class="flex gap-2">
-                        <input type="number"
-                            class="w-1/2 bg-white text-black border border-gray-300 rounded-md p-2 text-sm"
-                            placeholder="Min">
-                        <input type="number"
-                            class="w-1/2 bg-white text-black border border-gray-300 rounded-md p-2 text-sm"
-                            placeholder="Max">
-                    </div>
-                </div>
-
-                <!-- Durum -->
-                <div>
-                    <label class="block mb-1 font-medium text-sm">Durum</label>
-                    <select class="w-full bg-white text-black border border-gray-300 rounded-md p-2 text-sm">
-                        <option>Satılık</option>
-                        <option>Kiralık</option>
-                    </select>
-                </div>
-
-                <!-- Tür -->
-                <div>
-                    <label class="block mb-1 font-medium text-sm">Tür</label>
-                    <select class="w-full bg-white text-black border border-gray-300 rounded-md p-2 text-sm">
-                        <option>Konut</option>
-                        <option>Arsa</option>
-                        <option>İşyeri</option>
-                    </select>
-                </div>
-
-                <!-- Ara Butonu -->
-                <div class="sm:col-span-2 text-center mt-4">
-                    <a href="emlak_urunler.html"
-                        class="bg-primary hover:bg-secondary text-white font-semibold py-3 px-8 rounded-lg transition inline-block">
-                        Ara
-                    </a>
-                </div>
-            </form>
-
-            <!-- Butonlar -->
-            <div id="popup-start-buttons"
-                class="flex flex-col sm:flex-row gap-3 justify-center items-center mt-6 sm:mt-10">
-                <button onclick="openPopupFilter()"
-                    class="bg-primary hover:bg-secondary text-white font-semibold py-2 sm:py-3 px-6 rounded-lg transition w-full sm:w-auto">
-                    Filtrele
-                </button>
-                <a href="emlak_urunler.html"
-                    class="border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold py-2 sm:py-3 px-6 rounded-lg text-center transition w-full sm:w-auto">
-                    Tüm İlanları Gör
-                </a>
-            </div>
-
-        </div>
-    </div>
-
+    
 
 
     <!-- ABOUT SECTION -->

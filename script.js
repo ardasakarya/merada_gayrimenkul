@@ -37,40 +37,4 @@
   
   });
 
-function openPopup() {
-  const overlay = document.getElementById('popup-overlay');
-  const box = document.getElementById('popup-box');
-  document.body.classList.add('overflow-hidden'); // Arka plan scroll kilitleniyor
-  overlay.classList.remove('hidden');
-  box.classList.remove('h-[90vh]', 'md:h-[90vh]');
-  box.classList.add('h-[45vh]', 'md:h-[40vh]');
-}
-
-function openPopupFilter() {
-  const box = document.getElementById('popup-box');
-  const buttons = document.getElementById("popup-start-buttons");
-  const form = document.getElementById("filter-form");
-
-  box.classList.remove('h-[45vh]', 'md:h-[50vh]');
-  box.classList.add('h-[80vh]', 'md:h-[70vh]');
-
-  form.classList.remove("hidden");
-  buttons.classList.add("hidden");
-}
-
-function closePopup() {
-  const overlay = document.getElementById('popup-overlay');
-  const box = document.getElementById('popup-box');
-  const buttons = document.getElementById("popup-start-buttons");
-  const form = document.getElementById("filter-form");
-
-  document.body.classList.remove('overflow-hidden'); // Scroll kilidi kaldırılıyor
-  box.classList.remove('h-[90vh]', 'md:h-[90vh]');
-  box.classList.add('h-[45vh]', 'md:h-[50vh]');
-
-  form.classList.add("hidden");
-  buttons.classList.remove("hidden");
-
-  overlay.classList.add('hidden');
-}
 
