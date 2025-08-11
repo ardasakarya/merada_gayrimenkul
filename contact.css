@@ -1,0 +1,47 @@
+ :where([class^="ri-"])::before { content: "\f3c2"; }
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .social-glow {
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.3);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, rgba(0, 123, 255, 0.05) 0%, rgba(255, 215, 0, 0.05) 100%);
+        }
+        .form-input {
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
+        }
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px) scale(1.05);
+        }
+
+
+        .glow {
+   text-shadow: 
+    0 0 8px rgba(255, 255, 180, 0.8),   /* Yakın parlama */
+    0 0 16px rgba(255, 255, 200, 0.6),  /* Orta parlama */
+    0 0 28px rgba(255, 255, 210, 0.4),  /* Uzak parlama */
+    0 0 42px rgba(255, 255, 230, 0.2);  /* Hafif dış halka */
+
+
+  }     
+  .navlink-hover:hover {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6),
+                 0 0 20px rgba(255, 255, 255, 0.4),
+                 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+  .glow-img {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6))
+          drop-shadow(0 0 20px rgba(255, 255, 255, 0.4))
+          drop-shadow(0 0 30px rgba(255, 255, 255, 0.2));
+}

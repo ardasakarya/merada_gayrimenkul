@@ -149,9 +149,9 @@ teamMembers.forEach(member => {
           <!-- FRONT -->
           <div class="bg-white p-8 rounded-2xl backface-hidden relative">
             <img src="${member.image}" alt="${member.name}" class="w-32 h-32 object-cover object-top rounded-full mx-auto mb-6">
-            <h4 class="text-xl font-bold text-gray-900 mb-2 text-center">${member.name}</h4>
+            <h4 class="text-xl font-bold text-iconBoxColor mb-2 text-center">${member.name}</h4>
             <div class="mx-auto mt-2 mb-4 w-14 h-1 rounded-full bg-gradient-to-r from-sky-500 to-sky-700 origin-left transform scale-x-0 group-hover:scale-x-100 group-focus-within:scale-x-100 transition-transform duration-700"></div>
-            <p class="text-blue-600 font-medium mb-4 text-center">${member.title}</p>
+            <p class="text-brandYellow font-medium mb-4 text-center">${member.title}</p>
             <p class="text-gray-600 text-sm leading-relaxed text-center">${member.description}</p>
           </div>
 
@@ -161,16 +161,16 @@ teamMembers.forEach(member => {
     <p class="text-sm font-semibold text-gray-900"> ${member.name} ile iletişime geçmek için aşağıdaki bilgileri kullanabilirsiniz:</p>
 
   
-    <div class="mx-auto mt-2 w-14 h-1 bg-sky-600 rounded-full"></div>
+    <div class="mx-auto mt-2 w-14 h-1 bg-footerTitle rounded-full"></div>
   </div>
 
   <!-- Email ve Phone bilgileri -->
   <div class="text-center mb-4">
-    <p class="text-sm text-gray-700">
-      <span class="font-medium text-sky-700">Email:</span> ${member.email}
+    <p class="text-sm text-iconBoxColor">
+      <span class="font-medium text-brandYellow">Email:</span> ${member.email}
     </p>
-    <p class="text-sm text-gray-700">
-      <span class="font-medium text-sky-700">Phone:</span> ${member.phone}
+    <p class="text-sm text-iconBoxColor">
+      <span class="font-medium text-brandYellow">Phone:</span> ${member.phone}
     </p>
   
 
