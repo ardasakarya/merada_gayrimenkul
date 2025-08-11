@@ -1,5 +1,8 @@
 // main.js
-
+function toggleAdvancedFilters() {
+    const adv = document.getElementById('advancedFilters');
+    adv.classList.toggle('hidden');
+}
   function toggleMobileFilters() {
     document.getElementById('filterSection').classList.toggle('hidden');
   }
@@ -56,17 +59,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (saleBtn && rentBtn) {
         saleBtn.addEventListener('click', function () {
-            saleBtn.classList.add('bg-primary', 'text-white');
-            saleBtn.classList.remove('text-gray-600');
-            rentBtn.classList.remove('bg-primary', 'text-white');
-            rentBtn.classList.add('text-gray-600');
+            saleBtn.classList.add('bg-brandYellow', 'text-iconBoxColor');
+            saleBtn.classList.remove('text-iconBoxColor');
+            rentBtn.classList.remove('bg-brandYellow', 'text-iconBoxColor');
+            rentBtn.classList.add('text-iconBoxColor');
         });
 
         rentBtn.addEventListener('click', function () {
-            rentBtn.classList.add('bg-primary', 'text-white');
-            rentBtn.classList.remove('text-gray-600');
-            saleBtn.classList.remove('bg-primary', 'text-white');
-            saleBtn.classList.add('text-gray-600');
+            rentBtn.classList.add('bg-brandYellow', 'text-iconBoxColor');
+            rentBtn.classList.remove('text-iconBoxColor');
+            saleBtn.classList.remove('bg-brandYellow', 'text-iconBoxColor');
+            saleBtn.classList.add('text-iconBoxColor');
         });
     }
 
@@ -78,19 +81,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (gridViewBtn && listViewBtn && gridView && listView) {
         gridViewBtn.addEventListener('click', function () {
-            gridViewBtn.classList.add('bg-primary', 'text-white');
-            gridViewBtn.classList.remove('text-gray-600');
-            listViewBtn.classList.remove('bg-primary', 'text-white');
-            listViewBtn.classList.add('text-gray-600');
+            gridViewBtn.classList.add('bg-brandYellow', 'text-iconBoxColor');
+            gridViewBtn.classList.remove('text-iconBoxColor');
+            listViewBtn.classList.remove('bg-brandYellow', 'text-iconBoxColor');
+            listViewBtn.classList.add('text-iconBoxColor');
             gridView.classList.remove('hidden');
             listView.classList.add('hidden');
         });
 
         listViewBtn.addEventListener('click', function () {
-            listViewBtn.classList.add('bg-primary', 'text-white');
-            listViewBtn.classList.remove('text-gray-600');
-            gridViewBtn.classList.remove('bg-primary', 'text-white');
-            gridViewBtn.classList.add('text-gray-600');
+            listViewBtn.classList.add('bg-brandYellow', 'text-iconBoxColor');
+            listViewBtn.classList.remove('text-iconBoxColor');
+            gridViewBtn.classList.remove('bg-brandYellow', 'text-iconBoxColor');
+            gridViewBtn.classList.add('text-iconBoxColor');
             listView.classList.remove('hidden');
             gridView.classList.add('hidden');
         });

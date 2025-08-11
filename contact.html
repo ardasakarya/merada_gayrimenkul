@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>İletişim - Premium Emlak</title>
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-  <script>tailwind.config = { theme: { extend: { colors: { primary: '#2563eb', secondary: '#1e40af', brandYellow: '#ffcb08', footerBg: '#333533', footerTitle: '#ffee32', iconBoxColor: '202020', boxColor: '#D6D6D6' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -19,56 +18,101 @@
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
 
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+
+
+          padding: {
+            '30': '7.5rem', // 120px gibi özel değer ekleyebilirsin
+            '50': '12.5rem',
+          },
+
+          colors: {
+            primary: '#1d4ed8',
+            secondary: '#1e40af',
+            sahibindenRenk: '#ffef00',
+            brandYellow: '#ffcb08',
+            footerBg: '#333533',
+            footerTitle: '#ffee32',
+            iconBoxColor: '202020',
+          },
+          borderRadius: {
+            'none': '0px',
+            'sm': '4px',
+            DEFAULT: '8px',
+            'md': '12px',
+            'lg': '16px',
+            'xl': '20px',
+            '2xl': '24px',
+            '3xl': '32px',
+            'full': '9999px',
+            'button': '8px'
+          }
+        }
+      }
+    }
+  </script>
+
 </head>
 
 <body class="bg-gradient-to-br from-blue-50 via-white to-yellow-50 min-h-screen">
 
-  
+
   <div class="min-h-screen">
-    
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-transparent">
-  <a href="/merada_gayrimenkul" class="block mt-4 mb-6 text-center">
-    <img src="img/logo.png" alt="Logo" class="mx-auto h-12 sm:h-15 w-auto" />
-  </a>
-</div>
 
-
-   <header class="relative overflow-hidden py-20 px-4"
-  style="background: linear-gradient(135deg, rgba(0, 123, 255, 0.08) 0%, rgba(255, 215, 0, 0.08) 100%);">
-
-
-
-  <div class="max-w-4xl mx-auto text-center">
-    <!-- Logo -->
-    <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6" style="font-family: 'Poppins', sans-serif;">
-      Bizimle <span class="text-brandYellow glow">İletişime</span> Geçin
-    </h1>
-    <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed" style="font-family: 'Inter', sans-serif;">
-      Premium emlak hizmetlerimiz hakkında detaylı bilgi almak ve hayalinizdeki mülkü bulmak için bizimle iletişime
-      geçin. Uzman ekibimiz size en iyi hizmeti sunmaya hazır.
-    </p>
-
-    <!-- Sosyal Medya İkonları -->
-    <div class="flex justify-center space-x-6 mt-10">
-      <a href="#"
-        class="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md bg-brandYellow/10 border-2 border-brandYellow/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors text-2xl">
-        <i class="ri-facebook-fill"></i>
-      </a>
-      <a href="#"
-        class="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md bg-brandYellow/10 border-2 border-brandYellow/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors text-2xl">
-        <i class="ri-twitter-fill"></i>
-      </a>
-      <a href="#"
-        class="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md bg-brandYellow/10 border-2 border-brandYellow/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors text-2xl">
-        <i class="ri-instagram-fill"></i>
-      </a>
-      <a href="#"
-        class="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md bg-brandYellow/10 border-2 border-brandYellow/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors text-2xl">
-        <i class="ri-linkedin-fill"></i>
-      </a>
+    <div class="fixed top-0 left-0 right-0 z-50 pt-0 shadow-sm">
+      <nav class="w-full border-b border-brandYellow bg-footerBg shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-center">
+          <!-- Logo (her ekranda ortalı) -->
+          <div class="flex justify-center">
+            <a href="/merada_gayrimenkul">
+              <img src="img/logo.png" alt="Logo" class="h-8 sm:h-12 w-auto glow-img">
+            </a>
+          </div>
+        </div>
+      </nav>
     </div>
-  </div>
-</header>
+
+
+    <header class="relative overflow-hidden py-50 px-4"
+      style="background: linear-gradient(135deg, rgba(0, 123, 255, 0.134) 0%, rgba(255, 217, 0, 0.14) 100%);">
+
+
+
+      <div class="max-w-4xl mx-auto text-center">
+        <!-- Logo -->
+        <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6" style="font-family: 'Poppins', sans-serif;">
+          Bizimle <span class="text-brandYellow glow">İletişime</span> Geçin
+        </h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed" style="font-family: 'Inter', sans-serif;">
+          Premium emlak hizmetlerimiz hakkında detaylı bilgi almak ve hayalinizdeki mülkü bulmak için bizimle iletişime
+          geçin. Uzman ekibimiz size en iyi hizmeti sunmaya hazır.
+        </p>
+
+        <!-- Sosyal Medya İkonları -->
+        <div class="flex justify-center space-x-6 mt-10">
+          <a href="#"
+            class="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md bg-brandYellow/10 border-2 border-brandYellow/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors text-2xl">
+            <i class="ri-facebook-fill"></i>
+          </a>
+          <a href="#"
+            class="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md bg-brandYellow/10 border-2 border-brandYellow/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors text-2xl">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a href="#"
+            class="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md bg-brandYellow/10 border-2 border-brandYellow/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors text-2xl">
+            <i class="ri-instagram-fill"></i>
+          </a>
+          <a href="#"
+            class="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md bg-brandYellow/10 border-2 border-brandYellow/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors text-2xl">
+            <i class="ri-linkedin-fill"></i>
+          </a>
+        </div>
+      </div>
+    </header>
 
 
     <main class="py-20 px-4">
@@ -130,36 +174,42 @@
               </form>
             </div>
 
-         <div class="grid md:grid-cols-3 gap-6">
-  <!-- Telefon -->
-  <div class="bg-white rounded-xl p-6 text-center shadow-lg border border-gray-100 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,215,0,0.6)]">
-    <div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mx-auto mb-4 transition-all duration-300 ease-out group-hover:scale-110">
-      <i class="ri-phone-fill text-primary text-xl"></i>
-    </div>
-    <h3 class="font-semibold text-gray-800 mb-2" style="font-family: 'Montserrat', sans-serif;">Telefon</h3>
-    <p class="text-gray-600 text-sm">+90 (212) 555 0123</p>
-  </div>
+            <div class="grid md:grid-cols-3 gap-6">
+              <!-- Telefon -->
+              <div
+                class="bg-white rounded-xl p-6 text-center shadow-lg border border-gray-100 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,215,0,0.6)]">
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mx-auto mb-4 transition-all duration-300 ease-out group-hover:scale-110">
+                  <i class="ri-phone-fill text-primary text-xl"></i>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-2" style="font-family: 'Montserrat', sans-serif;">Telefon</h3>
+                <p class="text-gray-600 text-sm">+90 (212) 555 0123</p>
+              </div>
 
-  <!-- E-posta -->
-  <div class="bg-white rounded-xl p-6 text-center shadow-lg border border-gray-100 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,215,0,0.6)]">
-    <div class="w-12 h-12 flex items-center justify-center bg-secondary/10 rounded-full mx-auto mb-4 transition-all duration-300 ease-out">
-      <i class="ri-mail-fill text-secondary text-xl"></i>
-    </div>
-    <h3 class="font-semibold text-gray-800 mb-2" style="font-family: 'Montserrat', sans-serif;">E-posta</h3>
-    <p class="text-gray-600 text-sm">info@premiumemlak.com</p>
-  </div>
+              <!-- E-posta -->
+              <div
+                class="bg-white rounded-xl p-6 text-center shadow-lg border border-gray-100 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,215,0,0.6)]">
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-secondary/10 rounded-full mx-auto mb-4 transition-all duration-300 ease-out">
+                  <i class="ri-mail-fill text-secondary text-xl"></i>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-2" style="font-family: 'Montserrat', sans-serif;">E-posta</h3>
+                <p class="text-gray-600 text-sm">info@premiumemlak.com</p>
+              </div>
 
-  <!-- Adres -->
-  <div class="bg-white rounded-xl p-6 text-center shadow-lg border border-gray-100 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,215,0,0.6)]">
-    <div class="w-12 h-12 flex items-center justify-center bg-green-100 rounded-full mx-auto mb-4 transition-all duration-300 ease-out">
-      <i class="ri-map-pin-fill text-green-600 text-xl"></i>
-    </div>
-    <h3 class="font-semibold text-gray-800 mb-2" style="font-family: 'Montserrat', sans-serif;">Adres</h3>
-    <p class="text-gray-600 text-sm">Levent, İstanbul</p>
-  </div>
-</div>
+              <!-- Adres -->
+              <div
+                class="bg-white rounded-xl p-6 text-center shadow-lg border border-gray-100 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,215,0,0.6)]">
+                <div
+                  class="w-12 h-12 flex items-center justify-center bg-green-100 rounded-full mx-auto mb-4 transition-all duration-300 ease-out">
+                  <i class="ri-map-pin-fill text-green-600 text-xl"></i>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-2" style="font-family: 'Montserrat', sans-serif;">Adres</h3>
+                <p class="text-gray-600 text-sm">Levent, İstanbul</p>
+              </div>
+            </div>
 
-            
+
           </div>
 
           <div class="space-y-8">
@@ -253,23 +303,25 @@
           </div>
         </div>
 
-         <div class="text-center sm:text-left">
-        <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-        <ul class="space-y-2">
-          <li><a href="index.html" class="brandYellow hover:text-[#f58549] transition-colors">Home</a></li>
-          <li><a href="about_us.html" class="brandYellow hover:text-[#f58549] transition-colors">About Us</a></li>
-          <li><a href="contact.html" class="brandYellow hover:text-[#f58549] transition-colors">Contact</a></li>
-        </ul>
-      </div>
+        <div class="text-center sm:text-left">
+          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="brandYellow hover:text-[#f58549] transition-colors">Home</a></li>
+            <li><a href="about_us.html" class="brandYellow hover:text-[#f58549] transition-colors">About Us</a></li>
+            <li><a href="contact.html" class="brandYellow hover:text-[#f58549] transition-colors">Contact</a></li>
+          </ul>
+        </div>
 
-      <div class="text-center sm:text-left">
-        <h4 class="text-lg font-semibold mb-4">Services</h4>
-        <ul class="space-y-2">
-          <li><a href="emlak_urunler.html" class="brandYellow hover:text-[#f58549] transition-colors">Merada Gayrimenkul</a></li>
-          <li><a href="yonetim_hizmetleri.html" class="brandYellow hover:text-[#f58549] transition-colors">Merada Yönetim</a></li>
+        <div class="text-center sm:text-left">
+          <h4 class="text-lg font-semibold mb-4">Services</h4>
+          <ul class="space-y-2">
+            <li><a href="emlak_urunler.html" class="brandYellow hover:text-[#f58549] transition-colors">Merada
+                Gayrimenkul</a></li>
+            <li><a href="yonetim_hizmetleri.html" class="brandYellow hover:text-[#f58549] transition-colors">Merada
+                Yönetim</a></li>
 
-        </ul>
-      </div>
+          </ul>
+        </div>
 
         <div class="text-center sm:text-left">
           <h4 class="text-lg font-semibold mb-4">Contact Info</h4>

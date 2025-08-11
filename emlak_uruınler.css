@@ -1,7 +1,0 @@
-   :where([class^="ri-"])::before {
-            content: "\f3c2";
-        }
-
-        html, body {
-  overflow-x: hidden;
-}
