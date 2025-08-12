@@ -100,17 +100,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Kalp (Favori) Toggle
-    const heartButtons = document.querySelectorAll('button i[class*="ri-heart"]');
-
-    heartButtons.forEach(button => {
-        button.parentElement.addEventListener('click', function () {
-            if (button.classList.contains('ri-heart-line')) {
-                button.classList.remove('ri-heart-line');
-                button.classList.add('ri-heart-fill', 'text-red-500');
-            } else {
-                button.classList.remove('ri-heart-fill', 'text-red-500');
-                button.classList.add('ri-heart-line');
-            }
-        });
-    });
+    
 });
+const filterMenu = document.getElementById("filterMenu");
+const filterBtn = document.getElementById("filterToggleBtn");
+
+let menuOpen = false;
+
+function toggleFilterMenu() {
+    const menuWidth = filterMenu.offsetWidth; // Menü genişliğini al
+
+    if (!menuOpen) {
+        // Menü aç
+        filterMenu.classList.remove("-translate-x-full");
+        filterBtn.style.transform = `translate(${menuWidth}px, -50%)`;
+        menuOpen = true;
+    } else {
+        // Menü kapa
+        filterMenu.classList.add("-translate-x-full");
+        filterBtn.style.transform = `translate(0, -50%)`;
+        menuOpen = false;
+    }
+}
