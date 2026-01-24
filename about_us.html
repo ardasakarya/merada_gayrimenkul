@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <script src="https://static.readdy.ai/static/e.js"></script>
+  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Us - Premier Real Estate</title>
@@ -49,20 +49,41 @@
   </nav>
 </header>
 
-  <section class="relative min-h-[70vh] flex items-center justify-center"
-    style="background-image: url('https://videos.openai.com/vg-assets/assets%2Ftask_01k2ce146jek09x4y3wv6bm96v%2F1754911652_img_0.webp?st=2025-08-11T09%3A48%3A07Z&se=2025-08-17T10%3A48%3A07Z&sks=b&skt=2025-08-11T09%3A48%3A07Z&ske=2025-08-17T10%3A48%3A07Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=8ebb0df1-a278-4e2e-9c20-f2d373479b3a&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=z%2F%2FwZ5Dd3L8nyTQgpEJLVaTJqlzVs4PGDWvmBC94PNA%3D&az=oaivgprodscus'); background-size: cover; background-position: center;">
-    <div class="absolute inset-0 bg-black bg-opacity-15"></div>
-    <div class="relative z-10 max-w-4xl mx-auto px-4">
+<section
+  class="relative min-h-[70vh] md:min-h-[80vh] flex items-center"
+  style="background-image: url('img/about.jpg'); background-size: cover; background-position: center;"
+>
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-black/25"></div>
 
-  <div class="bg-white/10 backdrop-blur-sm rounded-xl p-20 text-center text-white">
-    <h1 class="text-5xl md:text-6xl font-bold mb-6 glow">About Us</h1>
-    <p class="text-xl md:text-2xl opacity-90 max-w-2xl mx-auto glow">
-      Building dreams and creating lasting relationships in real estate for over two decades
-    </p>
+  <!-- İçerik Alanı -->
+  <div class="relative z-10 w-full px-4 sm:px-6 lg:px-0">
+    <div
+      class="relative text-white
+             w-full sm:max-w-lg md:max-w-xl
+             p-6 sm:p-8 md:p-10
+             mx-auto lg:mx-0
+             lg:ml-24
+             rounded-xl
+             bg-white/15
+             backdrop-blur-xl
+             border border-white/20
+             shadow-[0_10px_40px_rgba(0,0,0,0.25)]
+             before:absolute before:inset-0 before:rounded-xl
+             before:bg-gradient-to-br before:from-white/30 before:via-transparent before:to-white/10
+             before:pointer-events-none"
+    >
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-brandYellow text-center">
+        About Us
+      </h1>
+      <p class="text-base sm:text-lg md:text-xl opacity-90">
+        Building dreams and creating lasting relationships in real estate for over two decades
+      </p>
+    </div>
   </div>
-</div>
+</section>
 
-  </section>
+
 
   <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -91,10 +112,13 @@
           </div>
         </div>
         <div class="relative">
-          <img
-            src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4npqVHmkEAlYURSrHsPNVUDiheL_BrABWfMgySRscSFI1tUZb9dc5_6q0_iN3P8gG5YmqdHL5Ui_qz41qa-C3ujL-tkS3Nh84LED1_RpGZ_QXa4SKkIq0LDhS2_tX4lYUIBiDbrQ=s1360-w1360-h1020-rw"
-            alt="Company Team" class="rounded-xl shadow-2xl object-cover w-full h-96">
-        </div>
+  <img
+    src="img/team.jpg"
+    alt="Company Team"
+    class="rounded-xl shadow-2xl object-cover w-full h-96"
+  >
+</div>
+
       </div>
     </div>
   </section>
@@ -183,8 +207,11 @@
     <div id="team" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
       <!-- Script ile eklenecek kartlar buraya gelecek -->
     </div>
+    
   </div>
+  
 </section>
+
 
 
 <footer class="bg-footerBg text-footerTitle py-16">
@@ -268,7 +295,7 @@
 
   <script src="about_us.js"></script>
 
-  <script src="https://static.readdy.ai/static/share.js"></script>
+ 
 </body>
 
 </html>

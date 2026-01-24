@@ -1,124 +1,222 @@
-// main.js
-function toggleAdvancedFilters() {
-    const adv = document.getElementById('advancedFilters');
-    adv.classList.toggle('hidden');
+// === CONFIG ===
+const BACKEND = "http://127.0.0.1:5000";
+let deletePropertyId = null;
+let activeFilters = {}; // aktif filtreler tutulacak
+
+// === UTILITY ===
+function escapeHtml(s) {
+  return String(s || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }
-  function toggleMobileFilters() {
-    document.getElementById('filterSection').classList.toggle('hidden');
-  }
 
-  function toggleDropdown(id) {
-    document.querySelectorAll('ul[id$="Dropdown"]').forEach(el => {
-      if (el.id !== id) el.classList.add('hidden');
+// === ANA LİSTEYİ YÜKLE ===
+async function loadProperties(filters = {}) {
+  try {
+    const query = new URLSearchParams(filters).toString();
+    const res = await fetch(`${BACKEND}/properties?${query}`);
+    if (!res.ok) throw new Error("Sunucudan veri alınamadı");
+    const data = await res.json();
+
+    const grid = document.getElementById("gridView");
+    const list = document.getElementById("listView");
+    grid.innerHTML = "";
+    list.innerHTML = "";
+
+    if (!data.length) {
+      const emptyHtml = `<div class="text-center text-gray-500 py-12">Hiç ilan bulunamadı.</div>`;
+      grid.innerHTML = emptyHtml;
+      list.innerHTML = emptyHtml;
+      return;
+    }
+
+    data.forEach(prop => {
+      // ======================
+      // 📦 GRID KART (Kutulu)
+      // ======================
+      const card = document.createElement("div");
+      card.className =
+        "bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-lg transition-all cursor-pointer";
+
+      const aspect = document.createElement("div");
+      aspect.className = "relative";
+      const img = document.createElement("img");
+      img.src = prop.photo || (BACKEND + "/img/placeholder.webp");
+      img.alt = prop.title || "photo";
+      img.className = "w-full h-48 object-cover object-center";
+      aspect.appendChild(img);
+
+      if (prop.status) {
+        const badge = document.createElement("div");
+        badge.className =
+          "absolute top-3 left-3 bg-green-600 text-white px-3 py-1 rounded-lg text-xs font-semibold shadow";
+        badge.textContent = prop.status;
+        aspect.appendChild(badge);
+      }
+
+      const body = document.createElement("div");
+      body.className = "p-5";
+      body.innerHTML = `
+        <div class="text-2xl font-bold text-gray-900 mb-2">
+          ${prop.currency ?? ""}${prop.price ?? "-"} 
+        </div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-3">${escapeHtml(prop.title || "-")}</h3>
+        <div class="flex items-center text-gray-500 text-sm mb-4">
+          <i class="ri-map-pin-line text-base mr-2"></i>
+          <span>${[prop.city, prop.district, prop.neighborhood].filter(Boolean).join(" / ")}</span>
+        </div>
+        <div class="flex items-center justify-between text-gray-600 text-sm">
+          <div class="flex items-center gap-1">
+            <i class="ri-hotel-bed-line text-indigo-600 text-lg"></i>
+            <span>${prop.rooms ?? "-"} Oda</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <i class="ri-drop-line text-indigo-600 text-lg"></i>
+            <span>${prop.bathrooms ?? "-"} Banyo</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <i class="ri-ruler-line text-indigo-600 text-lg"></i>
+            <span>${prop.net_sqm ?? "-"} m²</span>
+          </div>
+        </div>
+      `;
+
+      card.appendChild(aspect);
+      card.appendChild(body);
+      card.addEventListener("click", () => {
+        window.location.href = `emlak_detay.html?id=${prop.id}`;
+      });
+      grid.appendChild(card);
+
+      // ======================
+      // 📋 LİSTE KART (Satırlı)
+      // ======================
+      const listCard = document.createElement("a");
+      listCard.href = `emlak_detay.html?id=${prop.id}`;
+      listCard.className = "block";
+
+      listCard.innerHTML = `
+        <div class="flex items-center bg-white rounded-lg shadow-sm border px-3 py-2 h-20 hover:shadow-md transition-all">
+          <div class="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden">
+            <img src="${prop.photo || (BACKEND + "/img/placeholder.webp")}"
+                 alt="${escapeHtml(prop.title || "-")}" 
+                 class="w-full h-full object-cover object-center">
+          </div>
+          <div class="flex-1 ml-3 overflow-hidden">
+            <div class="text-sm font-semibold text-gray-800 truncate">${escapeHtml(prop.title || "-")}</div>
+            <div class="flex gap-3 text-xs text-gray-600 mt-1 whitespace-nowrap overflow-hidden overflow-x-auto">
+              <span><i class="ri-ruler-line mr-1"></i>${prop.net_sqm ?? "-"} m²</span>
+              <span><i class="ri-map-pin-line mr-1"></i>${prop.city || ""}</span>
+              <span><i class="ri-hotel-bed-line mr-1"></i>${prop.rooms ?? "-"} Oda</span>
+            </div>
+          </div>
+          <div class="text-sm font-bold text-gray-900 ml-2 whitespace-nowrap">
+            ${prop.currency ?? ""}${prop.price ?? "-"}
+          </div>
+        </div>
+      `;
+
+      list.appendChild(listCard);
     });
-    document.getElementById(id).classList.toggle('hidden');
-  }
 
-  function selectOption(labelId, value) {
-    document.getElementById(labelId).innerText = value;
-    // dropdown'ı kapat
-    const dropdownId = labelId.replace("Label", "Dropdown");
-    document.getElementById(dropdownId).classList.add("hidden");
+  } catch (err) {
+    console.error("İlanlar yüklenemedi:", err);
+    alert("İlanlar yüklenemedi: " + err.message);
   }
+}
 
-  // Sayfa dışında tıklanınca dropdown'ı kapat
-  document.addEventListener('click', function (e) {
-    const isDropdownButton = e.target.closest('button')?.onclick?.toString().includes('toggleDropdown');
-    if (!isDropdownButton) {
-      document.querySelectorAll('ul[id$="Dropdown"]').forEach(el => el.classList.add('hidden'));
-    }
+// === FİLTRE ===
+function toggleDropdown(id) {
+  document.querySelectorAll('ul[id$="Dropdown"]').forEach(el => {
+    if (el.id !== id) el.classList.add('hidden');
   });
+  document.getElementById(id).classList.toggle('hidden');
+}
+
+function selectOption(labelId, value) {
+  document.getElementById(labelId).innerText = value;
+  const dropdownId = labelId.replace("Label", "Dropdown");
+  document.getElementById(dropdownId).classList.add("hidden");
+}
+
+document.addEventListener('click', function (e) {
+  const isDropdownButton = e.target.closest('button')?.onclick?.toString().includes('toggleDropdown');
+  if (!isDropdownButton) {
+    document.querySelectorAll('ul[id$="Dropdown"]').forEach(el => el.classList.add('hidden'));
+  }
+});
 
 
 
-  function applyFilters() {
-    const selectedPrice = document.getElementById("priceLabel").innerText;
-    const selectedType = document.getElementById("typeLabel").innerText;
-    const selectedLocation = document.getElementById("locationLabel").innerText;
-    const selectedBedroom = document.getElementById("bedroomLabel").innerText;
-    const isForSale = document.getElementById("saleBtn").classList.contains("bg-primary");
 
-    // Örnek: Filtre bilgilerini yazdır
-    console.log("Filtreler:");
-    console.log("Satış Türü:", isForSale ? "For Sale" : "For Rent");
-    console.log("Fiyat Aralığı:", selectedPrice);
-    console.log("Emlak Türü:", selectedType);
-    console.log("Konum:", selectedLocation);
-    console.log("Yatak Odası:", selectedBedroom);
 
-    // Burada istersen filtreleri bir API isteğine gönderebilirsin
-    // veya sayfada listeyi güncelleyebilirsin.
+
+// === TOGGLES ===
+document.addEventListener('DOMContentLoaded', function () {
+  const saleBtn = document.getElementById('saleBtn');
+  const rentBtn = document.getElementById('rentBtn');
+
+  if (saleBtn && rentBtn) {
+    saleBtn.addEventListener('click', function () {
+      saleBtn.classList.add('bg-brandYellow');
+      rentBtn.classList.remove('bg-brandYellow');
+    });
+    rentBtn.addEventListener('click', function () {
+      rentBtn.classList.add('bg-brandYellow');
+      saleBtn.classList.remove('bg-brandYellow');
+    });
   }
 
+  // Görünüm toggle
+  const gridViewBtn = document.getElementById('gridViewBtn');
+  const listViewBtn = document.getElementById('listViewBtn');
+  const gridView = document.getElementById('gridView');
+  const listView = document.getElementById('listView');
 
+  if (gridViewBtn && listViewBtn && gridView && listView) {
+    gridViewBtn.addEventListener('click', function () {
+      gridViewBtn.classList.add('bg-brandYellow');
+      listViewBtn.classList.remove('bg-brandYellow');
+      gridView.classList.remove('hidden');
+      listView.classList.add('hidden');
+    });
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Satış / Kiralama Toggle
-    const saleBtn = document.getElementById('saleBtn');
-    const rentBtn = document.getElementById('rentBtn');
+    listViewBtn.addEventListener('click', function () {
+      listViewBtn.classList.add('bg-brandYellow');
+      gridViewBtn.classList.remove('bg-brandYellow');
+      listView.classList.remove('hidden');
+      gridView.classList.add('hidden');
+    });
+  }
 
-    if (saleBtn && rentBtn) {
-        saleBtn.addEventListener('click', function () {
-            saleBtn.classList.add('bg-brandYellow', 'text-iconBoxColor');
-            saleBtn.classList.remove('text-iconBoxColor');
-            rentBtn.classList.remove('bg-brandYellow', 'text-iconBoxColor');
-            rentBtn.classList.add('text-iconBoxColor');
-        });
-
-        rentBtn.addEventListener('click', function () {
-            rentBtn.classList.add('bg-brandYellow', 'text-iconBoxColor');
-            rentBtn.classList.remove('text-iconBoxColor');
-            saleBtn.classList.remove('bg-brandYellow', 'text-iconBoxColor');
-            saleBtn.classList.add('text-iconBoxColor');
-        });
-    }
-
-    // Grid / Liste Görünümü Toggle
-    const gridViewBtn = document.getElementById('gridViewBtn');
-    const listViewBtn = document.getElementById('listViewBtn');
-    const gridView = document.getElementById('gridView');
-    const listView = document.getElementById('listView');
-
-    if (gridViewBtn && listViewBtn && gridView && listView) {
-        gridViewBtn.addEventListener('click', function () {
-            gridViewBtn.classList.add('bg-brandYellow', 'text-iconBoxColor');
-            gridViewBtn.classList.remove('text-iconBoxColor');
-            listViewBtn.classList.remove('bg-brandYellow', 'text-iconBoxColor');
-            listViewBtn.classList.add('text-iconBoxColor');
-            gridView.classList.remove('hidden');
-            listView.classList.add('hidden');
-        });
-
-        listViewBtn.addEventListener('click', function () {
-            listViewBtn.classList.add('bg-brandYellow', 'text-iconBoxColor');
-            listViewBtn.classList.remove('text-iconBoxColor');
-            gridViewBtn.classList.remove('bg-brandYellow', 'text-iconBoxColor');
-            gridViewBtn.classList.add('text-iconBoxColor');
-            listView.classList.remove('hidden');
-            gridView.classList.add('hidden');
-        });
-    }
-
-    // Kalp (Favori) Toggle
-    
+  // Sayfa yüklendiğinde ilanları getir
+  loadProperties();
 });
-const filterMenu = document.getElementById("filterMenu");
-const filterBtn = document.getElementById("filterToggleBtn");
 
-let menuOpen = false;
-
+// === FİLTRE PANELİ (Mobil) ===
 function toggleFilterMenu() {
-    const menuWidth = filterMenu.offsetWidth; // Menü genişliğini al
+  const filterMenu = document.getElementById("filterMenu");
+  const filterBtn = document.getElementById("filterToggleBtn");
+  const menuWidth = filterMenu.offsetWidth;
 
-    if (!menuOpen) {
-        // Menü aç
-        filterMenu.classList.remove("-translate-x-full");
-        filterBtn.style.transform = `translate(${menuWidth}px, -50%)`;
-        menuOpen = true;
+  if (!filterMenu.classList.contains("-translate-x-full")) {
+    filterMenu.classList.add("-translate-x-full");
+    filterBtn.style.transform = `translate(0, -50%)`;
+  } else {
+    filterMenu.classList.remove("-translate-x-full");
+    filterBtn.style.transform = `translate(${menuWidth}px, -50%)`;
+  }
+}
+function toggleAdvancedFilters() {
+    const adv = document.getElementById("advancedFilters");
+    if (adv.classList.contains("hidden")) {
+        adv.classList.remove("hidden");
+        adv.classList.add("block");
     } else {
-        // Menü kapa
-        filterMenu.classList.add("-translate-x-full");
-        filterBtn.style.transform = `translate(0, -50%)`;
-        menuOpen = false;
+        adv.classList.add("hidden");
+        adv.classList.remove("block");
     }
 }

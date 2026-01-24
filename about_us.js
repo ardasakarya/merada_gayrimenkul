@@ -82,60 +82,61 @@
 
 const teamMembers = [
   {
-    name: "Sarah Johnson",
-    title: "President & CEO",
-    description: "With over 20 years of industry experience, Sarah leads our strategic vision and global expansion initiatives.",
-    image: "https://readdy.ai/api/search-image?query=Professional%20headshot%20of%20confident%20business%20executive%20woman%20in%20modern%20corporate%20attire%2C%20clean%20studio%20lighting%2C%20professional%20photography%20style%2C%20contemporary%20business%20portrait%20with%20neutral%20background&width=300&height=300&seq=leader001&orientation=squarish",
-    email: "sarah.johnson@example.com",
-    phone: "+1234567890",
-    whatsapp: "901234567890"
+    name: "Onur Özdamar",
+    title: "Kurucu",
+    description: "Merada Gayrimenkul’ün kurucusu olarak şirketin vizyonunu ve stratejik yönünü belirlemektedir.",
+    image: "img/placeholder.png",
+    email: "onur@merada.com.tr",
+    phone: "+90 (540) 328 00 33",
+    whatsapp: "+905403280033"
   },
   {
-    name: "Michael Chen",
-    title: "Vice President of Operations",
-    description: "Michael oversees our operational excellence and member services, ensuring exceptional experiences for all members.",
-    image: "https://readdy.ai/api/search-image?query=Professional%20headshot%20of%20distinguished%20business%20executive%20man%20in%20formal%20business%20suit%2C%20confident%20expression%2C%20studio%20lighting%2C%20corporate%20photography%20style%20with%20clean%20neutral%20background&width=300&height=300&seq=leader002&orientation=squarish",
-    email: "michael.chen@example.com",
-    phone: "+1987654321",
-    whatsapp: "901234567891"
+    name: "Taha Deniz",
+    title: "Gayrimenkul Danışmanı",
+    description: "Müşteri memnuniyeti odaklı yaklaşımıyla konut ve yatırım süreçlerinde profesyonel danışmanlık sunar.",
+    image: "img/placeholder.png",
+    email: "taha@meradagayrimenkul.com",
+    phone: "+90 (532) 163 64 48",
+    whatsapp: "+905321636448"
   },
   {
-    name: "Dr. Emily Rodriguez",
-    title: "Director of Research",
-    description: "Dr. Rodriguez leads our research initiatives and innovation programs, driving industry advancement through evidence-based insights.",
-    image: "https://readdy.ai/api/search-image?query=Professional%20headshot%20of%20accomplished%20business%20woman%20executive%20in%20contemporary%20business%20attire%2C%20warm%20professional%20smile%2C%20studio%20photography%20with%20clean%20background%2C%20corporate%20portrait%20style&width=300&height=300&seq=leader003&orientation=squarish",
-    email: "emily.rodriguez@example.com",
-    phone: "+1122334455",
-    whatsapp: "901234567892"
+    name: "İsmail Danışan",
+    title: "Gayrimenkul Danışmanı",
+    description: "Satın alma ve satış süreçlerinde güvenilir ve şeffaf çözümler sunar.",
+    image: "img/placeholder.png",
+    email: "ismail@meradagayrimenkul.com",
+    phone: "+90 (552) 380 23 13",
+    whatsapp: "+905523802313"
   },
   {
-    name: "David Chen",
-    title: "Director of Research",
-    description: "David specializes in guiding first-time homebuyers through the process with patience and expertise, making homeownership dreams accessible to all.",
-    image: "https://readdy.ai/api/search-image?query=Professional%20headshot%20of%20confident%20middle-aged%20businessman%20in%20navy%20suit%20and%20tie%2C%20warm%20smile%2C%20clean%20white%20background%2C%20corporate%20photography%20style%2C%20high%20quality%20portrait%2C%20professional%20lighting%2C%20friendly%20approachable%20expression&width=300&height=300&seq=agent1&orientation=squarish",
-    email: "david.chen@example.com",
-    phone: "+1098765432",
-    whatsapp: "901234567893"
+    name: "Mahir Şenel",
+    title: "Gayrimenkul Danışmanı",
+    description: "Yatırım ve portföy yönetimi alanlarında uzmanlaşmıştır.",
+    image: "img/placeholder.png",
+    email: "mahir@meradagayrimenkul.com",
+    phone: "+90 (535) 252 92 71",
+    whatsapp: "+905352529271"
   },
   {
-    name: "Sarah Williams",
-    title: "Valued Clients",
-    description: "Sarah brings 8 years of commercial real estate expertise, focusing on office buildings, retail spaces, and investment properties throughout the metro area.",
-    image: "https://readdy.ai/api/search-image?query=Professional%20headshot%20of%20confident%20businesswoman%20in%20elegant%20blazer%2C%20warm%20genuine%20smile%2C%20clean%20white%20background%2C%20corporate%20photography%20style%2C%20high%20quality%20portrait%2C%20professional%20lighting%2C%20approachable%20friendly%20expression%2C%20shoulder%20length%20hair&width=300&height=300&seq=agent2&orientation=squarish",
-    email: "sarah.williams@example.com",
-    phone: "+1011121314",
-    whatsapp: "901234567894"
+    name: "Mücahit Danışan",
+    title: "Gayrimenkul Danışmanı",
+    description: "Alıcı ve satıcılar arasında güvene dayalı köprü kurar.",
+    image: "img/placeholder.png",
+    email: "mücahit@meradagayrimenkul.com",
+    phone: "+90 (537) 606 33 13",
+    whatsapp: "+905376063313"
   },
   {
-    name: "Michael Johnson",
-    title: "Valued Client",
-    description: "Michael shares his positive experience working with Prime Properties, emphasizing our dedication to client success.",
-    image: "https://readdy.ai/api/search-image?query=Professional%20headshot%20of%20successful%20businessman%20in%20suit%20smiling%20confidently%2C%20clean%20white%20background%2C%20natural%20lighting%2C%20genuine%20expression%20of%20satisfaction%2C%20professional%20appearance&width=80&height=80&seq=client2&orientation=squarish",
-    email: "michael.johnson@example.com",
-    phone: "+1151515151",
-    whatsapp: "901234567895"
+    name: "Beyza Güngör",
+    title: "Ön Büro",
+    description: "Ofis operasyonları ve müşteri iletişiminden sorumludur.",
+    image: "img/placeholder.png",
+    email: "beyza@meradagayrimenkul.com",
+    phone: "+90 (506) 033 07 33",
+    whatsapp: "+905060330733"
   }
 ];
+
 
 const teamContainer = document.getElementById("team");
 
@@ -226,3 +227,6 @@ teamMembers.forEach(member => {
 
   teamContainer.insertAdjacentHTML("beforeend", card);
 });
+
+
+

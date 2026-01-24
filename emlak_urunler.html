@@ -94,221 +94,168 @@
 
         <!-- Filtre Kapsayıcı -->
   <!-- Çentik Buton -->
+<!-- 🟨 Filtre Menüsü Butonu -->
 <button id="filterToggleBtn"
     class="fixed top-1/2 -translate-y-1/2 left-0 z-50 bg-brandYellow text-iconBoxColor p-3 rounded-r-lg shadow-md transition-transform duration-300"
     onclick="toggleFilterMenu()">
     <i class="ri-filter-3-line text-xl"></i>
 </button>
 
-
-<!-- Soldan Kayan Filtre Menüsü -->
+<!-- 🟧 Soldan Kayan Filtre Menüsü -->
 <div id="filterMenu"
-    class="fixed top-0 left-0 h-full w-[85%] sm:w-[400px] lg:w-[600px] xl:w-[750px] bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-40 overflow-y-auto">
+    class="fixed top-0 left-0 h-full w-[85%] sm:w-[400px] lg:w-[600px] xl:w-[700px] bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-40 overflow-y-auto">
 
     <!-- Menü Başlık -->
-   <div class="text-center mt-[12vh] p-6">
-    <h2 class="text-3xl font-bold text-iconBoxColor mb-2 border-b-2 border-brandYellow inline-block pb-2">
-        Filtreler
-    </h2>
-</div>
-
-
-    <!-- Filtre İçeriği -->
-    <div class="p-4 space-y-4">
-
-        <!-- Satış / Kiralık -->
-        <div class="flex rounded-lg p-1 justify-center">
-            <button id="saleBtn"
-                class="px-4 py-2 rounded bg-brandYellow text-iconBoxColor whitespace-nowrap !rounded-button">For Sale</button>
-            <button id="rentBtn"
-                class="px-4 py-2 rounded text-iconBoxColor whitespace-nowrap !rounded-button">For Rent</button>
-        </div>
-
-        <!-- Price Range -->
-        <div>
-            <label class="block text-gray-700 font-semibold mb-1">Price Range</label>
-            <select class="w-full border border-gray-300 rounded-lg p-2">
-                <option>Any</option>
-                <option>$0 - $100k</option>
-                <option>$100k - $500k</option>
-                <option>$500k+</option>
-            </select>
-        </div>
-
-        <!-- Property Type -->
-        <div>
-            <label class="block text-gray-700 font-semibold mb-1">Property Type</label>
-            <select class="w-full border border-gray-300 rounded-lg p-2">
-                <option>Any</option>
-                <option>House</option>
-                <option>Apartment</option>
-                <option>Villa</option>
-            </select>
-        </div>
-
-        <!-- Location -->
-        <div>
-            <label class="block text-gray-700 font-semibold mb-1">Location</label>
-            <select class="w-full border border-gray-300 rounded-lg p-2">
-                <option>Any</option>
-                <option>Istanbul</option>
-                <option>Ankara</option>
-                <option>Izmir</option>
-            </select>
-        </div>
-
-        <!-- Bedrooms -->
-        <div>
-            <label class="block text-gray-700 font-semibold mb-1">Bedrooms</label>
-            <select class="w-full border border-gray-300 rounded-lg p-2">
-                <option>Any</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3+</option>
-            </select>
-        </div>
-
- <div class="flex justify-center mt-5 gap-3">
-    <!-- Ara Butonu -->
-    <button class="px-6 py-2 bg-brandYellow text-iconBoxColor rounded-lg shadow hover:bg-primary-dark transition">
-        Ara
-    </button>
-
-    <!-- Gelişmiş Filtreler Butonu -->
-    <button onclick="toggleAdvancedFilters()"
-        class="px-6 py-2 bg-brandYellow text-iconBoxColor rounded-lg shadow-md hover:bg-primary-dark transition font-medium text-sm">
-        Gelişmiş Filtreleri Gör
-    </button>
-</div>
-
-<!-- Gelişmiş Filtreler -->
-<div id="advancedFilters" class="hidden mt-5 p-5 bg-gray-50 border border-gray-200 rounded-2xl shadow-sm">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-
-        <!-- Tek Filtre Kutusu -->
-        <div>
-            <label class="block mb-2 text-gray-700 font-semibold">Banyo</label>
-            <select class="w-full border border-gray-300 rounded-xl p-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary">
-                <option>Any</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3+</option>
-            </select>
-        </div>
-
-        <div>
-            <label class="block mb-2 text-gray-700 font-semibold">Bina Yaşı</label>
-            <select class="w-full border border-gray-300 rounded-xl p-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary">
-                <option>Any</option>
-                <option>0-5</option>
-                <option>5-10</option>
-                <option>10+</option>
-            </select>
-        </div>
-
-        <div>
-            <label class="block mb-2 text-gray-700 font-semibold">Metrekare (Min - Max)</label>
-            <div class="flex gap-2">
-                <input type="number" placeholder="Min" class="w-full border border-gray-300 rounded-xl p-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary">
-                <input type="number" placeholder="Max" class="w-full border border-gray-300 rounded-xl p-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary">
-            </div>
-        </div>
-
-        <div>
-            <label class="block mb-2 text-gray-700 font-semibold">Isıtma</label>
-            <select class="w-full border border-gray-300 rounded-xl p-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary">
-                <option>Any</option>
-                <option>Doğalgaz</option>
-                <option>Klima</option>
-                <option>Soba</option>
-            </select>
-        </div>
-
-        <div>
-            <label class="block mb-2 text-gray-700 font-semibold">Balkon</label>
-            <select class="w-full border border-gray-300 rounded-xl p-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary">
-                <option>Any</option>
-                <option>Var</option>
-                <option>Yok</option>
-            </select>
-        </div>
-
-        <div>
-            <label class="block mb-2 text-gray-700 font-semibold">Otopark</label>
-            <select class="w-full border border-gray-300 rounded-xl p-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary">
-                <option>Any</option>
-                <option>Var</option>
-                <option>Yok</option>
-            </select>
-        </div>
-
-        <div>
-            <label class="block mb-2 text-gray-700 font-semibold">Eşyalı</label>
-            <select class="w-full border border-gray-300 rounded-xl p-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary">
-                <option>Any</option>
-                <option>Evet</option>
-                <option>Hayır</option>
-            </select>
-        </div>
-
-        <div>
-            <label class="block mb-2 text-gray-700 font-semibold">Manzara</label>
-            <select class="w-full border border-gray-300 rounded-xl p-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary">
-                <option>Any</option>
-                <option>Deniz</option>
-                <option>Şehir</option>
-                <option>Doğa</option>
-            </select>
-        </div>
-
-        <div>
-            <label class="block mb-2 text-gray-700 font-semibold">Kat Sayısı (Min - Max)</label>
-            <div class="flex gap-2">
-                <input type="number" placeholder="Min" class="w-full border border-gray-300 rounded-xl p-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary">
-                <input type="number" placeholder="Max" class="w-full border border-gray-300 rounded-xl p-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary">
-            </div>
-        </div>
-
-        <div>
-            <label class="block mb-2 text-gray-700 font-semibold">Aidat (₺)</label>
-            <input type="number" placeholder="Max" class="w-full border border-gray-300 rounded-xl p-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary">
-        </div>
-
-        <div>
-            <label class="block mb-2 text-gray-700 font-semibold">Asansör</label>
-            <select class="w-full border border-gray-300 rounded-xl p-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary">
-                <option>Any</option>
-                <option>Var</option>
-                <option>Yok</option>
-            </select>
-        </div>
-
-        <div>
-            <label class="block mb-2 text-gray-700 font-semibold">Site İçinde</label>
-            <select class="w-full border border-gray-300 rounded-xl p-2 text-sm focus:border-primary focus:ring-1 focus:ring-primary">
-                <option>Any</option>
-                <option>Evet</option>
-                <option>Hayır</option>
-            </select>
-        </div>
-
+    <div class="text-center mt-[12vh] p-6 border-b border-gray-200">
+        <h2 class="text-3xl font-bold text-iconBoxColor mb-2 border-b-2 border-brandYellow inline-block pb-2">
+            Filtreler
+        </h2>
     </div>
 
-        <!-- Filtre Uygula Butonu -->
-        <div class="flex justify-end mt-5">
-            <button class="px-6 py-2 bg-brandYellow text-iconBoxColor rounded-lg shadow hover:bg-primary-dark transition">
-                Filtreleri Uygula
+    <!-- Filtre İçeriği -->
+    <div class="p-5 space-y-5">
+
+        <!-- Satış / Kiralık -->
+        <div class="flex gap-3 justify-center">
+            <button id="saleBtn"
+                class="px-4 py-2 rounded bg-brandYellow text-iconBoxColor whitespace-nowrap !rounded-button"
+                onclick="setSaleType('sale')">Satılık</button>
+            <button id="rentBtn"
+                class="px-4 py-2 rounded text-iconBoxColor whitespace-nowrap !rounded-button"
+                onclick="setSaleType('rent')">Kiralık</button>
+        </div>
+
+        <!-- Şehir (Sabit Mersin) -->
+        <div>
+            <label class="block text-gray-700 font-semibold mb-1">Şehir</label>
+            <input id="filter_city" type="text" value="Mersin" disabled
+                class="w-full border border-gray-300 rounded-lg p-2 bg-gray-100" />
+        </div>
+
+        <!-- İlçe -->
+        <div>
+            <label class="block text-gray-700 font-semibold mb-1">İlçe</label>
+            <select id="filter_district" class="w-full border border-gray-300 rounded-lg p-2">
+                <option value="">Tümü</option>
+                <option value="Akdeniz">Akdeniz</option>
+                <option value="Mezitli">Mezitli</option>
+                <option value="Yenişehir">Yenişehir</option>
+                <option value="Toroslar">Toroslar</option>
+                <option value="Tarsus">Tarsus</option>
+                <option value="Erdemli">Erdemli</option>
+                <option value="Silifke">Silifke</option>
+                <option value="Anamur">Anamur</option>
+            </select>
+        </div>
+
+        <!-- Fiyat Aralığı -->
+        <div>
+            <label class="block text-gray-700 font-semibold mb-1">Fiyat Aralığı</label>
+            <select id="filter_price" class="w-full border border-gray-300 rounded-lg p-2">
+                <option value="">Tümü</option>
+                <option value="0-100000">₺0 - ₺100.000</option>
+                <option value="100000-500000">₺100.000 - ₺500.000</option>
+                <option value="500000-1000000">₺500.000 - ₺1.000.000</option>
+                <option value="1000000-5000000">₺1.000.000 - ₺5.000.000</option>
+                <option value="5000000-999999999">₺5.000.000+</option>
+            </select>
+        </div>
+
+        <!-- Oda Sayısı -->
+        <div>
+            <label class="block text-gray-700 font-semibold mb-1">Oda Sayısı</label>
+            <select id="filter_rooms" class="w-full border border-gray-300 rounded-lg p-2">
+                <option value="">Tümü</option>
+                <option value="1">1+1</option>
+                <option value="2">2+1</option>
+                <option value="3">3+1</option>
+                <option value="4">4+1</option>
+                <option value="5">5+ ve üzeri</option>
+            </select>
+        </div>
+
+        <!-- Ara & Gelişmiş Butonlar -->
+        <div class="flex justify-center gap-3">
+            <button onclick="applyFilters()"
+                class="px-6 py-2 bg-brandYellow text-iconBoxColor rounded-lg shadow hover:bg-primary-dark transition">
+                Ara
+            </button>
+            <button onclick="toggleAdvancedFilters()"
+                class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg shadow hover:bg-gray-300 transition">
+                Gelişmiş Filtreleri Gör
             </button>
         </div>
 
+        <!-- 🧩 Gelişmiş Filtreler -->
+        <div id="advancedFilters"
+            class="hidden mt-5 p-5 bg-gray-50 border border-gray-200 rounded-2xl shadow-sm space-y-4">
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block mb-2 text-gray-700 font-semibold">Banyo</label>
+                    <select id="filter_bathrooms"
+                        class="w-full border border-gray-300 rounded-xl p-2 text-sm">
+                        <option value="">Tümü</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3+</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block mb-2 text-gray-700 font-semibold">Isıtma</label>
+                    <select id="filter_heating"
+                        class="w-full border border-gray-300 rounded-xl p-2 text-sm">
+                        <option value="">Tümü</option>
+                        <option value="Doğalgaz">Doğalgaz</option>
+                        <option value="Klima">Klima</option>
+                        <option value="Soba">Soba</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block mb-2 text-gray-700 font-semibold">Eşyalı</label>
+                    <select id="filter_furnished"
+                        class="w-full border border-gray-300 rounded-xl p-2 text-sm">
+                        <option value="">Farketmez</option>
+                        <option value="1">Evet</option>
+                        <option value="0">Hayır</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block mb-2 text-gray-700 font-semibold">Balkon</label>
+                    <select id="filter_balcony"
+                        class="w-full border border-gray-300 rounded-xl p-2 text-sm">
+                        <option value="">Farketmez</option>
+                        <option value="1">Var</option>
+                        <option value="0">Yok</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block mb-2 text-gray-700 font-semibold">Alan (m²)</label>
+                    <select id="filter_area"
+                        class="w-full border border-gray-300 rounded-xl p-2 text-sm">
+                        <option value="">Tümü</option>
+                        <option value="0-50">0 - 50</option>
+                        <option value="50-100">50 - 100</option>
+                        <option value="100-150">100 - 150</option>
+                        <option value="150-250">150 - 250</option>
+                        <option value="250-999999">250+</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex justify-end mt-5">
+                <button onclick="applyFilters()"
+                    class="px-6 py-2 bg-brandYellow text-iconBoxColor rounded-lg shadow hover:bg-primary-dark transition">
+                    Filtreleri Uygula
+                </button>
+            </div>
+        </div>
     </div>
 </div>
-
-</div>
-
-
-
-
 
 
 
@@ -326,669 +273,15 @@
             </div>
         </div>
 
-        <div id="gridView" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-            <a href="emlak_detay.html?id=1" class="block">
-                <div class="bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="relative">
-                        <img src="https://readdy.ai/api/search-image?query=modern%20luxury%20house%20exterior%20with%20clean%20white%20walls%2C%20large%20windows%2C%20contemporary%20architecture%2C%20beautiful%20landscaping%2C%20bright%20daylight%2C%20professional%20real%20estate%20photography%20style%2C%20minimalist%20design&width=400&height=300&seq=1&orientation=landscape"
-                            alt="Modern Luxury Villa" class="w-full h-48 object-cover object-top">
-                     
-                        <div
-                            class="absolute top-3 left-3 bg-green-500 text-white px-2 py-1 rounded text-sm font-medium">
-                            For Sale</div>
-                    </div>
-                    <div class="p-4">
-                        <div class="text-2xl font-bold text-gray-900 mb-2">$1,250,000</div>
-                        <h3 class="font-semibold text-gray-900 mb-2">Modern Luxury Villa</h3>
-                        <div class="flex items-center text-gray-600 text-sm mb-3">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-map-pin-line"></i>
-                            </div>
-                            <span>Beverly Hills, CA</span>
-                        </div>
-                        <div class="flex items-center justify-between text-gray-600 text-sm">
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-hotel-bed-line"></i>
-                                </div>
-                                <span>4 Beds</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-drop-line"></i>
-                                </div>
-                                <span>3 Baths</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-ruler-line"></i>
-                                </div>
-                                <span>3,200 sqft</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <a href="emlak_detay.html?id=2" class="block">
-                <div class="bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="relative">
-                        <img src="https://readdy.ai/api/search-image?query=elegant%20apartment%20building%20exterior%20with%20modern%20glass%20facade%2C%20urban%20setting%2C%20professional%20real%20estate%20photography%2C%20clean%20architectural%20lines%2C%20bright%20natural%20lighting&width=400&height=300&seq=2&orientation=landscape"
-                            alt="Downtown Penthouse" class="w-full h-48 object-cover object-top">
-                     
-                        <div class="absolute top-3 left-3 bg-blue-500 text-white px-2 py-1 rounded text-sm font-medium">
-                            For Rent</div>
-                    </div>
-                    <div class="p-4">
-                        <div class="text-2xl font-bold text-gray-900 mb-2">$4,500/mo</div>
-                        <h3 class="font-semibold text-gray-900 mb-2">Downtown Penthouse</h3>
-                        <div class="flex items-center text-gray-600 text-sm mb-3">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-map-pin-line"></i>
-                            </div>
-                            <span>Manhattan, NY</span>
-                        </div>
-                        <div class="flex items-center justify-between text-gray-600 text-sm">
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-hotel-bed-line"></i>
-                                </div>
-                                <span>2 Beds</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-drop-line"></i>
-                                </div>
-                                <span>2 Baths</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-ruler-line"></i>
-                                </div>
-                                <span>1,800 sqft</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <a href="emlak_detay.html?id=3" class="block">
-                <div class="bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="relative">
-                        <img src="https://readdy.ai/api/search-image?query=cozy%20family%20house%20with%20traditional%20architecture%2C%20well-maintained%20garden%2C%20suburban%20neighborhood%2C%20warm%20natural%20lighting%2C%20professional%20real%20estate%20photography&width=400&height=300&seq=3&orientation=landscape"
-                            alt="Family Home" class="w-full h-48 object-cover object-top">
-                     
-                        <div
-                            class="absolute top-3 left-3 bg-green-500 text-white px-2 py-1 rounded text-sm font-medium">
-                            For Sale</div>
-                    </div>
-                    <div class="p-4">
-                        <div class="text-2xl font-bold text-gray-900 mb-2">$850,000</div>
-                        <h3 class="font-semibold text-gray-900 mb-2">Charming Family Home</h3>
-                        <div class="flex items-center text-gray-600 text-sm mb-3">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-map-pin-line"></i>
-                            </div>
-                            <span>Austin, TX</span>
-                        </div>
-                        <div class="flex items-center justify-between text-gray-600 text-sm">
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-hotel-bed-line"></i>
-                                </div>
-                                <span>3 Beds</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-drop-line"></i>
-                                </div>
-                                <span>2 Baths</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-ruler-line"></i>
-                                </div>
-                                <span>2,400 sqft</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <a href="emlak_detay.html?id=4" class="block">
-                <div class="bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="relative">
-                        <img src="https://readdy.ai/api/search-image?query=modern%20studio%20apartment%20interior%20with%20minimalist%20design%2C%20large%20windows%2C%20city%20view%2C%20contemporary%20furniture%2C%20bright%20natural%20lighting%2C%20real%20estate%20photography&width=400&height=300&seq=4&orientation=landscape"
-                            alt="Studio Apartment" class="w-full h-48 object-cover object-top">
-                     
-                        <div class="absolute top-3 left-3 bg-blue-500 text-white px-2 py-1 rounded text-sm font-medium">
-                            For Rent</div>
-                    </div>
-                    <div class="p-4">
-                        <div class="text-2xl font-bold text-gray-900 mb-2">$2,200/mo</div>
-                        <h3 class="font-semibold text-gray-900 mb-2">Modern Studio</h3>
-                        <div class="flex items-center text-gray-600 text-sm mb-3">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-map-pin-line"></i>
-                            </div>
-                            <span>San Francisco, CA</span>
-                        </div>
-                        <div class="flex items-center justify-between text-gray-600 text-sm">
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-hotel-bed-line"></i>
-                                </div>
-                                <span>Studio</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-drop-line"></i>
-                                </div>
-                                <span>1 Bath</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-ruler-line"></i>
-                                </div>
-                                <span>650 sqft</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <a href="emlak_detay.html?id=5" class="block">
-                <div class="bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="relative">
-                        <img src="https://readdy.ai/api/search-image?query=luxury%20townhouse%20exterior%20with%20brick%20facade%2C%20elegant%20entrance%2C%20urban%20residential%20area%2C%20professional%20real%20estate%20photography%2C%20well-maintained%20landscaping&width=400&height=300&seq=5&orientation=landscape"
-                            alt="Luxury Townhouse" class="w-full h-48 object-cover object-top">
-                     
-                        <div
-                            class="absolute top-3 left-3 bg-green-500 text-white px-2 py-1 rounded text-sm font-medium">
-                            For Sale</div>
-                    </div>
-                    <div class="p-4">
-                        <div class="text-2xl font-bold text-gray-900 mb-2">$1,850,000</div>
-                        <h3 class="font-semibold text-gray-900 mb-2">Luxury Townhouse</h3>
-                        <div class="flex items-center text-gray-600 text-sm mb-3">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-map-pin-line"></i>
-                            </div>
-                            <span>Brooklyn, NY</span>
-                        </div>
-                        <div class="flex items-center justify-between text-gray-600 text-sm">
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-hotel-bed-line"></i>
-                                </div>
-                                <span>4 Beds</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-drop-line"></i>
-                                </div>
-                                <span>3 Baths</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-ruler-line"></i>
-                                </div>
-                                <span>2,800 sqft</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <a href="emlak_detay.html?id=6" class="block">
-                <div class="bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="relative">
-                        <img src="https://readdy.ai/api/search-image?query=spacious%20condo%20with%20balcony%20overlooking%20city%20skyline%2C%20modern%20high-rise%20building%2C%20glass%20windows%2C%20urban%20living%2C%20professional%20real%20estate%20photography&width=400&height=300&seq=6&orientation=landscape"
-                            alt="City View Condo" class="w-full h-48 object-cover object-top">
-                     
-                        <div class="absolute top-3 left-3 bg-blue-500 text-white px-2 py-1 rounded text-sm font-medium">
-                            For Rent</div>
-                    </div>
-                    <div class="p-4">
-                        <div class="text-2xl font-bold text-gray-900 mb-2">$3,800/mo</div>
-                        <h3 class="font-semibold text-gray-900 mb-2">City View Condo</h3>
-                        <div class="flex items-center text-gray-600 text-sm mb-3">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-map-pin-line"></i>
-                            </div>
-                            <span>Seattle, WA</span>
-                        </div>
-                        <div class="flex items-center justify-between text-gray-600 text-sm">
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-hotel-bed-line"></i>
-                                </div>
-                                <span>2 Beds</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-drop-line"></i>
-                                </div>
-                                <span>2 Baths</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-ruler-line"></i>
-                                </div>
-                                <span>1,500 sqft</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <a href="emlak_detay.html?id=7" class="block">
-                <div class="bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="relative">
-                        <img src="https://readdy.ai/api/search-image?query=colonial%20style%20house%20with%20white%20columns%2C%20traditional%20American%20architecture%2C%20manicured%20lawn%2C%20suburban%20setting%2C%20professional%20real%20estate%20photography&width=400&height=300&seq=7&orientation=landscape"
-                            alt="Colonial Estate" class="w-full h-48 object-cover object-top">
-                     
-                        <div
-                            class="absolute top-3 left-3 bg-green-500 text-white px-2 py-1 rounded text-sm font-medium">
-                            For Sale</div>
-                    </div>
-                    <div class="p-4">
-                        <div class="text-2xl font-bold text-gray-900 mb-2">$2,100,000</div>
-                        <h3 class="font-semibold text-gray-900 mb-2">Colonial Estate</h3>
-                        <div class="flex items-center text-gray-600 text-sm mb-3">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-map-pin-line"></i>
-                            </div>
-                            <span>Greenwich, CT</span>
-                        </div>
-                        <div class="flex items-center justify-between text-gray-600 text-sm">
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-hotel-bed-line"></i>
-                                </div>
-                                <span>5 Beds</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-drop-line"></i>
-                                </div>
-                                <span>4 Baths</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-ruler-line"></i>
-                                </div>
-                                <span>4,200 sqft</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <a href="emlak_detay.html?id=8" class="block">
-                <div class="bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="relative">
-                        <img src="https://readdy.ai/api/search-image?query=contemporary%20loft%20apartment%20with%20exposed%20brick%20walls%2C%20high%20ceilings%2C%20industrial%20design%20elements%2C%20urban%20living%20space%2C%20professional%20real%20estate%20photography&width=400&height=300&seq=8&orientation=landscape"
-                            alt="Industrial Loft" class="w-full h-48 object-cover object-top">
-                     
-                        <div class="absolute top-3 left-3 bg-blue-500 text-white px-2 py-1 rounded text-sm font-medium">
-                            For Rent</div>
-                    </div>
-                    <div class="p-4">
-                        <div class="text-2xl font-bold text-gray-900 mb-2">$5,200/mo</div>
-                        <h3 class="font-semibold text-gray-900 mb-2">Industrial Loft</h3>
-                        <div class="flex items-center text-gray-600 text-sm mb-3">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-map-pin-line"></i>
-                            </div>
-                            <span>Chicago, IL</span>
-                        </div>
-                        <div class="flex items-center justify-between text-gray-600 text-sm">
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-hotel-bed-line"></i>
-                                </div>
-                                <span>1 Bed</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-drop-line"></i>
-                                </div>
-                                <span>1 Bath</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-ruler-line"></i>
-                                </div>
-                                <span>1,200 sqft</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <a href="emlak_detay.html?id=9" class="block">
-                <div class="bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="relative">
-                        <img src="https://readdy.ai/api/search-image?query=mediterranean%20villa%20with%20terracotta%20roof%2C%20stucco%20walls%2C%20palm%20trees%2C%20luxury%20outdoor%20pool%2C%20warm%20climate%20architecture%2C%20professional%20real%20estate%20photography&width=400&height=300&seq=9&orientation=landscape"
-                            alt="Mediterranean Villa" class="w-full h-48 object-cover object-top">
-                     
-                        <div
-                            class="absolute top-3 left-3 bg-green-500 text-white px-2 py-1 rounded text-sm font-medium">
-                            For Sale</div>
-                    </div>
-                    <div class="p-4">
-                        <div class="text-2xl font-bold text-gray-900 mb-2">$3,750,000</div>
-                        <h3 class="font-semibold text-gray-900 mb-2">Mediterranean Villa</h3>
-                        <div class="flex items-center text-gray-600 text-sm mb-3">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-map-pin-line"></i>
-                            </div>
-                            <span>Miami, FL</span>
-                        </div>
-                        <div class="flex items-center justify-between text-gray-600 text-sm">
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-hotel-bed-line"></i>
-                                </div>
-                                <span>6 Beds</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-drop-line"></i>
-                                </div>
-                                <span>5 Baths</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-ruler-line"></i>
-                                </div>
-                                <span>5,800 sqft</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <a href="emlak_detay.html?id=10" class="block">
-                <div class="bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="relative">
-                        <img src="https://readdy.ai/api/search-image?query=cozy%20cottage%20with%20garden%2C%20white%20picket%20fence%2C%20traditional%20charm%2C%20small%20residential%20property%2C%20professional%20real%20estate%20photography%2C%20countryside%20setting&width=400&height=300&seq=10&orientation=landscape"
-                            alt="Garden Cottage" class="w-full h-48 object-cover object-top">
-                     
-                        <div class="absolute top-3 left-3 bg-blue-500 text-white px-2 py-1 rounded text-sm font-medium">
-                            For Rent</div>
-                    </div>
-                    <div class="p-4">
-                        <div class="text-2xl font-bold text-gray-900 mb-2">$2,800/mo</div>
-                        <h3 class="font-semibold text-gray-900 mb-2">Garden Cottage</h3>
-                        <div class="flex items-center text-gray-600 text-sm mb-3">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-map-pin-line"></i>
-                            </div>
-                            <span>Portland, OR</span>
-                        </div>
-                        <div class="flex items-center justify-between text-gray-600 text-sm">
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-hotel-bed-line"></i>
-                                </div>
-                                <span>2 Beds</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-drop-line"></i>
-                                </div>
-                                <span>1 Bath</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-ruler-line"></i>
-                                </div>
-                                <span>900 sqft</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <a href="emlak_detay.html?id=11" class="block">
-                <div class="bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="relative">
-                        <img src="https://readdy.ai/api/search-image?query=luxury%20high-rise%20penthouse%20with%20floor-to-ceiling%20windows%2C%20modern%20architecture%2C%20city%20skyline%20view%2C%20upscale%20urban%20living%2C%20professional%20real%20estate%20photography&width=400&height=300&seq=11&orientation=landscape"
-                            alt="Sky Penthouse" class="w-full h-48 object-cover object-top">
-                     
-                        <div
-                            class="absolute top-3 left-3 bg-green-500 text-white px-2 py-1 rounded text-sm font-medium">
-                            For Sale</div>
-                    </div>
-                    <div class="p-4">
-                        <div class="text-2xl font-bold text-gray-900 mb-2">$4,200,000</div>
-                        <h3 class="font-semibold text-gray-900 mb-2">Sky Penthouse</h3>
-                        <div class="flex items-center text-gray-600 text-sm mb-3">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-map-pin-line"></i>
-                            </div>
-                            <span>Los Angeles, CA</span>
-                        </div>
-                        <div class="flex items-center justify-between text-gray-600 text-sm">
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-hotel-bed-line"></i>
-                                </div>
-                                <span>3 Beds</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-drop-line"></i>
-                                </div>
-                                <span>3 Baths</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-ruler-line"></i>
-                                </div>
-                                <span>2,600 sqft</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
+      <!-- === GRID VIEW === -->
+<div id="gridView" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+  <!-- Grid kartlar JS ile gelecek -->
+</div>
 
-            <a href="emlak_detay.html?id=12" class="block">
-                <div class="bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="relative">
-                        <img src="https://readdy.ai/api/search-image?query=craftsman%20style%20bungalow%20with%20wooden%20details%2C%20front%20porch%2C%20traditional%20American%20architecture%2C%20mature%20trees%2C%20residential%20neighborhood%2C%20professional%20real%20estate%20photography&width=400&height=300&seq=12&orientation=landscape"
-                            alt="Craftsman Bungalow" class="w-full h-48 object-cover object-top">
-                     
-                        <div class="absolute top-3 left-3 bg-blue-500 text-white px-2 py-1 rounded text-sm font-medium">
-                            For Rent</div>
-                    </div>
-                    <div class="p-4">
-                        <div class="text-2xl font-bold text-gray-900 mb-2">$3,200/mo</div>
-                        <h3 class="font-semibold text-gray-900 mb-2">Craftsman Bungalow</h3>
-                        <div class="flex items-center text-gray-600 text-sm mb-3">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-map-pin-line"></i>
-                            </div>
-                            <span>Denver, CO</span>
-                        </div>
-                        <div class="flex items-center justify-between text-gray-600 text-sm">
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-hotel-bed-line"></i>
-                                </div>
-                                <span>3 Beds</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-drop-line"></i>
-                                </div>
-                                <span>2 Baths</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                    <i class="ri-ruler-line"></i>
-                                </div>
-                                <span>1,900 sqft</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        </div>
-        </a>
-        <div id="listView" class="space-y-2 hidden mt-4">
-            <!-- 1.Kart -->
-            <a href="emlak_detay.html?id=1" class="block">
-                <div class="flex items-center bg-white rounded-lg shadow-sm border px-3 py-2 h-20">
+<div id="listView" class="space-y-2 hidden mt-4">
+  <!-- List kartlar JS ile gelecek -->
+</div>
 
-                    <!-- Küçük Resim -->
-                    <div class="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden">
-
-                        <img src="https://readdy.ai/api/search-image?query=modern%20luxury%20house%20exterior%20with%20clean%20white%20walls%2C%20large%20windows%2C%20contemporary%20architecture%2C%20beautiful%20landscaping%2C%20bright%20daylight%2C%20professional%20real%20estate%20photography%20style%2C%20minimalist%20design&width=400&height=300&seq=1&orientation=landscape"
-                            alt="Villa" class="w-full h-full object-cover object-center">
-                    </div>
-
-                    <!-- İçerik -->
-                    <div class="flex-1 ml-3 overflow-hidden">
-                        <div class="text-sm font-semibold text-gray-800 truncate">Modern Luxury Villa</div>
-                        <div
-                            class="flex gap-3 text-xs text-gray-600 mt-1 whitespace-nowrap overflow-hidden overflow-x-auto">
-
-                            <span><i class="ri-ruler-line mr-1"></i>3200 sqft</span>
-                            <span><i class="ri-map-pin-line mr-1"></i>Beverly Hills</span>
-                        </div>
-                    </div>
-
-                    <!-- Fiyat -->
-                    <div class="text-sm font-bold text-gray-900 ml-2 whitespace-nowrap">$1.25M</div>
-                </div>
-            </a>
-            <!-- 2.Kart -->
-            <a href="emlak_detay.html?id=2" class="block">
-                <div class="flex items-center bg-white rounded-lg shadow-sm border px-3 py-2 h-20">
-
-                    <!-- Küçük Resim -->
-                    <div class="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden">
-
-                        <img src="https://readdy.ai/api/search-image?query=modern%20luxury%20house%20exterior%20with%20clean%20white%20walls%2C%20large%20windows%2C%20contemporary%20architecture%2C%20beautiful%20landscaping%2C%20bright%20daylight%2C%20professional%20real%20estate%20photography%20style%2C%20minimalist%20design&width=400&height=300&seq=1&orientation=landscape"
-                            alt="Villa" class="w-full h-full object-cover object-center">
-                    </div>
-
-                    <!-- İçerik -->
-                    <div class="flex-1 ml-3 overflow-hidden">
-                        <div class="text-sm font-semibold text-gray-800 truncate">Modern Luxury Villa</div>
-                        <div
-                            class="flex gap-3 text-xs text-gray-600 mt-1 whitespace-nowrap overflow-hidden overflow-x-auto">
-
-                            <span><i class="ri-ruler-line mr-1"></i>3200 sqft</span>
-                            <span><i class="ri-map-pin-line mr-1"></i>Beverly Hills</span>
-                        </div>
-                    </div>
-
-                    <!-- Fiyat -->
-                    <div class="text-sm font-bold text-gray-900 ml-2 whitespace-nowrap">$1.25M</div>
-                </div>
-            </a>
-
-            <!-- 3.Kart -->
-            <a href="emlak_detay.html?id=3" class="block">
-                <div class="flex items-center bg-white rounded-lg shadow-sm border px-3 py-2 h-20">
-
-
-                    <!-- Küçük Resim -->
-                    <div class="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden">
-
-                        <img src="https://readdy.ai/api/search-image?query=modern%20luxury%20house%20exterior%20with%20clean%20white%20walls%2C%20large%20windows%2C%20contemporary%20architecture%2C%20beautiful%20landscaping%2C%20bright%20daylight%2C%20professional%20real%20estate%20photography%20style%2C%20minimalist%20design&width=400&height=300&seq=1&orientation=landscape"
-                            alt="Villa" class="w-full h-full object-cover object-center">
-                    </div>
-
-                    <!-- İçerik -->
-                    <div class="flex-1 ml-3 overflow-hidden">
-                        <div class="text-sm font-semibold text-gray-800 truncate">Modern Luxury Villa</div>
-                        <div
-                            class="flex gap-3 text-xs text-gray-600 mt-1 whitespace-nowrap overflow-hidden overflow-x-auto">
-
-                            <span><i class="ri-ruler-line mr-1"></i>3200 sqft</span>
-                            <span><i class="ri-map-pin-line mr-1"></i>Beverly Hills</span>
-                        </div>
-                    </div>
-
-                    <!-- Fiyat -->
-                    <div class="text-sm font-bold text-gray-900 ml-2 whitespace-nowrap">$1.25M</div>
-                </div>
-            </a>
-            <!-- 4.Kart -->
-            <a href="emlak_detay.html?id=4" class="block">
-                <div class="flex items-center bg-white rounded-lg shadow-sm border px-3 py-2 h-20">
-
-                    <!-- Küçük Resim -->
-                    <div class="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden">
-
-                        <img src="https://readdy.ai/api/search-image?query=modern%20luxury%20house%20exterior%20with%20clean%20white%20walls%2C%20large%20windows%2C%20contemporary%20architecture%2C%20beautiful%20landscaping%2C%20bright%20daylight%2C%20professional%20real%20estate%20photography%20style%2C%20minimalist%20design&width=400&height=300&seq=1&orientation=landscape"
-                            alt="Villa" class="w-full h-full object-cover object-center">
-                    </div>
-
-                    <!-- İçerik -->
-                    <div class="flex-1 ml-3 overflow-hidden">
-                        <div class="text-sm font-semibold text-gray-800 truncate">Modern Luxury Villa</div>
-                        <div
-                            class="flex gap-3 text-xs text-gray-600 mt-1 whitespace-nowrap overflow-hidden overflow-x-auto">
-
-                            <span><i class="ri-ruler-line mr-1"></i>3200 sqft</span>
-                            <span><i class="ri-map-pin-line mr-1"></i>Beverly Hills</span>
-                        </div>
-                    </div>
-
-                    <!-- Fiyat -->
-                    <div class="text-sm font-bold text-gray-900 ml-2 whitespace-nowrap">$1.25M</div>
-                </div>
-            </a>
-            <!-- 5.Kart -->
-            <a href="emlak_detay.html?id=5" class="block">
-                <div class="flex items-center bg-white rounded-lg shadow-sm border px-3 py-2 h-20">
-
-                    <!-- Küçük Resim -->
-                    <div class="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden">
-
-                        <img src="https://readdy.ai/api/search-image?query=modern%20luxury%20house%20exterior%20with%20clean%20white%20walls%2C%20large%20windows%2C%20contemporary%20architecture%2C%20beautiful%20landscaping%2C%20bright%20daylight%2C%20professional%20real%20estate%20photography%20style%2C%20minimalist%20design&width=400&height=300&seq=1&orientation=landscape"
-                            alt="Villa" class="w-full h-full object-cover object-center">
-                    </div>
-
-                    <!-- İçerik -->
-                    <div class="flex-1 ml-3 overflow-hidden">
-                        <div class="text-sm font-semibold text-gray-800 truncate">Modern Luxury Villa</div>
-                        <div
-                            class="flex gap-3 text-xs text-gray-600 mt-1 whitespace-nowrap overflow-hidden overflow-x-auto">
-
-                            <span><i class="ri-ruler-line mr-1"></i>3200 sqft</span>
-                            <span><i class="ri-map-pin-line mr-1"></i>Beverly Hills</span>
-                        </div>
-                    </div>
-
-                    <!-- Fiyat -->
-                    <div class="text-sm font-bold text-gray-900 ml-2 whitespace-nowrap">$1.25M</div>
-                </div>
-            </a>
-
-            <!-- 6.Kart -->
-            <a href="emlak_detay.html?id=6" class="block">
-                <div class="flex items-center bg-white rounded-lg shadow-sm border px-3 py-2 h-20">
-
-                    <!-- Küçük Resim -->
-                    <div class="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden">
-
-                        <img src="https://readdy.ai/api/search-image?query=modern%20luxury%20house%20exterior%20with%20clean%20white%20walls%2C%20large%20windows%2C%20contemporary%20architecture%2C%20beautiful%20landscaping%2C%20bright%20daylight%2C%20professional%20real%20estate%20photography%20style%2C%20minimalist%20design&width=400&height=300&seq=1&orientation=landscape"
-                            alt="Villa" class="w-full h-full object-cover object-center">
-                    </div>
-
-                    <!-- İçerik -->
-                    <div class="flex-1 ml-3 overflow-hidden">
-                        <div class="text-sm font-semibold text-gray-800 truncate">Modern Luxury Villa</div>
-                        <div
-                            class="flex gap-3 text-xs text-gray-600 mt-1 whitespace-nowrap overflow-hidden overflow-x-auto">
-
-                            <span><i class="ri-ruler-line mr-1"></i>3200 sqft</span>
-                            <span><i class="ri-map-pin-line mr-1"></i>Beverly Hills</span>
-                        </div>
-                    </div>
-
-                    <!-- Fiyat -->
-                    <div class="text-sm font-bold text-gray-900 ml-2 whitespace-nowrap">$1.25M</div>
-                </div>
-            </a>
-
-        </div>
 
         <div class="mt-8 flex flex-col items-center justify-center gap-4">
             <!-- Sayfa numaraları -->

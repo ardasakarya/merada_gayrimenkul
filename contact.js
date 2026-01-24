@@ -87,3 +87,25 @@ document.addEventListener('DOMContentLoaded', function () {
         observer.observe(el);
     });
 });
+
+
+ const slider = document.getElementById("addressSlider");
+  const totalSlides = slider.children.length;
+  let index = 0;
+
+  function updateSlide() {
+    slider.style.transform = `translateX(-${index * 100}%)`;
+  }
+
+  function nextSlide() {
+    index = (index + 1) % totalSlides;
+    updateSlide();
+  }
+
+  function prevSlide() {
+    index = (index - 1 + totalSlides) % totalSlides;
+    updateSlide();
+  }
+
+  // Otomatik geçiş (5 saniye)
+  setInterval(nextSlide, 5000);

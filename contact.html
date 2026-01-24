@@ -64,7 +64,7 @@
   <div class="min-h-screen">
 
     <div class="fixed top-0 left-0 right-0 z-50 pt-0 shadow-sm">
-      <nav class="w-full border-b border-brandYellow bg-footerBg shadow-sm">
+      <nav class="w-full bg-footerBg shadow-sm">
         <div class="container mx-auto px-4 py-4 flex items-center justify-center">
           <!-- Logo (her ekranda ortalı) -->
           <div class="flex justify-center">
@@ -77,42 +77,59 @@
     </div>
 
 
-    <header class="relative overflow-hidden py-50 px-4"
-      style="background: linear-gradient(135deg, rgba(0, 123, 255, 0.134) 0%, rgba(255, 217, 0, 0.14) 100%);">
+  <header
+  class="relative overflow-hidden py-50 px-4 bg-cover bg-center"
+  style="background-image: url('img/c7e5989e-7e5b-4359-b025-635e63042026-u1_2a8c0f1a-a56f-4e35-a213-6a36d016ddea.jpeg');">
+
+  <!-- OVERLAY (opsiyonel ama tavsiye edilir) -->
 
 
+  <div class="relative max-w-4xl mx-auto text-center">
+    <!-- Logo -->
+    <h1 class="text-5xl md:text-6xl font-bold text-white mb-6"
+        style="font-family: 'Poppins', sans-serif;">
+      Bizimle <span class="text-brandYellow">İletişime</span> Geçin
+    </h1>
 
-      <div class="max-w-4xl mx-auto text-center">
-        <!-- Logo -->
-        <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6" style="font-family: 'Poppins', sans-serif;">
-          Bizimle <span class="text-brandYellow glow">İletişime</span> Geçin
-        </h1>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed" style="font-family: 'Inter', sans-serif;">
-          Premium emlak hizmetlerimiz hakkında detaylı bilgi almak ve hayalinizdeki mülkü bulmak için bizimle iletişime
-          geçin. Uzman ekibimiz size en iyi hizmeti sunmaya hazır.
-        </p>
+    <p class="text-xl text-white/90 max-w-2xl mx-auto leading-relaxed"
+       style="font-family: 'Inter', sans-serif;">
+      Premium emlak hizmetlerimiz hakkında detaylı bilgi almak ve hayalinizdeki mülkü bulmak için bizimle iletişime
+      geçin. Uzman ekibimiz size en iyi hizmeti sunmaya hazır.
+    </p>
 
-        <!-- Sosyal Medya İkonları -->
-        <div class="flex justify-center space-x-6 mt-10">
-          <a href="#"
-            class="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md bg-brandYellow/10 border-2 border-brandYellow/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors text-2xl">
-            <i class="ri-facebook-fill"></i>
-          </a>
-          <a href="#"
-            class="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md bg-brandYellow/10 border-2 border-brandYellow/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors text-2xl">
-            <i class="ri-twitter-fill"></i>
-          </a>
-          <a href="#"
-            class="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md bg-brandYellow/10 border-2 border-brandYellow/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors text-2xl">
-            <i class="ri-instagram-fill"></i>
-          </a>
-          <a href="#"
-            class="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-md bg-brandYellow/10 border-2 border-brandYellow/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors text-2xl">
-            <i class="ri-linkedin-fill"></i>
-          </a>
-        </div>
-      </div>
-    </header>
+    <!-- Sosyal Medya İkonları -->
+    <div class="flex justify-center space-x-6 mt-10">
+      <a href="#"
+        class="w-14 h-14 rounded-full flex items-center justify-center
+               backdrop-blur-md bg-brandYellow/20 border-2 border-brandYellow/40
+               hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white
+               transition-all duration-300 text-2xl text-white">
+        <i class="ri-facebook-fill"></i>
+      </a>
+      <a href="#"
+        class="w-14 h-14 rounded-full flex items-center justify-center
+               backdrop-blur-md bg-brandYellow/20 border-2 border-brandYellow/40
+               hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white
+               transition-all duration-300 text-2xl text-white">
+        <i class="ri-twitter-fill"></i>
+      </a>
+      <a href="#"
+        class="w-14 h-14 rounded-full flex items-center justify-center
+               backdrop-blur-md bg-brandYellow/20 border-2 border-brandYellow/40
+               hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white
+               transition-all duration-300 text-2xl text-white">
+        <i class="ri-instagram-fill"></i>
+      </a>
+      <a href="#"
+        class="w-14 h-14 rounded-full flex items-center justify-center
+               backdrop-blur-md bg-brandYellow/20 border-2 border-brandYellow/40
+               hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white
+               transition-all duration-300 text-2xl text-white">
+        <i class="ri-linkedin-fill"></i>
+      </a>
+    </div>
+  </div>
+</header>
 
 
     <main class="py-20 px-4">
@@ -174,40 +191,90 @@
               </form>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-6">
-              <!-- Telefon -->
-              <div
-                class="bg-white rounded-xl p-6 text-center shadow-lg border border-gray-100 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,215,0,0.6)]">
-                <div
-                  class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full mx-auto mb-4 transition-all duration-300 ease-out group-hover:scale-110">
-                  <i class="ri-phone-fill text-primary text-xl"></i>
-                </div>
-                <h3 class="font-semibold text-gray-800 mb-2" style="font-family: 'Montserrat', sans-serif;">Telefon</h3>
-                <p class="text-gray-600 text-sm">+90 (212) 555 0123</p>
-              </div>
+       <div class="grid md:grid-cols-3 gap-4">
+  <!-- Telefon -->
+  <div
+    class="bg-white rounded-xl p-4 text-center shadow-lg border border-gray-100 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_0_16px_rgba(255,215,0,0.6)]">
+    <div
+      class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full mx-auto mb-2">
+      <i class="ri-phone-fill text-primary text-lg"></i>
+    </div>
+    <h3 class="font-semibold text-gray-800 mb-1 text-sm" style="font-family: 'Montserrat', sans-serif;">
+      Telefon
+    </h3>
+    <p class="text-gray-600 text-xs leading-snug">+90 (324) 328 0000</p>
+    <p class="text-gray-600 text-xs leading-snug">+90 (540) 328 0033</p>
+  </div>
 
-              <!-- E-posta -->
-              <div
-                class="bg-white rounded-xl p-6 text-center shadow-lg border border-gray-100 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,215,0,0.6)]">
-                <div
-                  class="w-12 h-12 flex items-center justify-center bg-secondary/10 rounded-full mx-auto mb-4 transition-all duration-300 ease-out">
-                  <i class="ri-mail-fill text-secondary text-xl"></i>
-                </div>
-                <h3 class="font-semibold text-gray-800 mb-2" style="font-family: 'Montserrat', sans-serif;">E-posta</h3>
-                <p class="text-gray-600 text-sm">info@premiumemlak.com</p>
-              </div>
+  <!-- E-posta -->
+  <div
+    class="bg-white rounded-xl p-4 text-center shadow-lg border border-gray-100 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_0_16px_rgba(255,215,0,0.6)]">
+    <div
+      class="w-10 h-10 flex items-center justify-center bg-secondary/10 rounded-full mx-auto mb-2">
+      <i class="ri-mail-fill text-secondary text-lg"></i>
+    </div>
+    <h3 class="font-semibold text-gray-800 mb-1 text-sm" style="font-family: 'Montserrat', sans-serif;">
+      E-posta
+    </h3>
+    <p class="text-gray-600 text-xs break-all">merada@merada.com.tr</p>
+  </div>
 
-              <!-- Adres -->
-              <div
-                class="bg-white rounded-xl p-6 text-center shadow-lg border border-gray-100 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,215,0,0.6)]">
-                <div
-                  class="w-12 h-12 flex items-center justify-center bg-green-100 rounded-full mx-auto mb-4 transition-all duration-300 ease-out">
-                  <i class="ri-map-pin-fill text-green-600 text-xl"></i>
-                </div>
-                <h3 class="font-semibold text-gray-800 mb-2" style="font-family: 'Montserrat', sans-serif;">Adres</h3>
-                <p class="text-gray-600 text-sm">Levent, İstanbul</p>
-              </div>
-            </div>
+  <!-- Adres (Swipe) -->
+
+<div
+  class="bg-white rounded-xl p-4 text-center shadow-lg border border-gray-100 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_0_16px_rgba(255,215,0,0.6)] relative">
+
+  <!-- Icon -->
+  <div class="w-10 h-10 flex items-center justify-center bg-green-100 rounded-full mx-auto mb-2">
+    <i class="ri-map-pin-fill text-green-600 text-lg"></i>
+  </div>
+
+  <h3 class="font-semibold text-gray-800 mb-2 text-sm" style="font-family: 'Montserrat', sans-serif;">
+    Adres
+  </h3>
+
+  <!-- SLIDER WRAPPER (overflow burada) -->
+  <div class="relative overflow-hidden px-2">
+    
+    <!-- Slider -->
+    <div id="addressSlider" class="flex transition-transform duration-700 ease-in-out">
+
+      <!-- Mezitli -->
+      <div class="min-w-full px-5">
+        <p class="text-gray-700 font-medium text-xs mb-0.5">Mezitli</p>
+        <p class="text-gray-600 text-xs leading-snug">
+          75. Yıl Mah. GMK Bulvarı No:13/28<br>
+          Mezitli / MERSİN
+        </p>
+      </div>
+
+      <!-- Yenişehir -->
+      <div class="min-w-full px-5">
+        <p class="text-gray-700 font-medium text-xs mb-0.5">Yenişehir</p>
+        <p class="text-gray-600 text-xs leading-snug">
+          Dumlupınar Mah. Adnan Menderes Bulvarı No:94/8<br>
+          Yenişehir / MERSİN
+        </p>
+      </div>
+
+    </div>
+
+    <!-- OKLAR (yazı alanının DIŞINDA) -->
+    <button onclick="prevSlide()"
+      class="absolute left-0 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow rounded-full w-6 h-6 flex items-center justify-center z-10">
+      <i class="ri-arrow-left-s-line text-sm"></i>
+    </button>
+
+    <button onclick="nextSlide()"
+      class="absolute right-0 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow rounded-full w-6 h-6 flex items-center justify-center z-10">
+      <i class="ri-arrow-right-s-line text-sm"></i>
+    </button>
+
+  </div>
+</div>
+
+</div>
+
 
 
           </div>

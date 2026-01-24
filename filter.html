@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>İlan Filtreleri</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+<!-- FILTER TOGGLE BUTTON -->
+<button id="filterToggle"
+  data-open="false"
+  class="fixed top-1/2 left-0 -translate-y-1/2 z-50
+         bg-yellow-400 text-gray-900 p-3 rounded-xl shadow-lg
+         transition-all duration-300">
+
+  <!-- FILTER ICON -->
+  <svg id="iconFilter" xmlns="http://www.w3.org/2000/svg"
+       class="w-6 h-6 block"
+       fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2l-6 6v6l-4 2v-8L3 6V4z" />
+  </svg>
+
+  <!-- CLOSE ICON -->
+  <svg id="iconClose" xmlns="http://www.w3.org/2000/svg"
+       class="w-6 h-6 hidden"
+       fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M6 18L18 6M6 6l12 12" />
+  </svg>
+</button>
+
+
+<!-- FILTER PANEL -->
+<div id="filterPanel"
+  class="fixed inset-y-0 left-0 w-[90%] sm:w-[420px]
+         bg-white shadow-2xl transform -translate-x-full
+         transition-transform duration-300 z-40 overflow-y-auto">
+
+  <!-- HEADER -->
+  <div class="p-6 border-b flex justify-between items-center">
+    <h2 class="text-2xl font-bold">Filtreler</h2>
+    <button onclick="toggleFilter()" class="text-xl">✕</button>
+  </div>
+
+  <div class="p-6 space-y-6">
+
+    <!-- ================= ANA FİLTRELER ================= -->
+
+    <h3 class="font-bold text-lg">Konum</h3>
+
+    <input value="Mersin" disabled
+      class="w-full p-2 bg-gray-100 border rounded-lg">
+
+    <select id="district" class="w-full p-2 border rounded-lg">
+      <option value="">İlçe Seç</option>
+      <option>Akdeniz</option>
+      <option>Mezitli</option>
+      <option>Yenişehir</option>
+      <option>Toroslar</option>
+      <option>Tarsus</option>
+    </select>
+
+ 
+
+    <h3 class="font-bold text-lg">Fiyat</h3>
+
+    <div class="grid grid-cols-2 gap-2">
+      <input id="price_min" type="number" placeholder="Min"
+        class="p-2 border rounded-lg">
+      <input id="price_max" type="number" placeholder="Max"
+        class="p-2 border rounded-lg">
+    </div>
+
+    <h3 class="font-bold text-lg">İlan Bilgisi</h3>
+
+    <select id="usage_status" class="w-full p-2 border rounded-lg">
+      <option value="">Satılık / Kiralık</option>
+      <option value="sale">Satılık</option>
+      <option value="rent">Kiralık</option>
+    </select>
+
+    <select id="rooms" class="w-full p-2 border rounded-lg">
+      <option value="">Oda Sayısı</option>
+      <option value="1+0">1+0</option>
+      <option value="1+1">1+1</option>
+      <option value="2+1">2+1</option>
+      <option value="3+1">3+1</option>
+      <option value="4+1">4+1</option>
+      <option value="5+1">5+1+</option>
+    </select>
+
+    <!-- ================= GELİŞMİŞ ================= -->
+
+    <button onclick="toggleAdvanced()"
+      class="w-full border py-2 rounded-lg font-semibold">
+      Gelişmiş Filtreler
+    </button>
+
+    <div id="advancedFilters" class="hidden space-y-8">
+
+      <!-- İLAN -->
+      <div>
+        <h4 class="font-bold mb-2">İlan & Kategori</h4>
+        <input id="listing_date" type="date"
+          class="w-full p-2 border rounded-lg mb-2">
+        <select id="category" class="w-full p-2 border rounded-lg">
+          <option value="">Kategori</option>
+          <option>Daire</option>
+          <option>Villa</option>
+          <option>Arsa</option>
+          <option>İş Yeri</option>
+        </select>
+      </div>
+
+      <!-- METREKARE -->
+      <div>
+        <h4 class="font-bold mb-2">Metrekare</h4>
+        <div class="grid grid-cols-2 gap-2">
+          <input id="gross_sqm" placeholder="Brüt m²" class="p-2 border rounded-lg">
+          <input id="net_sqm" placeholder="Net m²" class="p-2 border rounded-lg">
+        </div>
+      </div>
+
+      <!-- BİNA -->
+      <div>
+        <h4 class="font-bold mb-2">Bina Bilgileri</h4>
+        <div class="grid grid-cols-2 gap-2">
+          <input id="building_age" placeholder="Bina Yaşı" class="p-2 border rounded-lg">
+          <input id="floors" placeholder="Bina Kat Sayısı" class="p-2 border rounded-lg">
+          <input id="floor_location" placeholder="Bulunduğu Kat" class="p-2 border rounded-lg">
+        </div>
+      </div>
+
+      <!-- ISINMA -->
+      <div>
+        <h4 class="font-bold mb-2">Isınma & Cephe</h4>
+        <select id="heating_type" class="w-full p-2 border rounded-lg mb-2">
+          <option value="">Isınma Tipi</option>
+          <option>Doğalgaz</option>
+          <option>Merkezi</option>
+          <option>Kombi</option>
+          <option>Klima</option>
+        </select>
+
+        <select id="facade" class="w-full p-2 border rounded-lg">
+          <option value="">Cephe</option>
+          <option>Kuzey</option>
+          <option>Güney</option>
+          <option>Doğu</option>
+          <option>Batı</option>
+        </select>
+      </div>
+
+      <!-- İÇ -->
+ 
+  <h4 class="font-bold mb-2">İç Özellikler</h4>
+ <div class="grid grid-cols-2 gap-3 text-sm">
+        <label><input type="checkbox" id="central_air"> Merkezi Klima</label>
+        <label><input type="checkbox" id="fireplace"> Şömine</label>
+        <label><input type="checkbox" id="smart_home"> Akıllı Ev</label>
+        <label><input type="checkbox" id="walk_in_closet"> Giyinme Odası</label>
+        <label><input type="checkbox" id="ensuite"> Ebeveyn Banyosu</label>
+        <label><input type="checkbox" id="modern_kitchen"> Modern Mutfak</label>
+      </div>
+       <h4 class="font-bold mb-2">Dış Özellikler</h4>
+  <div class="grid grid-cols-2 gap-3 text-sm">
+        <label><input type="checkbox" id="parking"> Otopark</label>
+        <label><input type="checkbox" id="garage"> Garaj</label>
+        <label><input type="checkbox" id="garden"> Bahçe</label>
+        <label><input type="checkbox" id="terrace"> Teras</label>
+        <label><input type="checkbox" id="swimming_pool"> Havuz</label>
+        <label><input type="checkbox" id="playground"> Oyun Alanı</label>
+      </div>
+
+      <!-- ENVIRONMENT -->
+        <h4 class="font-bold mb-2">Çevre Özellikleri</h4>
+      <div class="grid grid-cols-2 gap-3 text-sm">
+        <label><input type="checkbox" id="sea_view"> Deniz Manzarası</label>
+        <label><input type="checkbox" id="mountain_view"> Dağ Manzarası</label>
+        <label><input type="checkbox" id="park_nearby"> Park Yakın</label>
+        <label><input type="checkbox" id="near_school"> Okula Yakın</label>
+        <label><input type="checkbox" id="near_hospital"> Hastaneye Yakın</label>
+        <label><input type="checkbox" id="near_market"> Market Yakın</label>
+        <label><input type="checkbox" id="near_transport"> Ulaşım Yakın</label>
+      </div>
+      <!-- DURUM -->
+      <div>
+        <h4 class="font-bold mb-2">Kullanım & Finans</h4>
+        <div class="grid grid-cols-2 gap-2 text-sm">
+          <label><input type="checkbox" id="usage_empty"> Boş</label>
+          <label><input type="checkbox" id="loan_status"> Krediye Uygun</label>
+          <label><input type="checkbox" id="exchange_status"> Takaslı</label>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- APPLY -->
+    <button onclick="applyFilters()"
+      class="w-full bg-yellow-400 py-3 rounded-xl font-bold">
+      Filtreleri Uygula
+    </button>
+
+  </div>
+</div>
+<script src="filter.js"></script>
+</body>
+</html>

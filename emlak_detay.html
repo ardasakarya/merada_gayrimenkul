@@ -55,7 +55,7 @@
                 <!-- Logo (her ekranda ortalı) -->
                 <div class="flex justify-center">
                     <a href="/merada_gayrimenkul">
-                        <img src="img/logo.png" alt="Logo" class="h-8 sm:h-12 w-auto glow-img">
+                        <img src="img/merada_no_frame.png" alt="Logo" class="h-8 sm:h-12 w-auto glow-img">
                     </a>
                 </div>
             </div>
@@ -63,108 +63,116 @@
     </header>
 
     <div class="max-w-7xl mx-auto px-4 py-20">
-        <h1 class="text-3xl font-bold text-center text-gray-900 p-10">Beşiktaş'ta Boğaz Manzaralı 5+2 Lüks Villa</h1>
+        <!-- Başlık -->
+        <h1 id="property_title" class="text-3xl font-bold text-center text-gray-900 p-10">
+            Beşiktaş'ta Boğaz Manzaralı 5+2 Lüks Villa
+        </h1>
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
 
             <div class="lg:col-span-2">
                 <!-- Büyük Görsel (Desktop) -->
                 <div class="relative rounded-lg overflow-hidden bg-white shadow-sm">
-                    <img id="mainImage"
-                        src="https://readdy.ai/api/search-image?query=modern%20luxury%20villa%20exterior%20view%2C%20bright%20sunny%20day%2C%20clean%20architectural%20design%2C%20floor%20to%20ceiling%20windows%2C%20contemporary%20landscaping%2C%20professional%20real%20estate%20photography&width=320&height=240&seq=2&orientation=landscape"
-                        class="w-full h-[600px] object-cover hidden lg:block" alt="Villa">
+                    <img id="mainImage" src="" class="w-full h-[600px] object-cover hidden lg:block" alt="Villa">
 
                     <!-- Mobil Slider -->
-                    <div class="flex overflow-x-auto space-x-4 p-2 lg:hidden">
-                        <img onclick="openGalleryPopup(0)" id="mainImage"
-                            src="https://readdy.ai/api/search-image?query=modern%20luxury%20villa%20exterior%20view%2C%20bright%20sunny%20day%2C%20clean%20architectural%20design%2C%20floor%20to%20ceiling%20windows%2C%20contemporary%20landscaping%2C%20professional%20real%20estate%20photography&width=320&height=240&seq=2&orientation=landscape"
+                    <div id="mobile_gallery" class="flex overflow-x-auto space-x-4 p-2 lg:hidden">
+                        <img onclick="openGalleryPopup(0)" id="gallery_image_0" src=""
                             class="h-72 min-w-full object-cover rounded-lg cursor-pointer" />
-                        <img onclick="openGalleryPopup(1)"
-                            src="https://readdy.ai/api/search-image?query=luxury%20modern%20living%20room%20interior%2C%20ocean%20view%2C%20high%20ceiling%2C%20minimalist%20furniture%2C%20large%20windows%2C%20natural%20light%2C%20professional%20real%20estate%20photography&width=320&height=240&seq=3&orientation=landscape"
+                        <img onclick="openGalleryPopup(1)" id="gallery_image_1" src=""
                             class="h-72 min-w-full object-cover rounded-lg cursor-pointer" />
-                        <img onclick="openGalleryPopup(2)"
-                            src="https://readdy.ai/api/search-image?query=modern%20luxury%20kitchen%20interior%2C%20white%20cabinets%2C%20marble%20countertops%2C%20high-end%20appliances%2C%20island%2C%20professional%20real%20estate%20photography&width=320&height=240&seq=4&orientation=landscape"
+                        <img onclick="openGalleryPopup(2)" id="gallery_image_2" src=""
                             class="h-72 min-w-full object-cover rounded-lg cursor-pointer" />
-                        <img onclick="openGalleryPopup(3)"
-                            src="https://readdy.ai/api/search-image?query=luxury%20master%20bedroom%2C%20ocean%20view%2C%20king%20size%20bed%2C%20modern%20design%2C%20large%20windows%2C%20professional%20real%20estate%20photography&width=320&height=240&seq=5&orientation=landscape"
+                        <img onclick="openGalleryPopup(3)" id="gallery_image_3" src=""
                             class="h-72 min-w-full object-cover rounded-lg cursor-pointer" />
                     </div>
                 </div>
 
                 <!-- Küçük Resimler (Desktop) -->
-                <div class="grid grid-cols-4 gap-4 mt-4 hidden lg:grid">
-                    <img onclick="setMainImage(this, 0)"
-                        src="https://readdy.ai/api/search-image?query=modern%20luxury%20villa%20exterior%20view%2C%20bright%20sunny%20day%2C%20clean%20architectural%20design%2C%20floor%20to%20ceiling%20windows%2C%20contemporary%20landscaping%2C%20professional%20real%20estate%20photography&width=320&height=240&seq=2&orientation=landscape"
+                <div id="desktop_gallery" class="grid grid-cols-4 gap-4 mt-4 hidden lg:grid">
+                    <img onclick="setMainImage(this, 0)" id="thumb_image_0" src=""
                         class="gallery-thumb w-full h-32 object-cover rounded cursor-pointer hover:opacity-90" />
-
-                    <img onclick="setMainImage(this, 1)"
-                        src="https://readdy.ai/api/search-image?query=luxury%20modern%20living%20room%20interior%2C%20ocean%20view%2C%20high%20ceiling%2C%20minimalist%20furniture%2C%20large%20windows%2C%20natural%20light%2C%20professional%20real%20estate%20photography&width=320&height=240&seq=3&orientation=landscape"
+                    <img onclick="setMainImage(this, 1)" id="thumb_image_1" src=""
                         class="gallery-thumb w-full h-32 object-cover rounded cursor-pointer hover:opacity-90" />
-
-                    <img onclick="setMainImage(this, 2)"
-                        src="https://readdy.ai/api/search-image?query=modern%20luxury%20kitchen%20interior%2C%20white%20cabinets%2C%20marble%20countertops%2C%20high-end%20appliances%2C%20island%2C%20professional%20real%20estate%20photography&width=320&height=240&seq=4&orientation=landscape"
+                    <img onclick="setMainImage(this, 2)" id="thumb_image_2" src=""
                         class="gallery-thumb w-full h-32 object-cover rounded cursor-pointer hover:opacity-90" />
-
                     <div onclick="openGalleryPopup(3)"
                         class="gallery-thumb relative w-full h-32 rounded cursor-pointer hover:opacity-90">
-                        <img src="https://readdy.ai/api/search-image?query=luxury%20master%20bedroom%2C%20ocean%20view%2C%20king%20size%20bed%2C%20modern%20design%2C%20large%20windows%2C%20professional%20real%20estate%20photography&width=320&height=240&seq=5&orientation=landscape"
-                            class="w-full h-32 object-cover rounded" />
+                        <img id="thumb_image_3" src="" class="w-full h-32 object-cover rounded" />
                         <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded">
                             <span class="text-white text-xl font-bold">+8</span>
                         </div>
                     </div>
                 </div>
-
             </div>
 
-            <!-- +8'e tıklanınca açılan SLIDER popup -->
-            <div id="galleryPopup"
-                class="fixed inset-0 bg-black bg-opacity-80 z-50 hidden flex items-center justify-center px-4">
-                <div class="relative w-full max-w-4xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
 
-                    <!-- Kapatma Butonu -->
-                    <button onclick="closeGalleryPopup()"
-                        class="absolute top-4 right-4 text-iconBoxColor text-4xl z-50">✕</button>
+ <div id="galleryPopup"
+  class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center px-4">
 
-                    <!-- Slider Alanı -->
-                    <div class="relative">
-                        <img id="sliderImage" src="" class="w-full h-[70vh] object-cover rounded" alt="Slider">
+  <div class="relative w-full max-w-5xl mx-auto bg-white rounded-2xl overflow-hidden shadow-2xl animate-fadeIn">
+    <!-- Kapatma Butonu -->
+    <button onclick="closeGalleryPopup()"
+      class="absolute top-4 right-4 text-gray-700 hover:text-red-500 text-3xl z-50 transition transform hover:scale-110">✕</button>
 
-                        <!-- Sol Ok -->
-                        <button onclick="prevImage()"
-                            class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-brandYellow bg-opacity-70 hover:bg-opacity-100 rounded-full p-2 z-50">⮜</button>
+    <!-- Slider Alanı -->
+    <div class="relative">
+      <!-- Fotoğraf -->
+      <img id="sliderImage"
+        src="https://picsum.photos/1200/800"
+        alt="Slider"
+        class="w-full aspect-video object-cover bg-black rounded transition duration-500 ease-in-out transform animate-scaleIn">
 
-                        <!-- Sağ Ok -->
-                        <button onclick="nextImage()"
-                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-brandYellow bg-opacity-70 hover:bg-opacity-100 rounded-full p-2 z-50">⮞</button>
-                    </div>
+      <!-- Sol / Sağ Oklar -->
+      <button onclick="prevImage()"
+        class="absolute left-3 top-1/2 -translate-y-1/2 bg-yellow-400 hover:bg-yellow-500 text-black rounded-full p-3 shadow-xl transition transform hover:scale-110">⮜</button>
 
-                </div>
-            </div>
+      <button onclick="nextImage()"
+        class="absolute right-3 top-1/2 -translate-y-1/2 bg-yellow-400 hover:bg-yellow-500 text-black rounded-full p-3 shadow-xl transition transform hover:scale-110">⮞</button>
+    </div>
 
+    <!-- Thumbnail Çubuğu -->
+    <div id="sliderThumbnails"
+      class="flex gap-3 overflow-x-auto p-4 bg-gray-100 border-t border-gray-200">
+      <!-- Küçük fotoğraflar -->
+      <img src="https://picsum.photos/300/200"
+        class="thumb w-28 h-20 object-cover rounded-lg cursor-pointer opacity-70 hover:opacity-100 hover:scale-105 transition"
+        alt="Thumb">
+      <img src="https://picsum.photos/301/200"
+        class="thumb w-28 h-20 object-cover rounded-lg cursor-pointer opacity-70 hover:opacity-100 hover:scale-105 transition"
+        alt="Thumb">
+      <img src="https://picsum.photos/302/200"
+        class="thumb w-28 h-20 object-cover rounded-lg cursor-pointer opacity-70 hover:opacity-100 hover:scale-105 transition"
+        alt="Thumb">
+    </div>
+  </div>
+</div>
+
+
+            <!-- Danışman Kartı -->
             <div class="bg-white p-8 rounded-lg shadow-xl h-fit max-w-screen-xl w-full mx-auto">
-
-
                 <div class="text-center mb-6">
                     <div class="w-24 h-24 mx-auto mb-4">
-                        <img src="https://readdy.ai/api/search-image?query=professional%20real%20estate%20agent%20headshot%2C%20Turkish%20woman%2C%20business%20attire%2C%20friendly%20smile%2C%20white%20background&width=200&height=200&seq=6&orientation=squarish"
+                        <img id="agent_photo" src=""
                             class="w-full h-full rounded-full object-cover" alt="Emlak Danışmanı">
                     </div>
-                    <h3 class="text-xl font-semibold mb-1">Ayşe Yılmaz</h3>
-                    <p class="text-gray-600 text-sm mb-4">Kıdemli Emlak Danışmanı</p>
+                    <h3 id="agent_name" class="text-xl font-semibold mb-1">Ayşe Yılmaz</h3>
+                    <p id="agent_title" class="text-gray-600 text-sm mb-4">Kıdemli Emlak Danışmanı</p>
                     <div class="space-y-3">
                         <a href="tel:+905301234567"
                             class="flex items-center justify-center gap-2 text-gray-700 hover:text-[#f58549]">
                             <i class="ri-phone-line"></i>
-                            <span>+90 530 123 45 67</span>
+                            <span id="agent_phone">+90 530 123 45 67</span>
                         </a>
                         <a href="mailto:ayse.yilmaz@emlak.com"
                             class="flex items-center justify-center gap-2 text-gray-700 hover:text-[#f58549]">
                             <i class="ri-mail-line"></i>
-                            <span>ayse.yilmaz@emlak.com</span>
+                            <span id="agent_email">ayse.yilmaz@emlak.com</span>
                         </a>
                     </div>
                 </div>
-                <button class="w-full bg-brandYellow text-iconBoxColor py-3 rounded-button hover:bg-brandYellow/90">İletişime
+                <button
+                    class="w-full bg-brandYellow text-iconBoxColor py-3 rounded-button hover:bg-brandYellow/90">İletişime
                     Geç</button>
 
                 <div class="bg-white rounded-lg shadow-sm p-8">
@@ -174,214 +182,243 @@
                             İlan Açıklaması
                         </h2>
                     </div>
-                    <p class="text-gray-700 leading-relaxed">
-                        Beşiktaş'ın en prestijli lokasyonunda, muhteşem Boğaz manzaralı, yeni inşa edilmiş lüks villa.
-                        Modern mimari ile tasarlanmış bu özel mülk, 450m² brüt kullanım alanına sahiptir. Geniş
-                        terasları ve
-                        özel bahçesi ile şehir yaşamında huzuru ve konforu bir arada sunar. Akıllı ev sistemleri, özel
-                        güvenlik ve son teknoloji ısıtma-soğutma sistemleri ile donatılmıştır.
+                    <p id="property_description" class="text-gray-700 leading-relaxed">
+                        Beşiktaş'ın en prestijli lokasyonunda, muhteşem Boğaz manzaralı, yeni inşa edilmiş lüks villa...
                     </p>
                 </div>
-
             </div>
-
         </div>
 
-
+        <!-- Fiyat ve Özellikler -->
         <div class="bg-white rounded-lg shadow-xl p-8 mb-8 max-w-screen-xl w-full mx-auto">
             <div class="mb-8">
-                <h2 class="text-3xl text-center font-bold text-gray-900 mb-2">₺24,500,000</h2>
-                <p class="  text-center text-gray-600">KDV Dahil</p>
+                <h2 id="property_price" class="text-3xl text-center font-bold text-gray-900 mb-2">₺24,500,000</h2>
+                <p class="text-center text-gray-600">KDV Dahil</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-4">
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">İlan Tarihi</span>
-                        <span class="font-medium">23 Temmuz 2025</span>
+                        <span id="listing_date" class="font-medium">23 Temmuz 2025</span>
                     </div>
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">Kategori</span>
-                        <span class="font-medium">Satılık Villa</span>
+                        <span id="category" class="font-medium">Satılık Villa</span>
                     </div>
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">Brüt Metrekare</span>
-                        <span class="font-medium">450 m²</span>
+                        <span id="gross_m2" class="font-medium">450 m²</span>
                     </div>
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">Net Metrekare</span>
-                        <span class="font-medium">380 m²</span>
+                        <span id="net_m2" class="font-medium">380 m²</span>
                     </div>
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">Oda Sayısı</span>
-                        <span class="font-medium">5+2</span>
+                        <span id="rooms" class="font-medium">5+2</span>
                     </div>
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">Bina Yaşı</span>
-                        <span class="font-medium">0 (Yeni)</span>
+                        <span id="building_age" class="font-medium">0 (Yeni)</span>
                     </div>
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">Bina Kat Sayısı</span>
-                        <span class="font-medium">3</span>
+                        <span id="building_floors" class="font-medium">3</span>
                     </div>
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">Bulunduğu Kat</span>
-                        <span class="font-medium">Villa</span>
+                        <span id="floor" class="font-medium">Villa</span>
                     </div>
                 </div>
                 <div class="space-y-4">
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">Isınma Tipi</span>
-                        <span class="font-medium">Doğalgaz</span>
+                        <span id="heating" class="font-medium">Doğalgaz</span>
                     </div>
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">Banyo Sayısı</span>
-                        <span class="font-medium">4</span>
+                        <span id="bathrooms" class="font-medium">4</span>
                     </div>
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">Balkon</span>
-                        <span class="font-medium">Var</span>
+                        <span id="balcony" class="font-medium">Var</span>
                     </div>
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">Eşyalı</span>
-                        <span class="font-medium">Hayır</span>
+                        <span id="furnished" class="font-medium">Hayır</span>
                     </div>
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">Kullanım Durumu</span>
-                        <span class="font-medium">Boş</span>
+                        <span id="usage_status" class="font-medium">Boş</span>
                     </div>
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">Kredi Durumu</span>
-                        <span class="font-medium">Uygun</span>
+                        <span id="credit_status" class="font-medium">Uygun</span>
                     </div>
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">Takas</span>
-                        <span class="font-medium">Hayır</span>
+                        <span id="swap" class="font-medium">Hayır</span>
                     </div>
                     <div class="flex justify-between border-brandYellow py-3 border-b">
                         <span class="text-gray-600">Cephe</span>
-                        <span class="font-medium">Güney-Doğu</span>
+                        <span id="facade" class="font-medium">Güney-Doğu</span>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- İç Özellikleri -->
+
         <div class="space-y-8">
-
-
             <div class="bg-white rounded-lg shadow-xl p-10">
                 <div class="text-center">
                     <h2
                         class="text-xl font-semibold inline-block relative after:content-[''] after:block after:mx-auto after:mt-1 after:mb-8 after:w-48 after:h-[2px] after:bg-brandYellow after:rounded-full">
-                        İç Özellikleri
+                        İç Özellikler
                     </h2>
                 </div>
-
-
-
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="flex items-center gap-3">
+                        <i class="ri-hotel-bed-line text-brandYellow"></i>
+                        <span id="master_bedroom">Ebeveyn Yatak Odası</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-home-8-line text-brandYellow"></i>
+                        <span id="guest_bedroom">Misafir Yatak Odası</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-shower-line text-brandYellow"></i>
+                        <span id="ensuite_bathroom">Ebeveyn Banyosu</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-t-shirt-line text-brandYellow"></i>
+                        <span id="walk_in_closet">Giyinme Odası</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-restaurant-2-line text-brandYellow"></i>
+                        <span id="modern_kitchen">Modern Mutfak</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-fridge-line text-brandYellow"></i>
+                        <span id="kitchen_island">Ada Mutfak</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-fire-line text-brandYellow"></i>
+                        <span id="fireplace">Şömine</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-layout-line text-brandYellow"></i>
+                        <span id="open_floor_plan">Açık Plan</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-apps-2-line text-brandYellow"></i>
+                        <span id="hardwood_floors">Parke Zemin</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-arrow-up-line text-brandYellow"></i>
+                        <span id="high_ceilings">Yüksek Tavan</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-windy-line text-brandYellow"></i>
+                        <span id="central_air">Merkezi Klima</span>
+                    </div>
+                    <div class="flex items-center gap-3">
                         <i class="ri-home-wifi-line text-brandYellow"></i>
-                        <span>Akıllı Ev Sistemi</span>
+                        <span id="smart_home_features">Akıllı Ev Özellikleri</span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <i class="ri-shield-check-line text-brandYellow"></i>
-                        <span>Çelik Kapı</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <i class="ri-temp-hot-line text-brandYellow"></i>
-                        <span>Yerden Isıtma</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <i class="ri-window-2-line text-brandYellow"></i>
-                        <span>Isıcam</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <i class="ri-home-gear-line text-brandYellow"></i>
-                        <span>Ankastre Mutfak</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <i class="ri-door-lock-line text-brandYellow"></i>
-                        <span>Vestiyer</span>
+                        <i class="ri-edit-2-line text-brandYellow"></i>
+                        <span id="custom_notes">Ekstra Notlar</span>
                     </div>
                 </div>
             </div>
 
+            <!-- Dış Özellikler -->
             <div class="bg-white rounded-lg shadow-xl p-8">
                 <div class="text-center">
                     <h2
                         class="text-xl font-semibold inline-block relative after:content-[''] after:block after:mx-auto after:mt-1 after:mb-8 after:w-48 after:h-[2px] after:bg-brandYellow after:rounded-full">
-                        Dış Özellikleri
+                        Dış Özellikler
                     </h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="flex items-center gap-3">
-                        <i class="ri-parking-box-line text-brandYellow"></i>
-                        <span>Kapalı Otopark</span>
+                        <i class="ri-home-4-line text-brandYellow"></i>
+                        <span id="terrace">Teras</span>
                     </div>
                     <div class="flex items-center gap-3">
                         <i class="ri-landscape-line text-brandYellow"></i>
-                        <span>Özel Bahçe</span>
+                        <span id="garden">Bahçe</span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <i class="ri-building-4-line text-brandYellow"></i>
-                        <span>Güvenlikli Site</span>
+                        <i class="ri-car-line text-brandYellow"></i>
+                        <span id="garage">Garaj</span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <i class="ri-camera-line text-brandYellow"></i>
-                        <span>7/24 Güvenlik</span>
+                        <i class="ri-parking-box-line text-brandYellow"></i>
+                        <span id="parking">Otopark</span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <i class="ri-home-smile-line text-brandYellow"></i>
-                        <span>Jeneratör</span>
+                        <i class="ri-community-line text-brandYellow"></i>
+                        <span id="swimming_pool">Yüzme Havuzu</span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <i class="ri-wheelchair-line text-brandYellow"></i>
-                        <span>Engelli Dostu</span>
+                        <i class="ri-restaurant-line text-brandYellow"></i>
+                        <span id="barbecue_area">Barbekü Alanı</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-football-line text-brandYellow"></i>
+                        <span id="playground">Oyun Alanı</span>
                     </div>
                 </div>
             </div>
 
+            <!-- Çevre Özellikler -->
             <div class="bg-white rounded-lg shadow-xl p-8">
                 <div class="text-center">
                     <h2
                         class="text-xl font-semibold inline-block relative after:content-[''] after:block after:mx-auto after:mt-1 after:mb-8 after:w-48 after:h-[2px] after:bg-brandYellow after:rounded-full">
-                        Çevre Özellikleri
+                        Çevre Özellikler
                     </h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="flex items-center gap-3">
-                        <i class="ri-ship-line text-brandYellow"></i>
-                        <span>Boğaz Manzarası</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <i class="ri-bus-line text-brandYellow"></i>
-                        <span>Toplu Taşıma</span>
+                        <i class="ri-book-line text-brandYellow"></i>
+                        <span id="near_school">Okula Yakın</span>
                     </div>
                     <div class="flex items-center gap-3">
                         <i class="ri-hospital-line text-brandYellow"></i>
-                        <span>Hastane</span>
+                        <span id="near_hospital">Hastaneye Yakın</span>
                     </div>
                     <div class="flex items-center gap-3">
                         <i class="ri-store-2-line text-brandYellow"></i>
-                        <span>Alışveriş Merkezi</span>
+                        <span id="near_market">Markete Yakın</span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <i class="ri-restaurant-line text-brandYellow"></i>
-                        <span>Restoran</span>
+                        <i class="ri-bus-line text-brandYellow"></i>
+                        <span id="near_transport">Toplu Taşıma Yakın</span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <i class="ri-bank-line text-brandYellow"></i>
-                        <span>Banka</span>
+                        <i class="ri-ship-line text-brandYellow"></i>
+                        <span id="sea_view">Deniz Manzarası</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-landscape-line text-brandYellow"></i>
+                        <span id="mountain_view">Dağ Manzarası</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-tree-line text-brandYellow"></i>
+                        <span id="park_nearby">Park Yakınında</span>
                     </div>
                 </div>
             </div>
+
         </div>
-
     </div>
-
+    <!-- Lokasyon -->
     <div
-        class="bg-white rounded-2xl shadow-xl overflow-hidden mb-12 mx-auto px-4 sm:px-0 w-[92%] sm:w-auto max-w-[60rem]">
+        class="bg-white rounded-2xl shadow-xl overflow-hidden mb-12 mx-auto px-4 sm:px-0 w-[80%] sm:w-auto max-w-[60rem]">
         <!-- Başlık -->
         <div class="p-6 border-b border-gray-200">
             <h2 class="text-2xl text-center font-bold text-gray-800">Lokasyonumuz</h2>
@@ -389,28 +426,26 @@
         </div>
 
         <!-- Harita -->
-        <div class="w-full h-[350px] sm:h-[600px]">
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3112.2305983245733!2d29.036944215003877!3d40.98777547930148!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac765e9f5a979%3A0x5b3d7e275eefcd86!2sKad%C4%B1k%C3%B6y%2C%20%C4%B0stanbul!5e0!3m2!1str!2str!4v1621000000000!5m2!1str!2str"
-                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade" class="w-full h-full"></iframe>
+        <div class="w-full h-[200px] sm:h-[300px]">
+            <iframe id="property_map" src="" width="100%" height="100%" style="border:0;" allowfullscreen=""
+                loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="w-full h-full"></iframe>
         </div>
 
         <!-- Açık Adres -->
         <div class="p-6 bg-gray-50">
             <p class="text-gray-700 font-medium mb-2">Açık Adres:</p>
-            <p class="text-gray-600">
-                Bağdat Caddesi No:123, Kadıköy, İstanbul, Türkiye <br />
-                Telefon: <a href="tel:+902162222222" class="text-footerBg hover:text-[#f58549]">+90 216 222 22 22</a>
-            </p>
+            <p id="property_address" class="text-gray-600"></p>
         </div>
     </div>
+
+
+
 
     <footer class="bg-footerBg text-footerTitle py-16">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12">
                 <div class="text-center sm:text-left">
-                    <img src="img/logo.png" alt="Logo" class="h-12 w-auto glow-img mb-4 mx-auto sm:mx-0">
+                    <img src="img/merada_no_frame.png" alt="Logo" class="h-12 w-auto glow-img mb-4 mx-auto sm:mx-0">
                     <p class="brandYellow mb-6 leading-relaxed">
                         Your premier destination for luxury real estate solutions. Connecting dreams with reality
                         through exceptional properties.
