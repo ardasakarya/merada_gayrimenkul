@@ -1,4 +1,6 @@
 // === CONFIG ===
+
+
 const BACKEND = "http://127.0.0.1:5000";
 let deletePropertyId = null;
 let activeFilters = {}; // aktif filtreler tutulacak
@@ -12,6 +14,25 @@ function escapeHtml(s) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
 }
+
+fetch("filter.html")
+  .then(res => res.text())
+  .then(html => {
+    const container = document.getElementById("filterContainer");
+    container.innerHTML = html;
+
+    // 🔥 DOM'un gerçekten oturmasını bekle
+    requestAnimationFrame(() => {
+      if (typeof initFilter === "function") {
+        initFilter();
+      } else {
+        console.error("❌ initFilter bulunamadı");
+      }
+    });
+  })
+  .catch(err => console.error("Filter yüklenemedi:", err));
+
+
 
 // === ANA LİSTEYİ YÜKLE ===
 async function loadProperties(filters = {}) {
@@ -220,3 +241,5 @@ function toggleAdvancedFilters() {
         adv.classList.remove("block");
     }
 }
+
+

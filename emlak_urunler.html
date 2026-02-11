@@ -92,171 +92,7 @@
             </div>
         </div>
 
-        <!-- Filtre Kapsayıcı -->
-  <!-- Çentik Buton -->
-<!-- 🟨 Filtre Menüsü Butonu -->
-<button id="filterToggleBtn"
-    class="fixed top-1/2 -translate-y-1/2 left-0 z-50 bg-brandYellow text-iconBoxColor p-3 rounded-r-lg shadow-md transition-transform duration-300"
-    onclick="toggleFilterMenu()">
-    <i class="ri-filter-3-line text-xl"></i>
-</button>
-
-<!-- 🟧 Soldan Kayan Filtre Menüsü -->
-<div id="filterMenu"
-    class="fixed top-0 left-0 h-full w-[85%] sm:w-[400px] lg:w-[600px] xl:w-[700px] bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-40 overflow-y-auto">
-
-    <!-- Menü Başlık -->
-    <div class="text-center mt-[12vh] p-6 border-b border-gray-200">
-        <h2 class="text-3xl font-bold text-iconBoxColor mb-2 border-b-2 border-brandYellow inline-block pb-2">
-            Filtreler
-        </h2>
-    </div>
-
-    <!-- Filtre İçeriği -->
-    <div class="p-5 space-y-5">
-
-        <!-- Satış / Kiralık -->
-        <div class="flex gap-3 justify-center">
-            <button id="saleBtn"
-                class="px-4 py-2 rounded bg-brandYellow text-iconBoxColor whitespace-nowrap !rounded-button"
-                onclick="setSaleType('sale')">Satılık</button>
-            <button id="rentBtn"
-                class="px-4 py-2 rounded text-iconBoxColor whitespace-nowrap !rounded-button"
-                onclick="setSaleType('rent')">Kiralık</button>
-        </div>
-
-        <!-- Şehir (Sabit Mersin) -->
-        <div>
-            <label class="block text-gray-700 font-semibold mb-1">Şehir</label>
-            <input id="filter_city" type="text" value="Mersin" disabled
-                class="w-full border border-gray-300 rounded-lg p-2 bg-gray-100" />
-        </div>
-
-        <!-- İlçe -->
-        <div>
-            <label class="block text-gray-700 font-semibold mb-1">İlçe</label>
-            <select id="filter_district" class="w-full border border-gray-300 rounded-lg p-2">
-                <option value="">Tümü</option>
-                <option value="Akdeniz">Akdeniz</option>
-                <option value="Mezitli">Mezitli</option>
-                <option value="Yenişehir">Yenişehir</option>
-                <option value="Toroslar">Toroslar</option>
-                <option value="Tarsus">Tarsus</option>
-                <option value="Erdemli">Erdemli</option>
-                <option value="Silifke">Silifke</option>
-                <option value="Anamur">Anamur</option>
-            </select>
-        </div>
-
-        <!-- Fiyat Aralığı -->
-        <div>
-            <label class="block text-gray-700 font-semibold mb-1">Fiyat Aralığı</label>
-            <select id="filter_price" class="w-full border border-gray-300 rounded-lg p-2">
-                <option value="">Tümü</option>
-                <option value="0-100000">₺0 - ₺100.000</option>
-                <option value="100000-500000">₺100.000 - ₺500.000</option>
-                <option value="500000-1000000">₺500.000 - ₺1.000.000</option>
-                <option value="1000000-5000000">₺1.000.000 - ₺5.000.000</option>
-                <option value="5000000-999999999">₺5.000.000+</option>
-            </select>
-        </div>
-
-        <!-- Oda Sayısı -->
-        <div>
-            <label class="block text-gray-700 font-semibold mb-1">Oda Sayısı</label>
-            <select id="filter_rooms" class="w-full border border-gray-300 rounded-lg p-2">
-                <option value="">Tümü</option>
-                <option value="1">1+1</option>
-                <option value="2">2+1</option>
-                <option value="3">3+1</option>
-                <option value="4">4+1</option>
-                <option value="5">5+ ve üzeri</option>
-            </select>
-        </div>
-
-        <!-- Ara & Gelişmiş Butonlar -->
-        <div class="flex justify-center gap-3">
-            <button onclick="applyFilters()"
-                class="px-6 py-2 bg-brandYellow text-iconBoxColor rounded-lg shadow hover:bg-primary-dark transition">
-                Ara
-            </button>
-            <button onclick="toggleAdvancedFilters()"
-                class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg shadow hover:bg-gray-300 transition">
-                Gelişmiş Filtreleri Gör
-            </button>
-        </div>
-
-        <!-- 🧩 Gelişmiş Filtreler -->
-        <div id="advancedFilters"
-            class="hidden mt-5 p-5 bg-gray-50 border border-gray-200 rounded-2xl shadow-sm space-y-4">
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="block mb-2 text-gray-700 font-semibold">Banyo</label>
-                    <select id="filter_bathrooms"
-                        class="w-full border border-gray-300 rounded-xl p-2 text-sm">
-                        <option value="">Tümü</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3+</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block mb-2 text-gray-700 font-semibold">Isıtma</label>
-                    <select id="filter_heating"
-                        class="w-full border border-gray-300 rounded-xl p-2 text-sm">
-                        <option value="">Tümü</option>
-                        <option value="Doğalgaz">Doğalgaz</option>
-                        <option value="Klima">Klima</option>
-                        <option value="Soba">Soba</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block mb-2 text-gray-700 font-semibold">Eşyalı</label>
-                    <select id="filter_furnished"
-                        class="w-full border border-gray-300 rounded-xl p-2 text-sm">
-                        <option value="">Farketmez</option>
-                        <option value="1">Evet</option>
-                        <option value="0">Hayır</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block mb-2 text-gray-700 font-semibold">Balkon</label>
-                    <select id="filter_balcony"
-                        class="w-full border border-gray-300 rounded-xl p-2 text-sm">
-                        <option value="">Farketmez</option>
-                        <option value="1">Var</option>
-                        <option value="0">Yok</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block mb-2 text-gray-700 font-semibold">Alan (m²)</label>
-                    <select id="filter_area"
-                        class="w-full border border-gray-300 rounded-xl p-2 text-sm">
-                        <option value="">Tümü</option>
-                        <option value="0-50">0 - 50</option>
-                        <option value="50-100">50 - 100</option>
-                        <option value="100-150">100 - 150</option>
-                        <option value="150-250">150 - 250</option>
-                        <option value="250-999999">250+</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="flex justify-end mt-5">
-                <button onclick="applyFilters()"
-                    class="px-6 py-2 bg-brandYellow text-iconBoxColor rounded-lg shadow hover:bg-primary-dark transition">
-                    Filtreleri Uygula
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
+    <div id="filterContainer"></div>
 
 
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-6">
@@ -282,9 +118,10 @@
   <!-- List kartlar JS ile gelecek -->
 </div>
 
+<!-- PAGINATION 
 
         <div class="mt-8 flex flex-col items-center justify-center gap-4">
-            <!-- Sayfa numaraları -->
+           
             <div class="flex flex-wrap items-center gap-2 justify-center">
                 <button
                     class="px-3 py-2 text-gray-500 border rounded-lg hover:bg-gray-50 disabled:opacity-50 whitespace-nowrap !rounded-button"
@@ -310,7 +147,7 @@
                 <p class="text-iconBoxColor">Showing 1,247 properties</p>
             </div>
         </div>
-
+-->
 
     </main>
 <footer class="bg-footerBg text-footerTitle py-16">
@@ -390,7 +227,9 @@
     </div>
   </div>
 </footer>
-    <script src="emlak_urunler.js"></script>
+<script src="filter.js"></script>
+<script src="emlak_urunler.js"></script>
+
 </body>
 
 </html>
