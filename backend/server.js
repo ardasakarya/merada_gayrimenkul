@@ -137,7 +137,19 @@ app.post("/api/properties/filter", async (req, res) => {
       LEFT JOIN property_accessibility_features pacc ON pacc.property_id = p.id
 
       ${whereSQL}
-      GROUP BY p.id
+      GROUP BY
+        p.id,
+        p.title,
+        p.description,
+        p.price,
+        p.currency,
+        p.created_at,
+        pl.city,
+        pl.district,
+        pl.neighborhood,
+        ps.rooms,
+        ps.gross_sqm,
+        ps.net_sqm
       ORDER BY p.created_at DESC
       LIMIT 300
     `;
@@ -146,7 +158,7 @@ app.post("/api/properties/filter", async (req, res) => {
     res.json(rows);
   } catch (err) {
     console.error("❌ Filtreleme hatası:", err);
-    res.status(500).json({ error: "Filtreleme hatası" });
+    res.status(500).json({ error: "Filtreleme hatası", detail: err.message });
   }
 });
 

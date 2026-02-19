@@ -1,29 +1,42 @@
-//emlak_detay_script.js
-// Backend URL
+// emlak_detay_script.js
 const BACKEND_URL = "http://127.0.0.1:5000";
 
 let currentIndex = 0;
 let photos = [];
 
-// URL'den id parametresini çek
-function getPropertyIdFromUrl() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("id"); // örnek: emlak_detay.html?id=5
+/* -----------------------------
+   SAFE DOM HELPERS
+------------------------------ */
+function setText(id, text) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = text ?? "";
 }
 
-// Backend'den gelen data ile galeriyi doldur
+function setSrc(id, src) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.src = src ?? "";
+}
+
+function getPropertyIdFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("id");
+}
+
+/* -----------------------------
+   GALLERY
+------------------------------ */
 function renderGallery(data) {
-  photos = data.photos || [];   // ✅ global photos array doluyor
+  photos = Array.isArray(data.photos) ? data.photos : [];
   if (photos.length === 0) return;
 
-  // Ana görsel
   const mainImage = document.getElementById("mainImage");
   if (mainImage) {
     mainImage.src = photos[0];
-    mainImage.onclick = () => openGalleryPopup(0); // ✅ ana foto da popup açsın
+    mainImage.onclick = () => openGalleryPopup(0);
   }
 
-  // Mobil galeri
   const mobileGallery = document.getElementById("mobile_gallery");
   if (mobileGallery) {
     mobileGallery.innerHTML = "";
@@ -36,85 +49,75 @@ function renderGallery(data) {
     });
   }
 
-  // Desktop galeri
-const desktopGallery = document.getElementById("desktop_gallery");
-if (desktopGallery) {
-  desktopGallery.innerHTML = "";
-  photos.forEach((url, idx) => {
-    if (idx < 3) {
-      // İlk 3 fotoğraf normal
-      const img = document.createElement("img");
-      img.src = url;
-      img.className = "gallery-thumb w-full h-32 object-cover rounded cursor-pointer hover:opacity-90";
-      img.onclick = () => openGalleryPopup(idx);
-      desktopGallery.appendChild(img);
-    } else if (idx === 3) {
-      if (photos.length === 4) {
-        // Tam 4 fotoğraf varsa 4. fotoğrafı normal göster
+  const desktopGallery = document.getElementById("desktop_gallery");
+  if (desktopGallery) {
+    desktopGallery.innerHTML = "";
+    photos.forEach((url, idx) => {
+      if (idx < 3) {
         const img = document.createElement("img");
         img.src = url;
-        img.className = "gallery-thumb w-full h-32 object-cover rounded cursor-pointer hover:opacity-90";
+        img.className =
+          "gallery-thumb w-full h-32 object-cover rounded cursor-pointer hover:opacity-90";
         img.onclick = () => openGalleryPopup(idx);
         desktopGallery.appendChild(img);
-      } else {
-        // 4’ten fazla fotoğraf varsa +N göster
-        const wrapper = document.createElement("div");
-        wrapper.className = "gallery-thumb relative w-full h-32 rounded cursor-pointer hover:opacity-90";
-        wrapper.onclick = () => openGalleryPopup(idx);
+      } else if (idx === 3) {
+        if (photos.length === 4) {
+          const img = document.createElement("img");
+          img.src = url;
+          img.className =
+            "gallery-thumb w-full h-32 object-cover rounded cursor-pointer hover:opacity-90";
+          img.onclick = () => openGalleryPopup(idx);
+          desktopGallery.appendChild(img);
+        } else {
+          const wrapper = document.createElement("div");
+          wrapper.className =
+            "gallery-thumb relative w-full h-32 rounded cursor-pointer hover:opacity-90";
+          wrapper.onclick = () => openGalleryPopup(idx);
 
-        const img = document.createElement("img");
-        img.src = url;
-        img.className = "w-full h-32 object-cover rounded";
+          const img = document.createElement("img");
+          img.src = url;
+          img.className = "w-full h-32 object-cover rounded";
 
-        const overlay = document.createElement("div");
-        overlay.className = "absolute inset-0 bg-black/60 flex items-center justify-center rounded";
+          const overlay = document.createElement("div");
+          overlay.className =
+            "absolute inset-0 bg-black/60 flex items-center justify-center rounded";
 
-        const span = document.createElement("span");
-        span.className = "text-white text-xl font-bold";
-        const extraCount = photos.length - 4; // ✅ sadece fazlalığı yaz
-        span.textContent = `+${extraCount}`;
+          const span = document.createElement("span");
+          span.className = "text-white text-xl font-bold";
+          const extraCount = photos.length - 4;
+          span.textContent = `+${extraCount}`;
 
-        overlay.appendChild(span);
-        wrapper.appendChild(img);
-        wrapper.appendChild(overlay);
-        desktopGallery.appendChild(wrapper);
+          overlay.appendChild(span);
+          wrapper.appendChild(img);
+          wrapper.appendChild(overlay);
+          desktopGallery.appendChild(wrapper);
+        }
       }
-    }
-  });
+    });
+  }
 }
-
-}
-
-
-
-// Ana görseli değiştirme
-function setMainImage(url, idx) {
-  const mainImage = document.getElementById("mainImage");
-  if (mainImage) mainImage.src = url;
-  currentIndex = idx;
-}
-
 
 function openGalleryPopup(startIndex = 0) {
   if (!photos || photos.length === 0) return;
   currentIndex = startIndex;
 
   const popup = document.getElementById("galleryPopup");
-  popup.classList.remove("hidden");   // popup aç
+  if (!popup) return;
+  popup.classList.remove("hidden");
 
   showSliderImage();
   renderThumbnails();
 }
 
 function closeGalleryPopup() {
-  document.getElementById("galleryPopup").classList.add("hidden");
+  const popup = document.getElementById("galleryPopup");
+  if (!popup) return;
+  popup.classList.add("hidden");
 }
 
 function showSliderImage() {
   const sliderImg = document.getElementById("sliderImage");
-  if (sliderImg) {
-    sliderImg.src = photos[currentIndex];
-  }
+  if (sliderImg) sliderImg.src = photos[currentIndex];
   highlightThumbnail();
 }
 
@@ -136,7 +139,8 @@ function renderThumbnails() {
   photos.forEach((photo, index) => {
     const thumb = document.createElement("img");
     thumb.src = photo;
-    thumb.className = "w-20 h-20 object-cover rounded cursor-pointer border-2 transition hover:opacity-80";
+    thumb.className =
+      "w-20 h-20 object-cover rounded cursor-pointer border-2 transition hover:opacity-80";
     thumb.onclick = () => {
       currentIndex = index;
       showSliderImage();
@@ -151,185 +155,243 @@ function highlightThumbnail() {
   const thumbs = document.querySelectorAll("#sliderThumbnails img");
   thumbs.forEach((t, i) => {
     t.classList.remove("border-brandYellow");
-    if (i === currentIndex) {
-      t.classList.add("border-brandYellow");
-    }
+    if (i === currentIndex) t.classList.add("border-brandYellow");
   });
 }
 
+/* -----------------------------
+   FEATURES: 1 => siyah, 0 => gri
+   (metin her zaman yazacak)
+------------------------------ */
+function paintFeature(id, isOn) {
+  const el = document.getElementById(id);
+  if (!el) return;
 
-// Veri çekme
-function fetchProperty(id) {
-  fetch(`${BACKEND_URL}/properties/${id}`)
-    .then(res => res.json())
-    .then(data => {
-      console.log("Gelen data:", data);
-
-      // Fotoğraf yollarını absolute URL'e çevir
-      if (data.photos && data.photos.length > 0) {
-        data.photos = data.photos.map(photo => {
-          if (!photo) return "";
-          // Eğer başında "uploads/" yoksa ekle
-          if (!photo.startsWith("uploads/")) {
-            photo = "uploads/" + photo;
-          }
-          // Tam URL oluştur
-          return `${BACKEND_URL}/${photo}`;
-        });
-      }
-
-      renderGallery(data);
-    })
-    .catch(err => console.error("Veri çekme hatası:", err));
-}
-
-// Sayfa yüklendiğinde id parametresini al ve çalıştır
-document.addEventListener("DOMContentLoaded", () => {
-  const id = getPropertyIdFromUrl();
-  if (id) {
-    fetchProperty(id);
-  } else {
-    console.error("URL'de id parametresi yok!");
+  // ilk metni "etiket" olarak sakla (sonradan bozulmasın)
+  if (!el.dataset.label) {
+    el.dataset.label = (el.textContent || "").trim();
   }
-});
 
+  // her zaman etiketi yaz
+  el.textContent = el.dataset.label;
 
-
-
-function getQueryParam(name) {
-  const url = new URL(window.location.href);
-  return url.searchParams.get(name);
+  // renk
+  el.classList.remove("text-gray-900", "text-gray-400", "opacity-60");
+  if (isOn) {
+    el.classList.add("text-gray-900");
+  } else {
+    el.classList.add("text-gray-400", "opacity-60");
+  }
 }
 
+function paintGroup(obj, ids) {
+  // obj yoksa hepsini 0 gibi boya
+  ids.forEach((id) => {
+    const v = obj?.[id];
+    const isOn = v === 1 || v === true;
+    paintFeature(id, isOn);
+  });
+}
+
+/* -----------------------------
+   MAP
+------------------------------ */
+function renderMap(loc) {
+  const mapEl = document.getElementById("property_map");
+  if (!mapEl) return;
+
+  if (loc?.latitude && loc?.longitude) {
+    const lat = parseFloat(loc.latitude);
+    const lng = parseFloat(loc.longitude);
+    if (!isNaN(lat) && !isNaN(lng)) {
+      const zoom = 16;
+      const embedUrl = `https://maps.google.com/maps?q=${lat},${lng}&z=${zoom}&output=embed&center=${lat},${lng}&markers=${lat},${lng}`;
+      mapEl.src = embedUrl;
+      mapEl.style.display = "";
+
+      const latInput = document.getElementById("latitude");
+      const lngInput = document.getElementById("longitude");
+      if (latInput) latInput.value = lat;
+      if (lngInput) lngInput.value = lng;
+      return;
+    }
+  }
+
+  mapEl.style.display = "none";
+}
+
+/* -----------------------------
+   MAIN FETCH (tek fetch)
+------------------------------ */
+async function loadDetail(propertyId) {
+  const res = await fetch(`${BACKEND_URL}/properties/${propertyId}`);
+  if (!res.ok) throw new Error("API hatası");
+  const data = await res.json();
+  console.log("DETAY DATA:", data);
+
+  // Fotoğrafları absolute URL yap
+  
+  // Galeri bas
+  renderGallery(data);
+
+  // Tarih formatlama
+  const dateStr = data?.specifications?.listing_date;
+  let formattedDate = "-";
+  if (dateStr) {
+    const date = new Date(dateStr);
+    if (!isNaN(date.getTime())) {
+      formattedDate = date.toLocaleDateString("tr-TR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+    }
+  }
+
+  // Başlık / fiyat / açıklama
+  setText("property_title", data.title || "");
+  const priceNum = Number(String(data.price ?? "").replace(/\D/g, "")) || 0;
+  setText(
+    "property_price",
+    `${data.currency ?? "₺"} ${priceNum.toLocaleString("tr-TR")}`
+  );
+  setText("property_description", data.description || "");
+
+  // Specifications
+  setText("listing_date", formattedDate);
+  setText("gross_m2", data?.specifications?.gross_sqm ? `${data.specifications.gross_sqm} m²` : "-");
+  setText("net_m2", data?.specifications?.net_sqm ? `${data.specifications.net_sqm} m²` : "-");
+  setText("rooms", data?.specifications?.rooms ?? "-");
+  setText("bathrooms", data?.specifications?.bathrooms ?? "-");
+  setText("building_age", data?.specifications?.building_age ?? "-");
+  setText("building_floors", data?.specifications?.floors ?? "-");
+  setText("floor", data?.specifications?.floor_location ?? "-");
+  setText("heating", data?.specifications?.heating_type ?? "-");
+
+  // Agent photo (backend’de photo yoktu; default bas)
+  setSrc("agent_photo", "../backend/img/merada_zemin_siyah_logo.png");
+
+  // Location map
+  renderMap(data.location);
+
+  /* -----------------------------
+     FEATURES OBJ’LERİ (backend ile uyumlu)
+  ------------------------------ */
+  const interior = data.interior_features || {};
+  const exterior = data.exterior_features || {};
+  const env = data.environmental_features || {};
+  const transport = data.transportation || {}; // ✅ backend: transportation
+  const views = data.views || {};
+  const accessibility = data.accessibility || {};
+  const housingType = data.housingType || {};
+  const facade = data.facade || {};         // ✅ backend: views
+
+  // Eğer senin HTML’de bu id’ler varsa, otomatik renklendirir:
+  const interiorIds = [
+    "wifi", "adsl", "fiber", "smart_home", "alarm_burglar", "alarm_fire", "steel_door",
+    "american_door", "wood_joinery", "aluminum_joinery", "pvc_joinery", "parquet",
+    "laminate_floor", "ceramic_floor", "marley", "painted", "wallpaper", "cornice",
+    "built_in_kitchen", "laminate_kitchen", "set_top_stove", "built_in_oven",
+    "natural_gas_kitchen", "washing_machine", "dryer", "dishwasher", "refrigerator",
+    "white_goods", "shower_cabin", "bathtub", "turkish_wc", "hilton_bathroom",
+    "ensuite_bathroom", "water_heater", "thermosiphon", "spot_lighting",
+    "air_conditioning", "dressing_room", "built_in_closet", "pantry", "jacuzzi",
+    "fireplace", "terrace", "video_intercom", "intercom_system", "biometric_system"
+  ];
+
+  const exteriorIds = [
+    "ev_charging_station",
+    "security_24h",
+    "janitor",
+    "steam_room",
+    "playground",
+    "hammam",
+    "hydrofor",
+    "thermal_insulation",
+    "generator",
+    "cable_tv",
+    "camera_system",
+    "nursery",
+    "open_pool",
+    "indoor_pool",
+    "private_pool",
+    "sauna",
+    "sound_insulation",
+    "siding",
+    "sports_area",
+    "water_tank",
+    "tennis_court",
+    "satellite",
+    "fire_escape"
+  ];
+
+  const envIds = [
+    "shopping_mall", "municipality", "mosque", "cemevi", "seafront", "pharmacy",
+    "entertainment_center", "fair", "lakefront", "hospital", "synagogue", "primary_school",
+    "fire_station", "church", "high_school", "market", "park", "beach", "police_station",
+    "health_center", "street_market", "gym", "city_center", "university"
+  ];
+
+  const transportIds = [
+    "main_road", "avenue", "dolmus", "e5", "airport", "marmaray", "metro", "metrobus",
+    "minibus", "bus_stop", "coast", "tem", "train_station", "tram"
+  ];
+
+  const viewIds = ["bosporus", "sea", "nature", "lake", "pool", "river", "park", "city"];
+
+  const accessibilityIds = [
+    "accessible_parking",
+    "accessible_kitchen",
+    "wide_corridor",
+    "accessible_wc",
+    "accessible_elevator",
+    "accessible_bathroom",
+    "ramp",
+    "handrails"
+  ];
+
+  const housingTypeIds = [
+    "duplex",
+    "top_floor",
+    "middle_floor",
+    "garden_duplex",
+    "roof_duplex",
+    "reverse_duplex",
+    "triplex"
+  ];
+
+  const facadeIds = ["west", "east", "south", "north"];
+
+  // ✅ Boya: 1 siyah, 0 gri (metin hep yazacak)
+  paintGroup(interior, interiorIds);
+  paintGroup(exterior, exteriorIds);
+  paintGroup(env, envIds);
+  paintGroup(transport, transportIds);
+  paintGroup(views, viewIds);
+  paintGroup(accessibility, accessibilityIds);
+  paintGroup(housingType, housingTypeIds);
+  paintGroup(facade, facadeIds);
+}
+
+/* -----------------------------
+   INIT
+------------------------------ */
 document.addEventListener("DOMContentLoaded", async () => {
-  const params = new URLSearchParams(window.location.search);
-  const propertyId = params.get("id") || 1;
+  const id = getPropertyIdFromUrl();
+  if (!id) {
+    console.error("URL'de id parametresi yok!");
+    return;
+  }
 
   try {
-    const res = await fetch(`http://127.0.0.1:5000/properties/${propertyId}`);
-    if (!res.ok) throw new Error("API hatası");
-    const data = await res.json();
-
-    // Tarih formatlama
-    const dateStr = data.specifications.listing_date;
-    const date = new Date(dateStr);
-    const formattedDate = date.toLocaleDateString("tr-TR", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-
-    // Başlık, fiyat, açıklama, adres
-    document.getElementById("property_title").textContent = data.title;
-    document.getElementById("property_price").textContent = `${data.currency} ${data.price.toLocaleString("tr-TR")}`;
-    document.getElementById("property_description").textContent = data.description;
-    document.getElementById("property_address").textContent = data.location.address;
-
-    // Özellikler
-    document.getElementById("listing_date").textContent = formattedDate;
-    document.getElementById("gross_m2").textContent = data.specifications.gross_sqm + " m²";
-    document.getElementById("net_m2").textContent = data.specifications.net_sqm + " m²";
-    document.getElementById("rooms").textContent = data.specifications.rooms;
-    document.getElementById("bathrooms").textContent = data.specifications.bathrooms;
-    document.getElementById("building_age").textContent = data.specifications.building_age;
-    document.getElementById("building_floors").textContent = data.specifications.floors;
-    document.getElementById("floor").textContent = data.specifications.floor_location;
-    document.getElementById("heating").textContent = data.specifications.heating_type;
-    document.getElementById("furnished").textContent = data.specifications.furnished;
-    document.getElementById("usage_status").textContent = data.specifications.usage_status;
-    document.getElementById("credit_status").textContent = data.specifications.loan_status;
-    document.getElementById("swap").textContent = data.specifications.exchange_status;
-    document.getElementById("facade").textContent = data.specifications.facade;
-
-    // Danışman
-    document.getElementById("agent_name").textContent = data.agent.name;
-    document.getElementById("agent_title").textContent = data.agent.title;
-    document.getElementById("agent_phone").textContent = data.agent.phone;
-    document.getElementById("agent_email").textContent = data.agent.email;
-   document.getElementById("agent_photo").src = data.agent.photo || "img/placeholder-profile-male-500x500.png";
-
-    // -----------------------------
-    // İç Özellikler (Boolean: Var / Yok)
-    // -----------------------------
-  // İç Özellikler
-const interior = data.interior_features;
-document.getElementById("master_bedroom").textContent = interior.master_bedroom ? document.getElementById("master_bedroom").textContent : "-";
-document.getElementById("guest_bedroom").textContent = interior.guest_bedroom ? document.getElementById("guest_bedroom").textContent : "-";
-document.getElementById("walk_in_closet").textContent = interior.walk_in_closet ? document.getElementById("walk_in_closet").textContent : "-";
-document.getElementById("ensuite_bathroom").textContent = interior.ensuite_bathroom ? document.getElementById("ensuite_bathroom").textContent : "-";
-document.getElementById("modern_kitchen").textContent = interior.modern_kitchen ? document.getElementById("modern_kitchen").textContent : "-";
-document.getElementById("kitchen_island").textContent = interior.kitchen_island ? document.getElementById("kitchen_island").textContent : "-";
-document.getElementById("open_floor_plan").textContent = interior.open_floor_plan ? document.getElementById("open_floor_plan").textContent : "-";
-document.getElementById("fireplace").textContent = interior.fireplace ? document.getElementById("fireplace").textContent : "-";
-document.getElementById("hardwood_floors").textContent = interior.hardwood_floors ? document.getElementById("hardwood_floors").textContent : "-";
-document.getElementById("high_ceilings").textContent = interior.high_ceilings ? document.getElementById("high_ceilings").textContent : "-";
-document.getElementById("central_air").textContent = interior.central_air ? document.getElementById("central_air").textContent : "-";
-document.getElementById("smart_home_features").textContent = interior.smart_home_features ? document.getElementById("smart_home_features").textContent : "-";
-document.getElementById("custom_notes").textContent = interior.custom_notes || "-";
-
-// Dış Özellikler
-const exterior = data.exterior_features;
-document.getElementById("balcony").textContent = exterior.balcony ? document.getElementById("balcony").textContent : "-";
-document.getElementById("terrace").textContent = exterior.terrace ? document.getElementById("terrace").textContent : "-";
-document.getElementById("garden").textContent = exterior.garden ? document.getElementById("garden").textContent : "-";
-document.getElementById("garage").textContent = exterior.garage ? document.getElementById("garage").textContent : "-";
-document.getElementById("parking").textContent = exterior.parking ? document.getElementById("parking").textContent : "-";
-document.getElementById("swimming_pool").textContent = exterior.swimming_pool ? document.getElementById("swimming_pool").textContent : "-";
-document.getElementById("barbecue_area").textContent = exterior.barbecue_area ? document.getElementById("barbecue_area").textContent : "-";
-document.getElementById("playground").textContent = exterior.playground ? document.getElementById("playground").textContent : "-";
-
-// Çevre Özellikler
-const env = data.environmental_features;
-document.getElementById("near_school").textContent = env.near_school ? document.getElementById("near_school").textContent : "-";
-document.getElementById("near_hospital").textContent = env.near_hospital ? document.getElementById("near_hospital").textContent : "-";
-document.getElementById("near_market").textContent = env.near_market ? document.getElementById("near_market").textContent : "-";
-document.getElementById("near_transport").textContent = env.near_transport ? document.getElementById("near_transport").textContent : "-";
-document.getElementById("sea_view").textContent = env.sea_view ? document.getElementById("sea_view").textContent : "-";
-document.getElementById("mountain_view").textContent = env.mountain_view ? document.getElementById("mountain_view").textContent : "-";
-document.getElementById("park_nearby").textContent = env.park_nearby ? document.getElementById("park_nearby").textContent : "-";
-
-//adres
-const loc = data.location;
-
-// --- Harita embed ---
-if (loc.latitude && loc.longitude) {
-  const lat = parseFloat(loc.latitude);
-  const lng = parseFloat(loc.longitude);
-
-  if (!isNaN(lat) && !isNaN(lng)) {
-    const zoom = 16; // zoom seviyesini buradan değiştirebilirsin
-    const embedUrl = `https://maps.google.com/maps?q=${lat},${lng}&z=${zoom}&output=embed&center=${lat},${lng}&markers=${lat},${lng}`;
-    document.getElementById("property_map").src = embedUrl;
-
-    // --- Inputları doldur ---
-    const latInput = document.getElementById("latitude");
-    const lngInput = document.getElementById("longitude");
-    if (latInput) latInput.value = lat;
-    if (lngInput) lngInput.value = lng;
-  } else {
-    console.warn("Geçersiz enlem/boylam:", loc);
-    document.getElementById("property_map").style.display = "none";
-  }
-} else {
-  console.warn("Eksik konum bilgisi:", loc);
-  document.getElementById("property_map").style.display = "none";
-}
-
-// --- Açık adres metni ---
-const addressParts = [
-    loc.street_address,
-    loc.street,
-    loc.neighborhood,
-    loc.district,
-    loc.city,
-    loc.zip_code
-].filter(Boolean); // boş olanları çıkarır
-
-const fullAddress = addressParts.join(", ");
-const addressEl = document.getElementById("property_address");
-if (addressEl) addressEl.textContent = fullAddress || "-";
-
+    await loadDetail(id);
   } catch (err) {
     console.error("❌ Veri çekme hatası:", err);
   }
 });
+
+// Popup butonların HTML'den çağırması için global bırak
+window.openGalleryPopup = openGalleryPopup;
+window.closeGalleryPopup = closeGalleryPopup;
+window.prevImage = prevImage;
+window.nextImage = nextImage;
