@@ -34,6 +34,26 @@ function togglePanel(forceOpen) {
   const isOpen = typeof forceOpen === "boolean" ? forceOpen : btn.dataset.open !== "true";
 
   panel.classList.toggle("-translate-x-full", !isOpen);
+
+  if (isOpen) {
+    // Panel genişliği kadar sağa taşı (responsive)
+    const panelRect = panel.getBoundingClientRect();
+    const panelWidth = panelRect.width;
+
+    // Butonun genişliği ve ekran genişliği
+    const btnRect = btn.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+
+    // Ekranın dışına çıkmasın diye max left'i sınırla (16px margin bırakalım)
+    const maxLeft = viewportWidth - btnRect.width - 16;
+    const newLeft = Math.min(panelWidth, maxLeft);
+
+    btn.style.left = `${newLeft}px`;
+  } else {
+    // Kapanınca eski haline dön (left-4 class'ı çalışsın)
+    btn.style.left = "";
+  }
+
   iconFilter?.classList.toggle("hidden", isOpen);
   iconClose?.classList.toggle("hidden", !isOpen);
   btn.dataset.open = isOpen ? "true" : "false";
