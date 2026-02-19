@@ -1,213 +1,199 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>İlan Filtreleri</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Tailwind -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>İlan Filtreleme</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen">
 
-<!-- FILTER TOGGLE BUTTON -->
-<button id="filterToggle"
-  data-open="false"
-  class="fixed top-1/2 left-0 -translate-y-1/2 z-50
-         bg-yellow-400 text-gray-900 p-3 rounded-xl shadow-lg
-         transition-all duration-300">
+<body class="bg-gray-50 min-h-screen">
 
-  <!-- FILTER ICON -->
-  <svg id="iconFilter" xmlns="http://www.w3.org/2000/svg"
-       class="w-6 h-6 block"
-       fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2l-6 6v6l-4 2v-8L3 6V4z" />
-  </svg>
+  <!-- Toggle -->
+  <button id="filterToggle" data-open="false"
+    class="fixed top-1/2 left-4 -translate-y-1/2 z-50 bg-[#ffcb08] text-black p-3 rounded-2xl shadow-lg hover:scale-105 transition">
+    <svg id="iconFilter" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2l-6 6v6l-4 2v-8L3 6V4z"/>
+    </svg>
+    <svg id="iconClose" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+  </button>
 
-  <!-- CLOSE ICON -->
-  <svg id="iconClose" xmlns="http://www.w3.org/2000/svg"
-       class="w-6 h-6 hidden"
-       fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M6 18L18 6M6 6l12 12" />
-  </svg>
-</button>
+  <!-- Panel -->
+  <aside id="filterPanel"
+    class="fixed inset-y-0 left-0 w-[92%] sm:w-[420px] bg-white shadow-2xl transform -translate-x-full transition-transform duration-300 z-40 overflow-y-auto">
 
-
-<!-- FILTER PANEL -->
-<div id="filterPanel"
-  class="fixed inset-y-0 left-0 w-[90%] sm:w-[420px]
-         bg-white shadow-2xl transform -translate-x-full
-         transition-transform duration-300 z-40 overflow-y-auto">
-
-  <!-- HEADER -->
-  <div class="p-6 border-b flex justify-between items-center">
-    <h2 class="text-2xl font-bold">Filtreler</h2>
-    <button onclick="toggleFilter()" class="text-xl">✕</button>
-  </div>
-
-  <div class="p-6 space-y-6">
-
-    <!-- ================= ANA FİLTRELER ================= -->
-
-    <h3 class="font-bold text-lg">Konum</h3>
-
-    <input value="Mersin" disabled
-      class="w-full p-2 bg-gray-100 border rounded-lg">
-
-    <select id="district" class="w-full p-2 border rounded-lg">
-      <option value="">İlçe Seç</option>
-      <option>Akdeniz</option>
-      <option>Mezitli</option>
-      <option>Yenişehir</option>
-      <option>Toroslar</option>
-      <option>Tarsus</option>
-    </select>
-
- 
-
-    <h3 class="font-bold text-lg">Fiyat</h3>
-
-    <div class="grid grid-cols-2 gap-2">
-      <input id="price_min" type="number" placeholder="Min"
-        class="p-2 border rounded-lg">
-      <input id="price_max" type="number" placeholder="Max"
-        class="p-2 border rounded-lg">
+    <div class="p-5 border-b flex items-center justify-between">
+      <h2 class="text-xl font-extrabold">Filtreler</h2>
+      <button id="closePanelBtn" class="text-2xl leading-none">✕</button>
     </div>
 
-    <h3 class="font-bold text-lg">İlan Bilgisi</h3>
+    <div class="p-5 space-y-6">
 
-    <select id="usage_status" class="w-full p-2 border rounded-lg">
-      <option value="">Satılık / Kiralık</option>
-      <option value="sale">Satılık</option>
-      <option value="rent">Kiralık</option>
-    </select>
-
-    <select id="rooms" class="w-full p-2 border rounded-lg">
-      <option value="">Oda Sayısı</option>
-      <option value="1+0">1+0</option>
-      <option value="1+1">1+1</option>
-      <option value="2+1">2+1</option>
-      <option value="3+1">3+1</option>
-      <option value="4+1">4+1</option>
-      <option value="5+1">5+1+</option>
-    </select>
-
-    <!-- ================= GELİŞMİŞ ================= -->
-
-    <button onclick="toggleAdvanced()"
-      class="w-full border py-2 rounded-lg font-semibold">
-      Gelişmiş Filtreler
-    </button>
-
-    <div id="advancedFilters" class="hidden space-y-8">
-
-      <!-- İLAN -->
-      <div>
-        <h4 class="font-bold mb-2">İlan & Kategori</h4>
-        <input id="listing_date" type="date"
-          class="w-full p-2 border rounded-lg mb-2">
-        <select id="category" class="w-full p-2 border rounded-lg">
-          <option value="">Kategori</option>
-          <option>Daire</option>
-          <option>Villa</option>
-          <option>Arsa</option>
-          <option>İş Yeri</option>
+      <!-- Konum -->
+      <section class="space-y-2">
+        <h3 class="font-bold">Konum</h3>
+        <input id="city" value="Mersin" class="w-full p-2 bg-gray-100 border rounded-xl"/>
+        <select id="district" class="w-full p-2 border rounded-xl">
+          <option value="">İlçe Seç</option>
+          <option value="Akdeniz">Akdeniz</option>
+          <option value="Mezitli">Mezitli</option>
+          <option value="Yenişehir">Yenişehir</option>
+          <option value="Toroslar">Toroslar</option>
+          <option value="Tarsus">Tarsus</option>
         </select>
-      </div>
+      </section>
 
-      <!-- METREKARE -->
-      <div>
-        <h4 class="font-bold mb-2">Metrekare</h4>
+      <!-- Fiyat -->
+      <section class="space-y-2">
+        <h3 class="font-bold">Fiyat</h3>
         <div class="grid grid-cols-2 gap-2">
-          <input id="gross_sqm" placeholder="Brüt m²" class="p-2 border rounded-lg">
-          <input id="net_sqm" placeholder="Net m²" class="p-2 border rounded-lg">
+          <input id="price_min" type="number" placeholder="Min" class="p-2 border rounded-xl">
+          <input id="price_max" type="number" placeholder="Max" class="p-2 border rounded-xl">
         </div>
-      </div>
+      </section>
 
-      <!-- BİNA -->
-      <div>
-        <h4 class="font-bold mb-2">Bina Bilgileri</h4>
-        <div class="grid grid-cols-2 gap-2">
-          <input id="building_age" placeholder="Bina Yaşı" class="p-2 border rounded-lg">
-          <input id="floors" placeholder="Bina Kat Sayısı" class="p-2 border rounded-lg">
-          <input id="floor_location" placeholder="Bulunduğu Kat" class="p-2 border rounded-lg">
-        </div>
-      </div>
+      <!-- İlan -->
+      <section class="space-y-2">
+        <h3 class="font-bold">İlan</h3>
 
-      <!-- ISINMA -->
-      <div>
-        <h4 class="font-bold mb-2">Isınma & Cephe</h4>
-        <select id="heating_type" class="w-full p-2 border rounded-lg mb-2">
-          <option value="">Isınma Tipi</option>
-          <option>Doğalgaz</option>
-          <option>Merkezi</option>
-          <option>Kombi</option>
-          <option>Klima</option>
+      
+
+        <select id="rooms" class="w-full p-2 border rounded-xl">
+          <option value="">Oda</option>
+          <option value="1+0">1+0</option>
+          <option value="1+1">1+1</option>
+          <option value="2+1">2+1</option>
+          <option value="3+1">3+1</option>
+          <option value="4+1">4+1</option>
+          <option value="5+1">5+1+</option>
         </select>
 
-        <select id="facade" class="w-full p-2 border rounded-lg">
-          <option value="">Cephe</option>
-          <option>Kuzey</option>
-          <option>Güney</option>
-          <option>Doğu</option>
-          <option>Batı</option>
-        </select>
-      </div>
+      
+      </section>
 
-      <!-- İÇ -->
- 
-  <h4 class="font-bold mb-2">İç Özellikler</h4>
- <div class="grid grid-cols-2 gap-3 text-sm">
-        <label><input type="checkbox" id="central_air"> Merkezi Klima</label>
-        <label><input type="checkbox" id="fireplace"> Şömine</label>
-        <label><input type="checkbox" id="smart_home"> Akıllı Ev</label>
-        <label><input type="checkbox" id="walk_in_closet"> Giyinme Odası</label>
-        <label><input type="checkbox" id="ensuite"> Ebeveyn Banyosu</label>
-        <label><input type="checkbox" id="modern_kitchen"> Modern Mutfak</label>
-      </div>
-       <h4 class="font-bold mb-2">Dış Özellikler</h4>
-  <div class="grid grid-cols-2 gap-3 text-sm">
-        <label><input type="checkbox" id="parking"> Otopark</label>
-        <label><input type="checkbox" id="garage"> Garaj</label>
-        <label><input type="checkbox" id="garden"> Bahçe</label>
-        <label><input type="checkbox" id="terrace"> Teras</label>
-        <label><input type="checkbox" id="swimming_pool"> Havuz</label>
-        <label><input type="checkbox" id="playground"> Oyun Alanı</label>
-      </div>
+      <!-- Advanced -->
+      <button id="toggleAdvancedBtn" class="w-full border py-2 rounded-xl font-bold hover:bg-gray-50 transition">
+        Gelişmiş Filtreler
+      </button>
 
-      <!-- ENVIRONMENT -->
-        <h4 class="font-bold mb-2">Çevre Özellikleri</h4>
-      <div class="grid grid-cols-2 gap-3 text-sm">
-        <label><input type="checkbox" id="sea_view"> Deniz Manzarası</label>
-        <label><input type="checkbox" id="mountain_view"> Dağ Manzarası</label>
-        <label><input type="checkbox" id="park_nearby"> Park Yakın</label>
-        <label><input type="checkbox" id="near_school"> Okula Yakın</label>
-        <label><input type="checkbox" id="near_hospital"> Hastaneye Yakın</label>
-        <label><input type="checkbox" id="near_market"> Market Yakın</label>
-        <label><input type="checkbox" id="near_transport"> Ulaşım Yakın</label>
-      </div>
-      <!-- DURUM -->
-      <div>
-        <h4 class="font-bold mb-2">Kullanım & Finans</h4>
-        <div class="grid grid-cols-2 gap-2 text-sm">
-          <label><input type="checkbox" id="usage_empty"> Boş</label>
-          <label><input type="checkbox" id="loan_status"> Krediye Uygun</label>
-          <label><input type="checkbox" id="exchange_status"> Takaslı</label>
+      <section id="advancedFilters" class="hidden space-y-6">
+
+        <div class="space-y-2">
+          <h4 class="font-bold">Tarih / m²</h4>
+          <input id="listing_date" type="date" class="w-full p-2 border rounded-xl" />
+          <div class="grid grid-cols-2 gap-2">
+            <input id="gross_sqm_min" type="number" placeholder="Brüt min" class="p-2 border rounded-xl" />
+            <input id="net_sqm_min" type="number" placeholder="Net min" class="p-2 border rounded-xl" />
+          </div>
         </div>
+
+        <div class="space-y-2">
+          <h4 class="font-bold">Bina / Isınma</h4>
+          <div class="grid grid-cols-2 gap-2">
+            <input id="building_age_max" type="number" placeholder="Bina yaşı (max)" class="p-2 border rounded-xl" />
+            <input id="floors" type="number" placeholder="Bina kat sayısı" class="p-2 border rounded-xl" />
+          </div>
+          <input id="floor_location" placeholder="Bulunduğu kat" class="w-full p-2 border rounded-xl" />
+          <select id="heating_type" class="w-full p-2 border rounded-xl">
+            <option value="">Isınma Tipi</option>
+            <option value="Doğalgaz">Doğalgaz</option>
+            <option value="Merkezi">Merkezi</option>
+            <option value="Kombi">Kombi</option>
+            <option value="Klima">Klima</option>
+          </select>
+        </div>
+
+        <div class="space-y-2">
+          <h4 class="font-bold">Finans</h4>
+          <div class="grid grid-cols-2 gap-2 text-sm">
+            <label class="flex items-center gap-2"><input type="checkbox" id="loan_status"> Krediye Uygun</label>
+            <label class="flex items-center gap-2"><input type="checkbox" id="exchange_status"> Takaslı</label>
+            <label class="flex items-center gap-2"><input type="checkbox" id="balcony"> Balkon</label>
+            <label class="flex items-center gap-2"><input type="checkbox" id="furnished"> Eşyalı</label>
+          </div>
+        </div>
+
+        <!-- Özellikler (dinamik) -->
+        <div class="space-y-4">
+          <h4 class="font-bold">Özellikler</h4>
+
+          <div class="space-y-2">
+            <div class="font-semibold text-sm text-gray-700">Ulaşım</div>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="transport" data-key="metro"> Metro</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="transport" data-key="metrobus"> Metrobüs</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="transport" data-key="marmaray"> Marmaray</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="transport" data-key="bus_stop"> Otobüs Durağı</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="transport" data-key="e5"> E5</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="transport" data-key="tem"> TEM</label>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="font-semibold text-sm text-gray-700">Manzara</div>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="view" data-key="sea"> Deniz</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="view" data-key="nature"> Doğa</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="view" data-key="bosporus"> Boğaz</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="view" data-key="city"> Şehir</label>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="font-semibold text-sm text-gray-700">Dış</div>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="exterior" data-key="security"> Güvenlik</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="exterior" data-key="camera_system"> Kamera Sistemi</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="exterior" data-key="open_pool"> Açık Havuz</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="exterior" data-key="indoor_pool"> Kapalı Havuz</label>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="font-semibold text-sm text-gray-700">Çevre</div>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="env" data-key="market"> Market</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="env" data-key="park"> Park</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="env" data-key="hospital"> Hastane</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="env" data-key="school"> Okul</label>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="font-semibold text-sm text-gray-700">Erişilebilirlik</div>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="access" data-key="accessible_elevator"> Engelli Asansör</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="access" data-key="ramp"> Rampa</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="access" data-key="handrails"> Tutunma Barı</label>
+              <label class="flex items-center gap-2"><input type="checkbox" data-group="access" data-key="accessible_wc"> Engelli WC</label>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <div class="grid grid-cols-2 gap-2">
+        <button id="resetBtn" class="w-full border py-3 rounded-2xl font-extrabold hover:bg-gray-50 transition">Sıfırla</button>
+        <button id="applyBtn" class="w-full bg-[#ffcb08] py-3 rounded-2xl font-extrabold hover:brightness-95 transition">Uygula</button>
       </div>
 
     </div>
+  </aside>
 
-    <!-- APPLY -->
-    <button onclick="applyFilters()"
-      class="w-full bg-yellow-400 py-3 rounded-xl font-bold">
-      Filtreleri Uygula
-    </button>
+  <!-- Content -->
+  <main class="max-w-7xl mx-auto px-4 py-10">
+    <div>
+      <h1 class="text-2xl font-extrabold text-gray-900">İlanlar</h1>
+      <p id="resultInfo" class="text-gray-600 text-sm mt-1">Filtre seçip “Uygula” deyin.</p>
+    </div>
 
-  </div>
-</div>
-<script src="filter.js"></script>
+    <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-6"></div>
+  </main>
+
+  <script src="filter.js"></script>
 </body>
 </html>

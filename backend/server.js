@@ -1,84 +1,109 @@
 const express = require("express");
 const cors = require("cors");
-const db = require("./config/db"); // senin db.js
+require("dotenv").config();
+
+const db = require("./config/db"); // mysql2/promise pool
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "5mb" }));
 
-/* ================= FILTER ENDPOINT ================= */
+
+const path = require("path");
+
+// uploads klasörünü public yap
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+const cleanStr = (v) => {
+  if (v === undefined || v === null) return null;
+  const s = String(v).trim();
+  return s ? s : null;
+};
+const cleanNum = (v) => {
+  if (v === undefined || v === null || v === "") return null;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+};
+const isChecked = (v) => v === 1 || v === true || v === "1";
+
+/** Feature whitelist: group -> { tableAlias, columnWhitelist[] } */
+const FEATURE_MAP = {
+  transport: { alias: "ptf", cols: ["main_road","avenue","dolmus","e5","airport","marmaray","metrobus","metro","minibus","coast","bus_stop","tem","train_station","tram"] },
+  view:      { alias: "pvf", cols: ["sea","nature","lake","pool","river","park","city","bosporus"] },
+  exterior:  { alias: "pef", cols: ["ev_charging","security","concierge","steam_room","playground","hamam","thermal_insulation","hydrophore","generator","cable_tv","camera_system","kindergarten","private_pool","sauna","sound_insulation","siding","sports_area","water_tank","tennis_court","satellite","fire_escape","open_pool","indoor_pool"] },
+  env:       { alias: "penv", cols: ["mall","cemevi","entertainment","lakefront","seafront","mosque","municipality","pharmacy","fair","hospital","synagogue","school","fire_station","church","high_school","market","park","beach","police","health_center","bazaar","gym","city_center","university"] },
+  access:    { alias: "pacc", cols: ["accessible_parking","accessible_kitchen","wide_corridor","accessible_wc","accessible_elevator","accessible_bathroom","ramp","handrails"] },
+};
 
 app.post("/api/properties/filter", async (req, res) => {
   try {
-    const f = req.body;
+    const f = req.body || {};
+    const where = [];
+    const values = [];
+    const add = (sql, val) => { where.push(sql); values.push(val); };
 
-    let where = [];
-    let values = [];
+    // ===== Base filters =====
+    const city = cleanStr(f.city);
+    const district = cleanStr(f.district);
+    if (city) add("pl.city = ?", city);
+    if (district) add("pl.district = ?", district);
 
-    const add = (condition, value) => {
-      values.push(value);
-      where.push(condition.replace("?", `$${values.length}`));
-    };
 
-    /* ================= KONUM ================= */
-    if (f.city) add("pl.city = ?", f.city);
-    if (f.district) add("pl.district = ?", f.district);
+    const rooms = cleanStr(f.rooms);
+   
 
-    /* ================= ANA ================= */
-    if (f.usage_status) add("ps.usage_status = ?", f.usage_status);
-    if (f.rooms) add("ps.rooms = ?", f.rooms);
-    if (f.price_min) add("p.price >= ?", f.price_min);
-    if (f.price_max) add("p.price <= ?", f.price_max);
 
-    /* ================= İLAN ================= */
-    if (f.category) add("ps.category = ?", f.category);
-    if (f.listing_date) add("ps.listing_date >= ?", f.listing_date);
+    if (rooms) add("ps.rooms = ?", rooms);
+ 
 
-    /* ================= METREKARE ================= */
-    if (f.gross_sqm) add("ps.gross_sqm >= ?", f.gross_sqm);
-    if (f.net_sqm) add("ps.net_sqm >= ?", f.net_sqm);
+    const priceMin = cleanNum(f.price_min);
+    const priceMax = cleanNum(f.price_max);
+    if (priceMin !== null) add("p.price >= ?", priceMin);
+    if (priceMax !== null) add("p.price <= ?", priceMax);
 
-    /* ================= BİNA ================= */
-    if (f.building_age) add("ps.building_age <= ?", f.building_age);
-    if (f.floors) add("ps.floors = ?", f.floors);
-    if (f.floor_location) add("ps.floor_location = ?", f.floor_location);
+    const listing_date = cleanStr(f.listing_date);
+    if (listing_date) add("DATE(ps.listing_date) >= DATE(?)", listing_date);
 
-    /* ================= ISINMA / CEPHE ================= */
-    if (f.heating_type) add("ps.heating_type = ?", f.heating_type);
-    if (f.facade) add("ps.facade = ?", f.facade);
+    const grossMin = cleanNum(f.gross_sqm_min);
+    const netMin = cleanNum(f.net_sqm_min);
+    if (grossMin !== null) add("ps.gross_sqm >= ?", grossMin);
+    if (netMin !== null) add("ps.net_sqm >= ?", netMin);
 
-    /* ================= İÇ ÖZELLİKLER ================= */
-    if (f.central_air) where.push("pif.central_air = 1");
-    if (f.fireplace) where.push("pif.fireplace = 1");
-    if (f.smart_home_features) where.push("pif.smart_home_features = 1");
-    if (f.walk_in_closet) where.push("pif.walk_in_closet = 1");
-    if (f.ensuite_bathroom) where.push("pif.ensuite_bathroom = 1");
-    if (f.modern_kitchen) where.push("pif.modern_kitchen = 1");
+    const buildingAgeMax = cleanNum(f.building_age_max);
+    const floors = cleanNum(f.floors);
+    const floor_location = cleanStr(f.floor_location);
 
-    /* ================= DIŞ ÖZELLİKLER ================= */
-    if (f.parking) where.push("ef.parking = 1");
-    if (f.garage) where.push("ef.garage = 1");
-    if (f.garden) where.push("ef.garden = 1");
-    if (f.terrace) where.push("ef.terrace = 1");
-    if (f.swimming_pool) where.push("ef.swimming_pool = 1");
-    if (f.playground) where.push("ef.playground = 1");
+    if (buildingAgeMax !== null) add("ps.building_age <= ?", buildingAgeMax);
+    if (floors !== null) add("ps.floors = ?", floors);
+    if (floor_location) add("ps.floor_location = ?", floor_location);
 
-    /* ================= ÇEVRE ================= */
-    if (f.sea_view) where.push("env.sea_view = 1");
-    if (f.mountain_view) where.push("env.mountain_view = 1");
-    if (f.park_nearby) where.push("env.park_nearby = 1");
-    if (f.near_school) where.push("env.near_school = 1");
-    if (f.near_hospital) where.push("env.near_hospital = 1");
-    if (f.near_market) where.push("env.near_market = 1");
-    if (f.near_transport) where.push("env.near_transport = 1");
+    const heating_type = cleanStr(f.heating_type);
+    if (heating_type) add("ps.heating_type = ?", heating_type);
 
-    /* ================= FİNANS ================= */
-    if (f.loan_status) where.push("ps.loan_status = 1");
-    if (f.exchange_status) where.push("ps.exchange_status = 1");
+    if (isChecked(f.loan_status)) where.push("ps.loan_status = 1");
+    if (isChecked(f.exchange_status)) where.push("ps.exchange_status = 1");
+    if (isChecked(f.balcony)) where.push("ps.balcony = 1");
+    if (isChecked(f.furnished)) where.push("ps.furnished = 1");
 
-    const whereSQL = where.length ? "WHERE " + where.join(" AND ") : "";
+    // ===== Feature filters (dynamic) =====
+    const features = f.features || {};
+    for (const group of Object.keys(FEATURE_MAP)) {
+      const selected = Array.isArray(features[group]) ? features[group] : [];
+      if (selected.length === 0) continue;
 
-    const query = `
+      const { alias, cols } = FEATURE_MAP[group];
+
+      // only keep whitelisted columns
+      const safeCols = selected.filter((k) => cols.includes(k));
+      for (const col of safeCols) {
+        where.push(`${alias}.${col} = 1`);
+      }
+    }
+
+    const whereSQL = where.length ? `WHERE ${where.join(" AND ")}` : "";
+
+    // ===== SQL (joins) =====
+    const sql = `
       SELECT
         p.id,
         p.title,
@@ -92,33 +117,40 @@ app.post("/api/properties/filter", async (req, res) => {
         pl.neighborhood,
 
         ps.rooms,
+ 
+
         ps.gross_sqm,
         ps.net_sqm,
-        ps.category,
-        ps.usage_status
+
+        MIN(pp.photo_url) AS cover_photo
 
       FROM properties p
       JOIN property_location pl ON pl.property_id = p.id
       JOIN property_specifications ps ON ps.property_id = p.id
-      LEFT JOIN property_interior_features pif ON pif.property_id = p.id
-      LEFT JOIN exterior_features ef ON ef.property_id = p.id
-      LEFT JOIN environmental_features env ON env.property_id = p.id
+
+      LEFT JOIN property_photos pp ON pp.property_id = p.id
+
+      LEFT JOIN property_transportation_features ptf ON ptf.property_id = p.id
+      LEFT JOIN property_view_features pvf ON pvf.property_id = p.id
+      LEFT JOIN property_exterior_features pef ON pef.property_id = p.id
+      LEFT JOIN property_environmental_features penv ON penv.property_id = p.id
+      LEFT JOIN property_accessibility_features pacc ON pacc.property_id = p.id
 
       ${whereSQL}
+      GROUP BY p.id
       ORDER BY p.created_at DESC
+      LIMIT 300
     `;
 
-    const { rows } = await db.query(query, values);
+    const [rows] = await db.query(sql, values);
     res.json(rows);
-
   } catch (err) {
-    console.error(err);
+    console.error("❌ Filtreleme hatası:", err);
     res.status(500).json({ error: "Filtreleme hatası" });
   }
 });
 
-/* ================= SERVER ================= */
+app.get("/health", (req, res) => res.json({ ok: true }));
 
-app.listen(3000, () => {
-  console.log("🚀 Server çalışıyor: http://localhost:3000");
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🚀 Server: http://localhost:${PORT}`));

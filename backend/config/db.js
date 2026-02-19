@@ -1,5 +1,5 @@
-const mysql = require("mysql2");
-require('dotenv').config();
+const mysql = require("mysql2/promise");
+require("dotenv").config();
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
@@ -8,17 +8,21 @@ const pool = mysql.createPool({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   waitForConnections: true,
-  connectionLimit: 10,   // havuzda max bağlantı
-  queueLimit: 0
+  connectionLimit: 10,
+  queueLimit: 0,
+  charset: "utf8mb4"
 });
 
-pool.getConnection((err, connection) => {
-  if (err) {
+// bağlantı test
+(async () => {
+  try {
+    const conn = await pool.getConnection();
+    console.log("✅ MySQL Pool bağlantısı başarılı");
+    conn.release();
+  } catch (err) {
     console.error("❌ MySQL bağlantı hatası:", err);
     process.exit(1);
   }
-  if (connection) connection.release();
-  console.log("✅ MySQL Pool bağlantısı başarılı");
-});
+})();
 
 module.exports = pool;

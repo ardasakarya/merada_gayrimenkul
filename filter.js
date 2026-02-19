@@ -1,128 +1,234 @@
-// === BU DOSYADA SADECE FONKSİYON TANIMI VAR ===
-// === DOM'A ERİŞİM initFilter İÇİNDE ===
+const API_BASE = "http://localhost:3000";
+const el = (id) => document.getElementById(id);
 
-function initFilter() {
-  console.log("✅ initFilter çalıştı");
+function togglePanel(forceOpen) {
+  const panel = el("filterPanel");
+  const btn = el("filterToggle");
+  const iconFilter = el("iconFilter");
+  const iconClose = el("iconClose");
+  if (!panel || !btn) return;
 
-  const panel = document.getElementById("filterPanel");
-  const toggleBtn = document.getElementById("filterToggle");
+  const isOpen = typeof forceOpen === "boolean" ? forceOpen : btn.dataset.open !== "true";
 
-  const iconFilter = document.getElementById("iconFilter");
-  const iconClose = document.getElementById("iconClose");
+  if (isOpen) {
+    panel.classList.remove("-translate-x-full");
+    iconFilter?.classList.add("hidden");
+    iconClose?.classList.remove("hidden");
+    btn.dataset.open = "true";
+  } else {
+    panel.classList.add("-translate-x-full");
+    iconClose?.classList.add("hidden");
+    iconFilter?.classList.remove("hidden");
+    btn.dataset.open = "false";
+  }
+}
 
-  if (!panel || !toggleBtn) {
-    console.warn("❌ Filter elemanları bulunamadı");
+function toggleAdvanced() {
+  el("advancedFilters")?.classList.toggle("hidden");
+}
+
+function cleanStr(v) {
+  if (v === undefined || v === null) return null;
+  const s = String(v).trim();
+  return s ? s : null;
+}
+function cleanNum(v) {
+  if (v === undefined || v === null || v === "") return null;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+
+function collectFeatureGroups() {
+  const groups = { transport: [], view: [], exterior: [], env: [], access: [], interior: [], facade: [], housing: [] };
+
+  document.querySelectorAll('input[type="checkbox"][data-group][data-key]').forEach((cb) => {
+    if (!cb.checked) return;
+    const g = cb.getAttribute("data-group");
+    const k = cb.getAttribute("data-key");
+    if (groups[g]) groups[g].push(k);
+  });
+
+  return groups;
+}
+
+function getFilters() {
+  const groups = collectFeatureGroups();
+
+  return {
+    city: cleanStr(el("city")?.value) || "Mersin",
+    district: cleanStr(el("district")?.value),
+
+  
+    rooms: cleanStr(el("rooms")?.value),
+   
+
+    price_min: cleanNum(el("price_min")?.value),
+    price_max: cleanNum(el("price_max")?.value),
+
+    listing_date: cleanStr(el("listing_date")?.value),
+
+    gross_sqm_min: cleanNum(el("gross_sqm_min")?.value),
+    net_sqm_min: cleanNum(el("net_sqm_min")?.value),
+
+    building_age_max: cleanNum(el("building_age_max")?.value),
+    floors: cleanNum(el("floors")?.value),
+    floor_location: cleanStr(el("floor_location")?.value),
+
+    heating_type: cleanStr(el("heating_type")?.value),
+
+    loan_status: el("loan_status")?.checked ? 1 : null,
+    exchange_status: el("exchange_status")?.checked ? 1 : null,
+    balcony: el("balcony")?.checked ? 1 : null,
+    furnished: el("furnished")?.checked ? 1 : null,
+
+    features: groups
+  };
+}
+
+function resetUI() {
+  const setVal = (id, v = "") => { if (el(id)) el(id).value = v; };
+  const setChk = (id, v = false) => { if (el(id)) el(id).checked = v; };
+
+  setVal("district");
+
+  setVal("rooms");
+
+  setVal("price_min");
+  setVal("price_max");
+
+  setVal("listing_date");
+  setVal("gross_sqm_min");
+  setVal("net_sqm_min");
+
+  setVal("building_age_max");
+  setVal("floors");
+  setVal("floor_location");
+
+  setVal("heating_type");
+
+  ["loan_status","exchange_status","balcony","furnished"].forEach(id => setChk(id,false));
+
+  document.querySelectorAll('input[type="checkbox"][data-group][data-key]').forEach(cb => cb.checked = false);
+}
+
+function escapeHtml(s) {
+  return String(s ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function formatPrice(price, currency = "₺") {
+  const n = Number(price);
+  if (!Number.isFinite(n)) return "";
+  return currency + n.toLocaleString("tr-TR");
+}
+
+/**
+ * Eğer sayfanda zaten renderProperties() varsa onu kullanır.
+ * Yoksa bu script kendi kartlarını basar.
+ */
+function fallbackRender(list) {
+  const grid = el("grid");
+  if (!grid) return;
+
+  grid.innerHTML = "";
+
+  if (!Array.isArray(list) || list.length === 0) {
+    grid.innerHTML = `<div class="col-span-full bg-white border rounded-2xl p-6 text-center text-gray-600">Sonuç bulunamadı.</div>`;
     return;
   }
 
-  toggleBtn.dataset.open = "false";
+  for (const p of list) {
+    const title = escapeHtml(p.title || "İlan");
+    const city = escapeHtml(p.city || "");
+    const district = escapeHtml(p.district || "");
+    const rooms = escapeHtml(p.rooms || "");
+    
+    const img = p.cover_photo ? escapeHtml(p.cover_photo) : "";
 
-  toggleBtn.addEventListener("click", () => {
-    const isOpen = toggleBtn.dataset.open === "true";
+    grid.insertAdjacentHTML("beforeend", `
+      <div class="bg-white border rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition">
+        ${img ? `<img src="${img}" class="w-full h-44 object-cover">` : `<div class="w-full h-44 bg-gray-100"></div>`}
+        <div class="p-5 space-y-2">
+          <div class="flex items-center justify-between">
+           
+            <span class="text-xs text-gray-500 font-semibold">${rooms}</span>
+          </div>
+          <h3 class="text-lg font-extrabold text-gray-900">${title}</h3>
+          <div class="text-sm text-gray-600">${district ? district + " / " : ""}${city}</div>
+          <div class="pt-2 text-xl font-black text-gray-900">${formatPrice(p.price, p.currency || "₺")}</div>
+          <p class="text-sm text-gray-600 line-clamp-2">${escapeHtml(p.description || "")}</p>
+        </div>
+      </div>
+    `);
+  }
+}
 
-    if (!isOpen) {
-      // PANEL AÇ
-      panel.classList.remove("-translate-x-full");
+async function applyFilters() {
+  const payload = getFilters();
 
-      iconFilter?.classList.add("hidden");
-      iconClose?.classList.remove("hidden");
+  try {
+    const res = await fetch(`${API_BASE}/api/properties/filter`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
 
-      toggleBtn.dataset.open = "true";
+    const data = await res.json();
+    if (!res.ok) {
+      console.error("❌ Backend error:", data);
+      return;
+    }
+
+    // Eğer senin sayfanda renderProperties fonksiyonu varsa onu kullan
+    if (typeof window.renderProperties === "function") {
+      window.renderProperties(data);
     } else {
-      // PANEL KAPA
-      panel.classList.add("-translate-x-full");
-
-      iconClose?.classList.add("hidden");
-      iconFilter?.classList.remove("hidden");
-
-      toggleBtn.dataset.open = "false";
-    }
-  });
-}
-
-/* ================= ADVANCED ================= */
-
-function toggleAdvanced() {
-  const advancedFilters = document.getElementById("advancedFilters");
-  advancedFilters?.classList.toggle("hidden");
-}
-
-/* ================= APPLY FILTERS ================= */
-
-function applyFilters() {
-  const filters = {
-    city: "Mersin",
-    district: document.getElementById("district")?.value || null,
-
-    usage_status: document.getElementById("usage_status")?.value || null,
-    rooms: document.getElementById("rooms")?.value || null,
-    price_min: document.getElementById("price_min")?.value || null,
-    price_max: document.getElementById("price_max")?.value || null,
-
-    listing_date: document.getElementById("listing_date")?.value || null,
-    category: document.getElementById("category")?.value || null,
-
-    gross_sqm: document.getElementById("gross_sqm")?.value || null,
-    net_sqm: document.getElementById("net_sqm")?.value || null,
-
-    building_age: document.getElementById("building_age")?.value || null,
-    floors: document.getElementById("floors")?.value || null,
-    floor_location: document.getElementById("floor_location")?.value || null,
-
-    heating_type: document.getElementById("heating_type")?.value || null,
-    facade: document.getElementById("facade")?.value || null,
-
-    central_air: document.getElementById("central_air")?.checked ? 1 : null,
-    fireplace: document.getElementById("fireplace")?.checked ? 1 : null,
-    smart_home_features: document.getElementById("smart_home")?.checked ? 1 : null,
-    walk_in_closet: document.getElementById("walk_in_closet")?.checked ? 1 : null,
-    ensuite_bathroom: document.getElementById("ensuite")?.checked ? 1 : null,
-    modern_kitchen: document.getElementById("modern_kitchen")?.checked ? 1 : null,
-
-    parking: document.getElementById("parking")?.checked ? 1 : null,
-    garage: document.getElementById("garage")?.checked ? 1 : null,
-    garden: document.getElementById("garden")?.checked ? 1 : null,
-    terrace: document.getElementById("terrace")?.checked ? 1 : null,
-    swimming_pool: document.getElementById("swimming_pool")?.checked ? 1 : null,
-    playground: document.getElementById("playground")?.checked ? 1 : null,
-
-    sea_view: document.getElementById("sea_view")?.checked ? 1 : null,
-    mountain_view: document.getElementById("mountain_view")?.checked ? 1 : null,
-    park_nearby: document.getElementById("park_nearby")?.checked ? 1 : null,
-    near_school: document.getElementById("near_school")?.checked ? 1 : null,
-    near_hospital: document.getElementById("near_hospital")?.checked ? 1 : null,
-    near_market: document.getElementById("near_market")?.checked ? 1 : null,
-    near_transport: document.getElementById("near_transport")?.checked ? 1 : null,
-
-    loan_status: document.getElementById("loan_status")?.checked ? 1 : null,
-    exchange_status: document.getElementById("exchange_status")?.checked ? 1 : null
-  };
-
-  console.log("📦 Uygulanan Filtreler:", filters);
-fetch("http://localhost:3000/api/properties/filter", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(filters)
-})
-  .then(res => res.json())
-  .then(data => {
-    console.log("✅ Gelen ilanlar:", data);
-
-    if (data.error) {
-      console.error("❌ Backend error:", data.error);
-      return;
+      fallbackRender(data);
     }
 
-    if (typeof renderProperties !== "function") {
-      console.error("❌ renderProperties tanımlı değil");
-      return;
-    }
-
-    renderProperties(data);
-  })
-  .catch(err => {
+    togglePanel(false);
+  } catch (err) {
     console.error("🔥 Fetch hatası:", err);
-  });
-
-
+  }
 }
+
+function wireEvents() {
+  // Bu elementler bazı sayfalarda yoksa hata vermesin diye ?.
+  el("filterToggle")?.addEventListener("click", () => togglePanel());
+  el("closePanelBtn")?.addEventListener("click", () => togglePanel(false));
+  el("toggleAdvancedBtn")?.addEventListener("click", toggleAdvanced);
+
+  el("applyBtn")?.addEventListener("click", applyFilters);
+  el("resetBtn")?.addEventListener("click", () => {
+    resetUI();
+  });
+}
+
+/**
+ * ✅ emlak_urunler.js bunu bekliyor.
+ * Global’e yazıyoruz.
+ */
+function initFilter() {
+  // panel/btn yoksa sayfada filtre yoktur, sessizce çık
+  if (!el("filterPanel") || !el("filterToggle")) return;
+
+  wireEvents();
+
+  // Sayfa ilk açıldığında ilanları getir
+  applyFilters();
+}
+
+// global yap
+window.initFilter = initFilter;
+
+// Eğer başka bir dosya çağırmazsa bile otomatik çalışsın:
+document.addEventListener("DOMContentLoaded", () => {
+  // sayfada filtre HTML'i varsa otomatik init
+  if (el("filterPanel") && el("filterToggle")) {
+    initFilter();
+  }
+});
