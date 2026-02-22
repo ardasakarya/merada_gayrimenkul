@@ -51,38 +51,7 @@
 
 <body class="bg-white">
     <!-- header Section -->
-<header class="fixed top-0 left-0 right-0 z-50 bg-footerBg shadow-sm">
-  <nav class="w-full border-b border-brandYellow bg-footerBg shadow-sm">
-    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-      <!-- Logo (solda) -->
-      <div class="flex justify-center sm:justify-start">
-        <a href="/merada_gayrimenkul">
-          <img src="img/lsogo-Photoroom.png" alt="Logo" class="h-8 sm:h-12 w-auto glow-img">
-        </a>
-      </div>
-
-      <!-- Menü (ortada) -->
-      <div class="hidden md:flex absolute right-6 top-1/2 transform -translate-y-1/2 space-x-6">
-        <a href="index.html" class="text-footerTitle hover:brandYellow transition navlink-hover">Home</a>
-        <a href="about_us.html" class="text-footerTitle hover:brandYellow transition navlink-hover">About</a>
-        <a href="contact.html" class="text-footerTitle hover:brandYellow transition navlink-hover">Contact</a>
-      </div>
-
-      <!-- Hamburger Menü Butonu -->
-      <button id="menuToggle" class="md:hidden text-2xl text-footerTitle">
-        <i class="ri-menu-line"></i>
-      </button>
-    </div>
-
-    <!-- Mobil Menü -->
-    <div id="mobileMenu" class="md:hidden px-4 pb-4 space-y-2 hidden">
-      <a href="index.html" class="block text-footerTitle hover:brandYellow transition">Home</a>
-      <a href="about_us.html" class="block text-footerTitle hover:brandYellow transition">About</a>
-      <a href="contact.html" class="block text-footerTitle hover:brandYellow transition">Contact</a>
-    </div>
-  </nav>
-</header>
-
+<div id="header"></div>
 
 
 
@@ -104,7 +73,7 @@
 
 
             <p class="text-xl md:text-2xl mb-12 font-light opacity-90 text-white glow">
-                Discover Your Perfect Space in Premium Locations
+                Seçkin Lokasyonlarda Mükemmel Mekanınızı Keşfedin
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center px-4 max-w-xl w-full mx-auto">
                 <a href="emlak_urunler.html" class="w-full sm:w-1/2">
@@ -179,93 +148,12 @@
 
 
 
-
-
-
-
-
     </section>
 
 
-    <!-- FOOTER SECTION -->
-<footer class="bg-footerBg text-footerTitle py-16">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-      <div class="text-center sm:text-left">
-        <img src="img/lsogo-Photoroom.png" alt="Logo" class="h-12 w-auto glow-img mb-4 mx-auto sm:mx-0">
-        <p class="brandYellow mb-6 leading-relaxed">
-          Your premier destination for luxury real estate solutions. Connecting dreams with reality
-          through exceptional properties.
-        </p>
-        <div class="flex justify-center sm:justify-start space-x-4">
-          <a href="#"
-            class="w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md bg-white/20 border border-white/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors">
-            <i class="ri-facebook-fill"></i>
-          </a>
-          <a href="#"
-            class="w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md bg-white/20 border border-white/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors">
-            <i class="ri-twitter-fill"></i>
-          </a>
-          <a href="#"
-            class="w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md bg-white/20 border border-white/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors">
-            <i class="ri-instagram-fill"></i>
-          </a>
-          <a href="#"
-            class="w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md bg-white/20 border border-white/30 hover:bg-[#ffd100] hover:border-[#ffd100] hover:text-white transition-colors">
-            <i class="ri-linkedin-fill"></i>
-          </a>
-        </div>
-      </div>
 
-      <div class="text-center sm:text-left">
-        <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-        <ul class="space-y-2">
-          <li><a href="index.html" class="brandYellow hover:text-[#f58549] transition-colors">Home</a></li>
-          <li><a href="about_us.html" class="brandYellow hover:text-[#f58549] transition-colors">About Us</a></li>
-          <li><a href="contact.html" class="brandYellow hover:text-[#f58549] transition-colors">Contact</a></li>
-        </ul>
-      </div>
 
-      <div class="text-center sm:text-left">
-        <h4 class="text-lg font-semibold mb-4">Services</h4>
-        <ul class="space-y-2">
-          <li><a href="emlak_urunler.html" class="brandYellow hover:text-[#f58549] transition-colors">Merada Gayrimenkul</a></li>
-          <li><a href="yonetim_hizmetleri.html" class="brandYellow hover:text-[#f58549] transition-colors">Merada Yönetim</a></li>
-
-        </ul>
-      </div>
-      <div class="text-center sm:text-left">
-        <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
-        <div class="space-y-3">
-          <div class="flex flex-col sm:flex-row items-center sm:items-start justify-center sm:justify-start space-y-1 sm:space-y-0 sm:space-x-3">
-            <div class="w-5 h-5 flex items-center justify-center mt-1">
-              <i class="ri-map-pin-line text-[#ffd100]"></i>
-            </div>
-            <p class="brandYellow">123 Premium Boulevard, Downtown District, NY 10001</p>
-          </div>
-          <div class="flex flex-col sm:flex-row items-center sm:items-center justify-center sm:justify-start space-y-1 sm:space-y-0 sm:space-x-3">
-            <div class="w-5 h-5 flex items-center justify-center">
-              <i class="ri-phone-line text-[#ffd100]"></i>
-            </div>
-            <p class="brandYellow">+1 (555) 123-4567</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="border-t border-brandYellow pt-8">
-      <div class="flex flex-col md:flex-row justify-center md:justify-between items-center">
-        <p class="brandYellow mb-4 md:mb-0 text-center md:text-left">© 2024 Prime Properties. All rights reserved.</p>
-        <div class="flex flex-wrap justify-center md:justify-start space-x-6">
-          <a href="#" class="brandYellow hover:text-[#ffd100] transition-colors">Privacy Policy</a>
-          <a href="#" class="brandYellow hover:text-[#ffd100] transition-colors">Terms of Service</a>
-          <a href="#" class="brandYellow hover:text-[#ffd100] transition-colors">Cookie Policy</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
-
+<div id="footer"></div>
 
     <script src="script.js"></script>
 </body>

@@ -49,18 +49,7 @@
 
 <body class="bg-gray-50">
 
-    <header class="fixed top-0 left-0 right-0 z-50 pt-0 shadow-sm">
-        <nav class="w-full border-b border-brandYellow bg-footerBg shadow-sm">
-            <div class="container mx-auto px-4 py-4 flex items-center justify-center">
-                <!-- Logo (her ekranda ortalı) -->
-                <div class="flex justify-center">
-                    <a href="/merada_gayrimenkul">
-                        <img src="img/merada_no_frame.png" alt="Logo" class="h-8 sm:h-12 w-auto glow-img">
-                    </a>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <div id="header"></div>
 
     <div class="max-w-7xl mx-auto px-4 py-20">
         <!-- Başlık -->
@@ -152,7 +141,8 @@
             <div class="bg-white p-8 rounded-lg shadow-xl h-fit max-w-screen-xl w-full mx-auto">
                 <div class="text-center mb-6">
                     <div class="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full bg-gray-100">
-                        <img id="agent_photo" src="/backend/img/merada_zemin_siyah_logo.png" class="w-full h-full object-cover" alt="Emlak Danışmanı">
+                        <img id="agent_photo" src="/backend/img/merada_zemin_siyah_logo.png"
+                            class="w-full h-full object-cover" alt="Emlak Danışmanı">
                     </div>
 
                     <h3 id="agent_name" class="text-xl font-semibold mb-1">Merada Gayrimenkul</h3>
@@ -242,13 +232,13 @@
                         <span class="text-gray-600">Banyo Sayısı</span>
                         <span id="bathrooms" class="font-medium">4</span>
                     </div>
-                  
-                  
+
+
                 </div>
             </div>
         </div>
 
-                   <!-- İç Özellikleri -->
+        <!-- İç Özellikleri -->
 
         <div class="space-y-8">
             <div class="bg-white rounded-lg shadow-xl p-10">
@@ -258,198 +248,244 @@
                         İç Özellikler
                     </h2>
                 </div>
-               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-  <div class="flex items-center gap-3"><i class="ri-home-wifi-line text-brandYellow"></i><span id="wifi">Wi-Fi</span></div>
-  <div class="flex items-center gap-3"><i class="ri-router-line text-brandYellow"></i><span id="adsl">ADSL</span></div>
-  <div class="flex items-center gap-3"><i class="ri-router-line text-brandYellow"></i><span id="fiber">Fiber İnternet</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-home-wifi-line text-brandYellow"></i><span
+                            id="wifi">Wi-Fi</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-router-line text-brandYellow"></i><span
+                            id="adsl">ADSL</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-router-line text-brandYellow"></i><span
+                            id="fiber">Fiber İnternet</span></div>
 
-  <div class="flex items-center gap-3"><i class="ri-smartphone-line text-brandYellow"></i><span id="smart_home">Akıllı Ev</span></div>
-  <div class="flex items-center gap-3"><i class="ri-alert-line text-brandYellow"></i><span id="alarm_burglar">Hırsız Alarmı</span></div>
-  <div class="flex items-center gap-3"><i class="ri-fire-line text-brandYellow"></i><span id="alarm_fire">Yangın Alarmı</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-smartphone-line text-brandYellow"></i><span
+                            id="smart_home">Akıllı Ev</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-alert-line text-brandYellow"></i><span
+                            id="alarm_burglar">Hırsız Alarmı</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-fire-line text-brandYellow"></i><span
+                            id="alarm_fire">Yangın Alarmı</span></div>
 
-  <div class="flex items-center gap-3"><i class="ri-door-line text-brandYellow"></i><span id="steel_door">Çelik Kapı</span></div>
-  <div class="flex items-center gap-3"><i class="ri-open-arm-line text-brandYellow"></i><span id="american_door">Amerikan Kapı</span></div>
-  <div class="flex items-center gap-3"><i class="ri-door-open-line text-brandYellow"></i><span id="wood_joinery">Ahşap Doğrama</span></div>
-  <div class="flex items-center gap-3"><i class="ri-door-open-line text-brandYellow"></i><span id="aluminum_joinery">Alüminyum Doğrama</span></div>
-  <div class="flex items-center gap-3"><i class="ri-door-open-line text-brandYellow"></i><span id="pvc_joinery">PVC Doğrama</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-door-line text-brandYellow"></i><span
+                            id="steel_door">Çelik Kapı</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-open-arm-line text-brandYellow"></i><span
+                            id="american_door">Amerikan Kapı</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-door-open-line text-brandYellow"></i><span
+                            id="wood_joinery">Ahşap Doğrama</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-door-open-line text-brandYellow"></i><span
+                            id="aluminum_joinery">Alüminyum Doğrama</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-door-open-line text-brandYellow"></i><span
+                            id="pvc_joinery">PVC Doğrama</span></div>
 
-  <div class="flex items-center gap-3"><i class="ri-layout-line text-brandYellow"></i><span id="parquet">Parke Zemin</span></div>
-  <div class="flex items-center gap-3"><i class="ri-layout-2-line text-brandYellow"></i><span id="laminate_floor">Laminat Zemin</span></div>
-  <div class="flex items-center gap-3"><i class="ri-layout-3-line text-brandYellow"></i><span id="ceramic_floor">Seramik Zemin</span></div>
-  <div class="flex items-center gap-3"><i class="ri-layout-masonry-line text-brandYellow"></i><span id="marley">Marley</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-layout-line text-brandYellow"></i><span
+                            id="parquet">Parke Zemin</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-layout-2-line text-brandYellow"></i><span
+                            id="laminate_floor">Laminat Zemin</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-layout-3-line text-brandYellow"></i><span
+                            id="ceramic_floor">Seramik Zemin</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-layout-masonry-line text-brandYellow"></i><span
+                            id="marley">Marley</span></div>
 
-  <div class="flex items-center gap-3"><i class="ri-brush-line text-brandYellow"></i><span id="painted">Boyalı</span></div>
-  <div class="flex items-center gap-3"><i class="ri-palette-line text-brandYellow"></i><span id="wallpaper">Duvar Kağıdı</span></div>
-  <div class="flex items-center gap-3"><i class="ri-shape-line text-brandYellow"></i><span id="cornice">Kartonpiyer</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-brush-line text-brandYellow"></i><span
+                            id="painted">Boyalı</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-palette-line text-brandYellow"></i><span
+                            id="wallpaper">Duvar Kağıdı</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-shape-line text-brandYellow"></i><span
+                            id="cornice">Kartonpiyer</span></div>
 
-  <div class="flex items-center gap-3"><i class="ri-restaurant-line text-brandYellow"></i><span id="built_in_kitchen">Ankastre Mutfak</span></div>
-  <div class="flex items-center gap-3"><i class="ri-apps-line text-brandYellow"></i><span id="laminate_kitchen">Laminat Mutfak</span></div>
-  <div class="flex items-center gap-3"><i class="ri-fire-line text-brandYellow"></i><span id="set_top_stove">Set Üstü Ocak</span></div>
-  <div class="flex items-center gap-3"><i class="ri-restaurant-2-line text-brandYellow"></i><span id="built_in_oven">Ankastre Fırın</span></div>
-  <div class="flex items-center gap-3"><i class="ri-gas-station-line text-brandYellow"></i><span id="natural_gas_kitchen">Mutfak Doğalgazı</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-restaurant-line text-brandYellow"></i><span
+                            id="built_in_kitchen">Ankastre Mutfak</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-apps-line text-brandYellow"></i><span
+                            id="laminate_kitchen">Laminat Mutfak</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-fire-line text-brandYellow"></i><span
+                            id="set_top_stove">Set Üstü Ocak</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-restaurant-2-line text-brandYellow"></i><span
+                            id="built_in_oven">Ankastre Fırın</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-gas-station-line text-brandYellow"></i><span
+                            id="natural_gas_kitchen">Mutfak Doğalgazı</span></div>
 
-  <div class="flex items-center gap-3"><i class="ri-wash-machine-line text-brandYellow"></i><span id="washing_machine">Çamaşır Makinesi</span></div>
-  <div class="flex items-center gap-3"><i class="ri-wash-machine-line text-brandYellow"></i><span id="dryer">Kurutma Makinesi</span></div>
-  <div class="flex items-center gap-3"><i class="ri-dishwasher-line text-brandYellow"></i><span id="dishwasher">Bulaşık Makinesi</span></div>
-  <div class="flex items-center gap-3"><i class="ri-fridge-line text-brandYellow"></i><span id="refrigerator">Buzdolabı</span></div>
-  <div class="flex items-center gap-3"><i class="ri-home-4-line text-brandYellow"></i><span id="white_goods">Beyaz Eşya</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-wash-machine-line text-brandYellow"></i><span
+                            id="washing_machine">Çamaşır Makinesi</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-wash-machine-line text-brandYellow"></i><span
+                            id="dryer">Kurutma Makinesi</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-dishwasher-line text-brandYellow"></i><span
+                            id="dishwasher">Bulaşık Makinesi</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-fridge-line text-brandYellow"></i><span
+                            id="refrigerator">Buzdolabı</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-home-4-line text-brandYellow"></i><span
+                            id="white_goods">Beyaz Eşya</span></div>
 
-  <div class="flex items-center gap-3"><i class="ri-bath-line text-brandYellow"></i><span id="shower_cabin">Duşakabin</span></div>
-  <div class="flex items-center gap-3"><i class="ri-bath-line text-brandYellow"></i><span id="bathtub">Küvet</span></div>
-  <div class="flex items-center gap-3"><i class="ri-user-3-line text-brandYellow"></i><span id="turkish_wc">Alaturka WC</span></div>
-  <div class="flex items-center gap-3"><i class="ri-home-smile-line text-brandYellow"></i><span id="hilton_bathroom">Hilton Banyo</span></div>
-  <div class="flex items-center gap-3"><i class="ri-hotel-line text-brandYellow"></i><span id="ensuite_bathroom">Ebeveyn Banyosu</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-bath-line text-brandYellow"></i><span
+                            id="shower_cabin">Duşakabin</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-bath-line text-brandYellow"></i><span
+                            id="bathtub">Küvet</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-user-3-line text-brandYellow"></i><span
+                            id="turkish_wc">Alaturka WC</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-home-smile-line text-brandYellow"></i><span
+                            id="hilton_bathroom">Hilton Banyo</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-hotel-line text-brandYellow"></i><span
+                            id="ensuite_bathroom">Ebeveyn Banyosu</span></div>
 
-  <div class="flex items-center gap-3"><i class="ri-drop-line text-brandYellow"></i><span id="water_heater">Şofben</span></div>
-  <div class="flex items-center gap-3"><i class="ri-drop-line text-brandYellow"></i><span id="thermosiphon">Termosifon</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-drop-line text-brandYellow"></i><span
+                            id="water_heater">Şofben</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-drop-line text-brandYellow"></i><span
+                            id="thermosiphon">Termosifon</span></div>
 
-  <div class="flex items-center gap-3"><i class="ri-lightbulb-line text-brandYellow"></i><span id="spot_lighting">Spot Aydınlatma</span></div>
-  <div class="flex items-center gap-3"><i class="ri-snowy-line text-brandYellow"></i><span id="air_conditioning">Klima</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-lightbulb-line text-brandYellow"></i><span
+                            id="spot_lighting">Spot Aydınlatma</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-snowy-line text-brandYellow"></i><span
+                            id="air_conditioning">Klima</span></div>
 
-  <div class="flex items-center gap-3"><i class="ri-t-shirt-line text-brandYellow"></i><span id="dressing_room">Giyinme Odası</span></div>
-  <div class="flex items-center gap-3"><i class="ri-archive-line text-brandYellow"></i><span id="built_in_closet">Gömme Dolap</span></div>
-  <div class="flex items-center gap-3"><i class="ri-store-2-line text-brandYellow"></i><span id="pantry">Kiler</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-t-shirt-line text-brandYellow"></i><span
+                            id="dressing_room">Giyinme Odası</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-archive-line text-brandYellow"></i><span
+                            id="built_in_closet">Gömme Dolap</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-store-2-line text-brandYellow"></i><span
+                            id="pantry">Kiler</span></div>
 
-  <div class="flex items-center gap-3"><i class="ri-bubble-chart-line text-brandYellow"></i><span id="jacuzzi">Jakuzi</span></div>
-  <div class="flex items-center gap-3"><i class="ri-fireplace-line text-brandYellow"></i><span id="fireplace">Şömine</span></div>
-  <div class="flex items-center gap-3"><i class="ri-plant-line text-brandYellow"></i><span id="terrace">Teras</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-bubble-chart-line text-brandYellow"></i><span
+                            id="jacuzzi">Jakuzi</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-fireplace-line text-brandYellow"></i><span
+                            id="fireplace">Şömine</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-plant-line text-brandYellow"></i><span
+                            id="terrace">Teras</span></div>
 
-  <div class="flex items-center gap-3"><i class="ri-camera-lens-line text-brandYellow"></i><span id="video_intercom">Görüntülü Diyafon</span></div>
-  <div class="flex items-center gap-3"><i class="ri-phone-line text-brandYellow"></i><span id="intercom_system">Intercom Sistemi</span></div>
-  <div class="flex items-center gap-3"><i class="ri-safe-2-line text-brandYellow"></i><span id="biometric_system">Yüz Tanıma & Parmak İzi</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-camera-lens-line text-brandYellow"></i><span
+                            id="video_intercom">Görüntülü Diyafon</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-phone-line text-brandYellow"></i><span
+                            id="intercom_system">Intercom Sistemi</span></div>
+                    <div class="flex items-center gap-3"><i class="ri-safe-2-line text-brandYellow"></i><span
+                            id="biometric_system">Yüz Tanıma & Parmak İzi</span></div>
 
-</div>
+                </div>
 
             </div>
 
             <!-- Dış Özellikler -->
-        <div class="bg-white rounded-lg shadow-xl p-8">
-  <div class="text-center">
-    <h2
-      class="text-xl font-semibold inline-block relative after:content-[''] after:block after:mx-auto after:mt-1 after:mb-8 after:w-48 after:h-[2px] after:bg-brandYellow after:rounded-full">
-      Dış Özellikler
-    </h2>
-  </div>
+            <div class="bg-white rounded-lg shadow-xl p-8">
+                <div class="text-center">
+                    <h2
+                        class="text-xl font-semibold inline-block relative after:content-[''] after:block after:mx-auto after:mt-1 after:mb-8 after:w-48 after:h-[2px] after:bg-brandYellow after:rounded-full">
+                        Dış Özellikler
+                    </h2>
+                </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div class="flex items-center gap-3">
-      <i class="ri-flashlight-line text-brandYellow"></i>
-      <span id="ev_charging_station">EV Şarj</span>
-    </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="flex items-center gap-3">
+                        <i class="ri-flashlight-line text-brandYellow"></i>
+                        <span id="ev_charging_station">EV Şarj</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-shield-check-line text-brandYellow"></i>
-      <span id="security_24h">Güvenlik</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-shield-check-line text-brandYellow"></i>
+                        <span id="security_24h">Güvenlik</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-user-star-line text-brandYellow"></i>
-      <span id="janitor">Apartman Görevlisi</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-user-star-line text-brandYellow"></i>
+                        <span id="janitor">Apartman Görevlisi</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-steam-line text-brandYellow"></i>
-      <span id="steam_room">Buhar Odası</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-steam-line text-brandYellow"></i>
+                        <span id="steam_room">Buhar Odası</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-football-line text-brandYellow"></i>
-      <span id="playground">Çocuk Oyun Parkı</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-football-line text-brandYellow"></i>
+                        <span id="playground">Çocuk Oyun Parkı</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-building-2-line text-brandYellow"></i>
-      <span id="hammam">Hamam</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-building-2-line text-brandYellow"></i>
+                        <span id="hammam">Hamam</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-water-flash-line text-brandYellow"></i>
-      <span id="hydrofor">Hidrofor</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-water-flash-line text-brandYellow"></i>
+                        <span id="hydrofor">Hidrofor</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-home-gear-line text-brandYellow"></i>
-      <span id="thermal_insulation">Isı Yalıtımı</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-home-gear-line text-brandYellow"></i>
+                        <span id="thermal_insulation">Isı Yalıtımı</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-battery-2-line text-brandYellow"></i>
-      <span id="generator">Jeneratör</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-battery-2-line text-brandYellow"></i>
+                        <span id="generator">Jeneratör</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-tv-2-line text-brandYellow"></i>
-      <span id="cable_tv">Kablo TV</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-tv-2-line text-brandYellow"></i>
+                        <span id="cable_tv">Kablo TV</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-cctv-line text-brandYellow"></i>
-      <span id="camera_system">Kamera Sistemi</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-cctv-line text-brandYellow"></i>
+                        <span id="camera_system">Kamera Sistemi</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-parent-line text-brandYellow"></i>
-      <span id="nursery">Kreş</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-parent-line text-brandYellow"></i>
+                        <span id="nursery">Kreş</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-swimming-line text-brandYellow"></i>
-      <span id="open_pool">Açık Havuz</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-swimming-line text-brandYellow"></i>
+                        <span id="open_pool">Açık Havuz</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-swimming-line text-brandYellow"></i>
-      <span id="indoor_pool">Kapalı Havuz</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-swimming-line text-brandYellow"></i>
+                        <span id="indoor_pool">Kapalı Havuz</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-swimming-line text-brandYellow"></i>
-      <span id="private_pool">Özel Havuz</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-swimming-line text-brandYellow"></i>
+                        <span id="private_pool">Özel Havuz</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-seedling-line text-brandYellow"></i>
-      <span id="sauna">Sauna</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-seedling-line text-brandYellow"></i>
+                        <span id="sauna">Sauna</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-volume-mute-line text-brandYellow"></i>
-      <span id="sound_insulation">Ses Yalıtımı</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-volume-mute-line text-brandYellow"></i>
+                        <span id="sound_insulation">Ses Yalıtımı</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-home-5-line text-brandYellow"></i>
-      <span id="siding">Dış Cephe Kaplama</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-home-5-line text-brandYellow"></i>
+                        <span id="siding">Dış Cephe Kaplama</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-basketball-line text-brandYellow"></i>
-      <span id="sports_area">Spor Alanı</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-basketball-line text-brandYellow"></i>
+                        <span id="sports_area">Spor Alanı</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-drop-line text-brandYellow"></i>
-      <span id="water_tank">Su Deposu</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-drop-line text-brandYellow"></i>
+                        <span id="water_tank">Su Deposu</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-tennis-line text-brandYellow"></i>
-      <span id="tennis_court">Tenis Kortu</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-tennis-line text-brandYellow"></i>
+                        <span id="tennis_court">Tenis Kortu</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-satellite-line text-brandYellow"></i>
-      <span id="satellite">Uydu</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-satellite-line text-brandYellow"></i>
+                        <span id="satellite">Uydu</span>
+                    </div>
 
-    <div class="flex items-center gap-3">
-      <i class="ri-fire-line text-brandYellow"></i>
-      <span id="fire_escape">Yangın Merdiveni</span>
-    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ri-fire-line text-brandYellow"></i>
+                        <span id="fire_escape">Yangın Merdiveni</span>
+                    </div>
 
-  </div>
-</div>
+                </div>
+            </div>
 
             <!-- Çevre Özellikler -->
             <div class="bg-white rounded-lg shadow-xl p-8">
@@ -556,13 +592,13 @@
                         <i class="ri-building-4-line text-brandYellow"></i>
                         <span id="university">Üniversite</span>
                     </div>
-                    
-                   
-                    
-                 
-                  
-                 
-                   
+
+
+
+
+
+
+
                 </div>
             </div>
 
@@ -761,7 +797,7 @@
                     </div>
                 </div>
             </div>
-            
+
 
             <!-- Cephe Özellikleri -->
             <div class="bg-white rounded-lg shadow-xl p-8">
@@ -814,28 +850,9 @@
 
 
 
-                                <i class="ri-phone-line text-[#ffd100]"></i>
-                            </div>
-                            <p class="brandYellow">+1 (555) 123-4567</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="border-t border-brandYellow pt-8">
-                <div class="flex flex-col md:flex-row justify-center md:justify-between items-center">
-                    <p class="brandYellow mb-4 md:mb-0 text-center md:text-left">© 2024 Prime Properties. All rights
-                        reserved.</p>
-                    <div class="flex flex-wrap justify-center md:justify-start space-x-6">
-                        <a href="#" class="brandYellow hover:text-[#ffd100] transition-colors">Privacy Policy</a>
-                        <a href="#" class="brandYellow hover:text-[#ffd100] transition-colors">Terms of Service</a>
-                        <a href="#" class="brandYellow hover:text-[#ffd100] transition-colors">Cookie Policy</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <div id="footer"></div>
 
     <script src="emlak_detay_script.js"></script>
 </body>
+
 </html>

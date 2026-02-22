@@ -1,40 +1,67 @@
+// HEADER YÜKLE
+function loadHeader() {
+  return fetch("/components/header/header.html")
+    .then(r => {
+      if (!r.ok) throw new Error("Header yüklenemedi: " + r.status);
+      return r.text();
+    })
+    .then(html => {
+      const container = document.getElementById("header");
+      if (!container) {
+        console.warn("#header elementi bulunamadı.");
+        return;
+      }
 
-   const menuToggle = document.getElementById("menuToggle");
+      container.innerHTML = html;
+
+      // Header HTML'i yerleştikten SONRA event bağla
+      initHeaderMenu();
+
+      document.dispatchEvent(new Event("headerLoaded"));
+    })
+    .catch(err => {
+      console.error("Header yüklenirken hata:", err);
+    });
+}
+
+function initHeaderMenu() {
+  const menuToggle = document.getElementById("menuToggle");
   const mobileMenu = document.getElementById("mobileMenu");
+
+  if (!menuToggle || !mobileMenu) {
+    console.warn("Hamburger menü elemanları bulunamadı.");
+    return;
+  }
 
   menuToggle.addEventListener("click", () => {
     mobileMenu.classList.toggle("hidden");
   });
-  document.addEventListener('DOMContentLoaded', function () {
-    // Masaüstü: Gayrimenkul Dropdown (üst menü)
-    const dropdownBtn = document.getElementById("mainDropdownBtn");
-    const dropdown = document.getElementById("mainDropdown");
-    const dropdownWrapper = document.getElementById("dropdownWrapper");
+}
 
-    if (dropdownBtn && dropdown && dropdownWrapper) {
-      dropdownBtn.addEventListener("click", () => {
-        dropdown.classList.toggle("hidden");
-      });
+// FOOTER YÜKLE (istersen footer component de aynı mantık)
+function loadFooter() {
+  return fetch("/components/footer/footer.html")
+    .then(r => {
+      if (!r.ok) throw new Error("Footer yüklenemedi: " + r.status);
+      return r.text();
+    })
+    .then(html => {
+      const container = document.getElementById("footer");
+      if (!container) {
+        console.warn("#footer elementi bulunamadı.");
+        return;
+      }
 
-      // Sayfa dışına tıklanınca dropdown kapansın
-      document.addEventListener("click", (e) => {
-        if (!dropdownWrapper.contains(e.target)) {
-          dropdown.classList.add("hidden");
-        }
-      });
-    }
+      container.innerHTML = html;
+      document.dispatchEvent(new Event("footerLoaded"));
+    })
+    .catch(err => {
+      console.error("Footer yüklenirken hata:", err);
+    });
+}
 
-    // Mobil Menü: Aç/Kapa
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    if (mobileMenuBtn && mobileMenu) {
-      mobileMenuBtn.addEventListener('click', function () {
-        mobileMenu.classList.toggle('hidden');
-      });
-    }
-
-  
-  });
-
-
+// SAYFA YÜKLENDİĞİNDE ÇALIŞTIR
+document.addEventListener("DOMContentLoaded", () => {
+  loadHeader();
+  loadFooter();
+});
