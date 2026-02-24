@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="https://static.readdy.ai/static/e.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Estate Admin Panel - Add Property</title>
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/urunEkle.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6',
+            secondary: '#64748b'
+          },
+          borderRadius: {
+            'none': '0px',
+            'sm': '4px',
+            DEFAULT: '8px',
+            'md': '12px',
+            'lg': '16px',
+            'xl': '20px',
+            '2xl': '24px',
+            '3xl': '32px',
+            'full': '9999px',
+            'button': '8px'
+          }
+        }
+      }
+    }
+  </script>
+
+</head>
+
+<body class="bg-gray-50 min-h-screen gradient-bg">
+
+
+  <div class="flex flex-col lg:flex-row">
+
+    <div class="lg:w-64 bg-white shadow-lg lg:min-h-screen">
+      <div class="p-6">
+        <div class="font-['Pacifico'] text-2xl text-primary mb-8">logo</div>
+        <nav class="space-y-2">
+          <a href="urunEkle.html" class="flex items-center px-4 py-3 text-gray-900 bg-blue-100 rounded-lg shadow-lg ">
+            <div class="w-5 h-5 flex items-center justify-center mr-3">
+              <i class="ri-home-4-line"></i>
+            </div>
+            Ürün Ekle
+          </a>
+          <a href="Urunler.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+            <div class="w-5 h-5 flex items-center justify-center mr-3">
+              <i class="ri-user-line"></i>
+            </div>
+            Ürünler
+          </a>
+          <a href="main.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+            <div class="w-5 h-5 flex items-center justify-center mr-3">
+              <i class="ri-file-list-line"></i>
+            </div>
+            Anasayfa
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 min-h-screen">
+      <!-- Header -->
+      <header class="bg-white shadow-sm border-b border-gray-200">
+        <div
+          class="px-4 lg:px-8 py-4 flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900">Add New Property</h1>
+            <p class="text-gray-600 mt-1">Create a new real estate listing</p>
+          </div>
+          <div class="flex items-center space-x-4">
+
+            <div class="flex items-center space-x-3">
+              <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                <i class="ri-user-line text-gray-600"></i>
+              </div>
+              <span class="text-gray-700">Admin User</span>
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- Content Area -->
+      <div class="p-4 lg:p-8">
+        <div class="max-w-6xl mx-auto space-y-6 lg:space-y-8">
+          <!-- Basic Information -->
+          <form id="propertyForm" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 w-full max-w-2xl">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Basic Information</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Property Title</label>
+                <input type="text" name="title" placeholder="Enter property title" required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Price</label>
+                <div class="flex">
+                  <select name="currency" class="px-4 py-3 border border-gray-300 rounded-l-lg bg-white text-sm pr-8">
+                    <option>₺</option>
+                  </select>
+                  <input type="text" id="price" name="price" placeholder="Enter price" required
+                    class="flex-1 px-4 py-3 border border-gray-300 border-l-0 rounded-r-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm" />
+
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+              <textarea name="description" rows="4" placeholder="Enter detailed property description..." required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm resize-none"></textarea>
+            </div>
+
+          </form>
+
+
+          <!-- Agent Information -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Danışman Bilgileri</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="agent_name">Ad Soyad</label>
+                <input id="agent_name" name="agent_name" type="text" placeholder="Örn: Onur Özdamar" required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="agent_phone">Telefon</label>
+                <input id="agent_phone" name="agent_phone" type="tel" placeholder="Örn: +90 530 123 45 67" required
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="agent_email">E-posta</label>
+                <input id="agent_email" name="agent_email" type="email" placeholder="Örn: info(@)meradagayrimenkul.com"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Photo Upload -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Property Photos</h2>
+
+            <!-- Upload Alanı -->
+            <label for="photoInput"
+              class="cursor-pointer border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-primary transition-colors block">
+              <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center">
+                <i class="ri-upload-cloud-line text-3xl text-gray-400"></i>
+              </div>
+              <p class="text-gray-600 mb-2">Drag and drop images here, or click to browse</p>
+              <p class="text-sm text-gray-500">Support JPG, PNG files up to 10MB</p>
+              <button type="button"
+                class="mt-4 px-6 py-2 bg-primary text-white rounded-button hover:bg-blue-600 whitespace-nowrap">
+                Choose Files
+              </button>
+              <input id="photoInput" type="file" multiple accept="image/*" class="hidden">
+            </label>
+
+            <!-- Önizleme Alanı -->
+            <div id="previewContainer" class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+          </div>
+
+
+          <!-- Location Details -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Location Details</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+              <!-- Sol taraf -->
+              <div class="grid grid-cols-1 gap-4">
+                <!-- İl -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">İl</label>
+                  <input type="text" id="city" value="Mersin" readonly
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-sm">
+                </div>
+
+                <!-- İlçe -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">İlçe</label>
+                  <select id="district" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                    <option value="">İlçe Seçin</option>
+                    <option>Akdeniz</option>
+                    <option>Mezitli</option>
+                    <option>Yenişehir</option>
+                  </select>
+                </div>
+
+                <!-- Mahalle -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Mahalle</label>
+                  <select id="neighborhood" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                    <option value="">Önce ilçe seçin</option>
+                  </select>
+                </div>
+
+                <!-- Sokak -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Sokak</label>
+                  <select id="street" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                    <option value="">Önce mahalle seçin</option>
+                  </select>
+                </div>
+
+                <!-- Açık adres -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Açık Adres</label>
+                  <input type="text" id="streetAddress" placeholder="Apartman, kapı no vb."
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                </div>
+
+                <!-- ZIP -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Posta Kodu</label>
+                  <input type="text" id="zipCode" placeholder="Posta kodu"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                </div>
+
+                <!-- Koordinatlar -->
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Latitude</label>
+                    <input type="text" id="latitude" placeholder="Enlem"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Longitude</label>
+                    <input type="text" id="longitude" placeholder="Boylam"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sağ taraf: Harita -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Harita Üzerinden Konum</label>
+                <div id="map" class="w-full h-80 rounded-lg overflow-hidden border"></div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+          <!-- Property Specifications -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">
+              Gayrimenkul Özellikleri
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+              <!-- İlan Tarihi -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="listingDate">
+                  İlan Tarihi
+                </label>
+                <input id="listingDate" name="listingDate" type="date" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm
+               focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none">
+              </div>
+
+              <!-- Brüt Metrekare -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="grossSqm">
+                  Brüt Metrekare
+                </label>
+                <input id="grossSqm" name="grossSqm" type="number" placeholder="Brüt alan girin" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm
+               focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none">
+              </div>
+
+              <!-- Net Metrekare -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="netSqm">
+                  Net Metrekare
+                </label>
+                <input id="netSqm" name="netSqm" type="number" placeholder="Net alan girin" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm
+               focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none">
+              </div>
+
+              <!-- Oda Sayısı -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="roomsSelect">
+                  Oda Sayısı
+                </label>
+                <select id="roomsSelect" name="rooms" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm
+               bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none">
+                  <option value="">Oda Sayısı Seçin</option>
+                  <option>1+0</option>
+                  <option>1+1</option>
+                  <option>2+1</option>
+                  <option>3+1</option>
+                  <option>4+1</option>
+                  <option>5+1</option>
+                  <option>6+ ve üzeri</option>
+                </select>
+              </div>
+
+              <!-- Bina Yaşı -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="buildingAge">
+                  Bina Yaşı
+                </label>
+                <input id="buildingAge" name="buildingAge" type="number" placeholder="Bina yaşı girin" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm
+               focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none">
+              </div>
+
+              <!-- Kat Sayısı -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="totalFloors">
+                  Kat Sayısı
+                </label>
+                <input id="totalFloors" name="floors" type="number" placeholder="Toplam kat sayısı" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm
+               focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none">
+              </div>
+
+              <!-- Bulunduğu Kat -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="floorLocation">
+                  Bulunduğu Kat
+                </label>
+                <input id="floorLocation" name="floorLocation" type="number" placeholder="Kat numarası girin" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm
+               focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none">
+              </div>
+
+              <!-- Isıtma Tipi -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="heatingTypeSelect">
+                  Isıtma Tipi
+                </label>
+                <select id="heatingTypeSelect" name="heatingType" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm
+               bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none">
+                  <option value="">Isıtma Tipi Seçin</option>
+                  <option>Merkezi Isıtma</option>
+                  <option>Doğalgaz</option>
+                  <option>Elektrik</option>
+                  <option>Güneş Enerjisi</option>
+                  <option>Isı Pompası</option>
+                </select>
+              </div>
+
+              <!-- Banyo Sayısı -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2" for="bathroomsCount">
+                  Banyo Sayısı
+                </label>
+                <input id="bathroomsCount" name="bathrooms" type="number" placeholder="Banyo sayısı girin" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm
+               focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none">
+              </div>
+
+            </div>
+          </div>
+
+
+          <!-- Property Features Tabs -->
+
+
+
+
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-10">
+
+            <!-- CEPHE -->
+            <section>
+              <h2 class="text-lg font-semibold mb-4">Cephe</h2>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <label><input type="checkbox" name="cephe[]" value="Batı"> Batı</label>
+                <label><input type="checkbox" name="cephe[]" value="Doğu"> Doğu</label>
+                <label><input type="checkbox" name="cephe[]" value="Güney"> Güney</label>
+                <label><input type="checkbox" name="cephe[]" value="Kuzey"> Kuzey</label>
+              </div>
+            </section>
+
+            <!-- İÇ ÖZELLİKLER -->
+            <section>
+              <h2 class="text-lg font-semibold mb-4">İç Özellikler</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <label><input type="checkbox" name="ic_ozellikler[]" value="ADSL"> ADSL</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Ahşap Doğrama"> Ahşap Doğrama</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Akıllı Ev"> Akıllı Ev</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Alarm (Hırsız)"> Alarm (Hırsız)</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Alarm (Yangın)"> Alarm (Yangın)</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Alaturka Tuvalet"> Alaturka Tuvalet</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Alüminyum Doğrama"> Alüminyum
+                  Doğrama</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Amerikan Kapı"> Amerikan Kapı</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Ankastre Fırın"> Ankastre Fırın</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Barbekü"> Barbekü</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Beyaz Eşya"> Beyaz Eşya</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Boyalı"> Boyalı</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Bulaşık Makinesi"> Bulaşık Makinesi</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Buzdolabı"> Buzdolabı</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Çamaşır Kurutma Makinesi"> Çamaşır Kurutma
+                  Makinesi</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Çamaşır Makinesi"> Çamaşır Makinesi</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Çamaşır Odası"> Çamaşır Odası</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Çelik Kapı"> Çelik Kapı</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Duşakabin"> Duşakabin</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Duvar Kağıdı"> Duvar Kağıdı</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Ebeveyn Banyosu"> Ebeveyn Banyosu</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Fırın"> Fırın</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Fiber İnternet"> Fiber İnternet</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Giyinme Odası"> Giyinme Odası</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Gömme Dolap"> Gömme Dolap</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Görüntülü Diyafon"> Görüntülü
+                  Diyafon</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Hilton Banyo"> Hilton Banyo</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Intercom Sistemi"> Intercom Sistemi</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Isıcam"> Isıcam</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Jakuzi"> Jakuzi</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Kartonpiyer"> Kartonpiyer</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Kiler"> Kiler</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Klima"> Klima</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Küvet"> Küvet</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Laminat Zemin"> Laminat Zemin</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Marley"> Marley</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Mobilya"> Mobilya</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Mutfak (Ankastre)"> Mutfak
+                  (Ankastre)</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Mutfak (Laminat)"> Mutfak (Laminat)</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Mutfak Doğalgazı"> Mutfak Doğalgazı</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Panjur / Jaluzi"> Panjur / Jaluzi</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Parke Zemin"> Parke Zemin</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="PVC Doğrama"> PVC Doğrama</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Seramik Zemin"> Seramik Zemin</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Set Üstü Ocak"> Set Üstü Ocak</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Spot Aydınlatma"> Spot Aydınlatma</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Şofben"> Şofben</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Şömine"> Şömine</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Teras"> Teras</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Termosifon"> Termosifon</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Vestiyer"> Vestiyer</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Wi-Fi"> Wi-Fi</label>
+                <label><input type="checkbox" name="ic_ozellikler[]" value="Yüz Tanıma & Parmak İzi"> Yüz Tanıma &
+                  Parmak İzi</label>
+              </div>
+            </section>
+
+            <!-- DIŞ ÖZELLİKLER -->
+            <section>
+              <h2 class="text-lg font-semibold mb-4">Dış Özellikler</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Araç Şarj İstasyonu"> Araç Şarj
+                  İstasyonu</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="24 Saat Güvenlik"> 24 Saat Güvenlik</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Apartman Görevlisi"> Apartman
+                  Görevlisi</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Buhar Odası"> Buhar Odası</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Çocuk Oyun Parkı"> Çocuk Oyun Parkı</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Hamam"> Hamam</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Hidrofor"> Hidrofor</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Isı Yalıtımı"> Isı Yalıtımı</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Jeneratör"> Jeneratör</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Kablo TV"> Kablo TV</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Kamera Sistemi"> Kamera Sistemi</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Kreş"> Kreş</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Müstakil Havuzlu"> Müstakil Havuzlu</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Sauna"> Sauna</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Ses Yalıtımı"> Ses Yalıtımı</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Siding"> Siding</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Spor Alanı"> Spor Alanı</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Su Deposu"> Su Deposu</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Tenis Kortu"> Tenis Kortu</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Uydu"> Uydu</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Yangın Merdiveni"> Yangın Merdiveni</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Yüzme Havuzu (Açık)"> Yüzme Havuzu
+                  (Açık)</label>
+                <label><input type="checkbox" name="dis_ozellikler[]" value="Yüzme Havuzu (Kapalı)"> Yüzme Havuzu
+                  (Kapalı)</label>
+              </div>
+            </section>
+
+            <!-- MUHİT -->
+            <section>
+              <h2 class="text-lg font-semibold mb-4">Muhit</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <label><input type="checkbox" name="muhit[]" value="Alışveriş Merkezi"> Alışveriş Merkezi</label>
+                <label><input type="checkbox" name="muhit[]" value="Belediye"> Belediye</label>
+                <label><input type="checkbox" name="muhit[]" value="Cami"> Cami</label>
+                <label><input type="checkbox" name="muhit[]" value="Cemevi"> Cemevi</label>
+                <label><input type="checkbox" name="muhit[]" value="Denize Sıfır"> Denize Sıfır</label>
+                <label><input type="checkbox" name="muhit[]" value="Eczane"> Eczane</label>
+                <label><input type="checkbox" name="muhit[]" value="Eğlence Merkezi"> Eğlence Merkezi</label>
+                <label><input type="checkbox" name="muhit[]" value="Fuar"> Fuar</label>
+                <label><input type="checkbox" name="muhit[]" value="Göle Sıfır"> Göle Sıfır</label>
+                <label><input type="checkbox" name="muhit[]" value="Hastane"> Hastane</label>
+                <label><input type="checkbox" name="muhit[]" value="Havra"> Havra</label>
+                <label><input type="checkbox" name="muhit[]" value="İlkokul-Ortaokul"> İlkokul - Ortaokul</label>
+                <label><input type="checkbox" name="muhit[]" value="İtfaiye"> İtfaiye</label>
+                <label><input type="checkbox" name="muhit[]" value="Kilise"> Kilise</label>
+                <label><input type="checkbox" name="muhit[]" value="Lise"> Lise</label>
+                <label><input type="checkbox" name="muhit[]" value="Market"> Market</label>
+                <label><input type="checkbox" name="muhit[]" value="Park"> Park</label>
+                <label><input type="checkbox" name="muhit[]" value="Plaj"> Plaj</label>
+                <label><input type="checkbox" name="muhit[]" value="Polis Merkezi"> Polis Merkezi</label>
+                <label><input type="checkbox" name="muhit[]" value="Sağlık Ocağı"> Sağlık Ocağı</label>
+                <label><input type="checkbox" name="muhit[]" value="Semt Pazarı"> Semt Pazarı</label>
+                <label><input type="checkbox" name="muhit[]" value="Spor Salonu"> Spor Salonu</label>
+                <label><input type="checkbox" name="muhit[]" value="Şehir Merkezi"> Şehir Merkezi</label>
+                <label><input type="checkbox" name="muhit[]" value="Üniversite"> Üniversite</label>
+              </div>
+            </section>
+
+            <!-- ULAŞIM -->
+            <section>
+              <h2 class="text-lg font-semibold mb-4">Ulaşım</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <label><input type="checkbox" name="ulasim[]" value="Anayol"> Anayol</label>
+                <label><input type="checkbox" name="ulasim[]" value="Avrasya Tüneli"> Avrasya Tüneli</label>
+                <label><input type="checkbox" name="ulasim[]" value="Boğaz Köprüleri"> Boğaz Köprüleri</label>
+                <label><input type="checkbox" name="ulasim[]" value="Cadde"> Cadde</label>
+                <label><input type="checkbox" name="ulasim[]" value="Deniz Otobüsü"> Deniz Otobüsü</label>
+                <label><input type="checkbox" name="ulasim[]" value="Dolmuş"> Dolmuş</label>
+                <label><input type="checkbox" name="ulasim[]" value="E-5"> E-5</label>
+                <label><input type="checkbox" name="ulasim[]" value="Havaalanı"> Havaalanı</label>
+                <label><input type="checkbox" name="ulasim[]" value="İskele"> İskele</label>
+                <label><input type="checkbox" name="ulasim[]" value="Marmaray"> Marmaray</label>
+                <label><input type="checkbox" name="ulasim[]" value="Metro"> Metro</label>
+                <label><input type="checkbox" name="ulasim[]" value="Metrobüs"> Metrobüs</label>
+                <label><input type="checkbox" name="ulasim[]" value="Minibüs"> Minibüs</label>
+                <label><input type="checkbox" name="ulasim[]" value="Otobüs Durağı"> Otobüs Durağı</label>
+                <label><input type="checkbox" name="ulasim[]" value="Sahil"> Sahil</label>
+                <label><input type="checkbox" name="ulasim[]" value="Teleferik"> Teleferik</label>
+                <label><input type="checkbox" name="ulasim[]" value="TEM"> TEM</label>
+                <label><input type="checkbox" name="ulasim[]" value="Tramvay"> Tramvay</label>
+                <label><input type="checkbox" name="ulasim[]" value="Tren İstasyonu"> Tren İstasyonu</label>
+                <label><input type="checkbox" name="ulasim[]" value="Troleybüs"> Troleybüs</label>
+              </div>
+            </section>
+
+            <!-- MANZARA -->
+            <section>
+              <h2 class="text-lg font-semibold mb-4">Manzara</h2>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <label><input type="checkbox" name="manzara[]" value="Boğaz"> Boğaz</label>
+                <label><input type="checkbox" name="manzara[]" value="Deniz"> Deniz</label>
+                <label><input type="checkbox" name="manzara[]" value="Doğa"> Doğa</label>
+                <label><input type="checkbox" name="manzara[]" value="Göl"> Göl</label>
+                <label><input type="checkbox" name="manzara[]" value="Havuz"> Havuz</label>
+                <label><input type="checkbox" name="manzara[]" value="Nehir"> Nehir</label>
+                <label><input type="checkbox" name="manzara[]" value="park"> Park & Yeşil Alan</label>
+                <label><input type="checkbox" name="manzara[]" value="Şehir"> Şehir</label>
+              </div>
+            </section>
+
+            <!-- KONUT TİPİ -->
+            <section>
+              <h2 class="text-lg font-semibold mb-4">Konut Tipi</h2>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <label><input type="checkbox" name="konut_tipi[]" value="Dubleks"> Dubleks</label>
+                <label><input type="checkbox" name="konut_tipi[]" value="En Üst Kat"> En Üst Kat</label>
+                <label><input type="checkbox" name="konut_tipi[]" value="Ara Kat"> Ara Kat</label>
+                <label><input type="checkbox" name="konut_tipi[]" value="Ara Kat Dubleks"> Ara Kat Dubleks</label>
+                <label><input type="checkbox" name="konut_tipi[]" value="Bahçe Dubleksi"> Bahçe Dubleksi</label>
+                <label><input type="checkbox" name="konut_tipi[]" value="Çatı Dubleksi"> Çatı Dubleksi</label>
+                <label><input type="checkbox" name="konut_tipi[]" value="Forleks"> Forleks</label>
+                <label><input type="checkbox" name="konut_tipi[]" value="Ters Dubleks"> Ters Dubleks</label>
+                <label><input type="checkbox" name="konut_tipi[]" value="Tripleks"> Tripleks</label>
+              </div>
+            </section>
+
+            <!-- ENGELLİ & YAŞLI -->
+            <section>
+              <h2 class="text-lg font-semibold mb-4">Engelliye ve Yaşlıya Uygun</h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <label><input type="checkbox" name="engelli[]" value="Araç Park Yeri"> Araç Park Yeri</label>
+                <label><input type="checkbox" name="engelli[]" value="Engelliye Uygun Asansör"> Engelliye Uygun
+                  Asansör</label>
+                <label><input type="checkbox" name="engelli[]" value="Engelliye Uygun Banyo"> Engelliye Uygun
+                  Banyo</label>
+                <label><input type="checkbox" name="engelli[]" value="Engelliye Uygun Mutfak"> Engelliye Uygun
+                  Mutfak</label>
+                <label><input type="checkbox" name="engelli[]" value="Engelliye Uygun Park"> Engelliye Uygun
+                  Park</label>
+                <label><input type="checkbox" name="engelli[]" value="Geniş Koridor"> Geniş Koridor</label>
+                <label><input type="checkbox" name="engelli[]" value="Giriş / Rampa"> Giriş / Rampa</label>
+                <label><input type="checkbox" name="engelli[]" value="Merdiven"> Merdiven</label>
+                <label><input type="checkbox" name="engelli[]" value="Oda Kapısı"> Oda Kapısı</label>
+                <label><input type="checkbox" name="engelli[]" value="Priz / Elektrik Anahtarı"> Priz / Elektrik
+                  Anahtarı</label>
+                <label><input type="checkbox" name="engelli[]" value="Tutamak / Korkuluk"> Tutamak / Korkuluk</label>
+                <label><input type="checkbox" name="engelli[]" value="Tuvalet"> Tuvalet</label>
+              </div>
+            </section>
+
+          </div>
+
+
+
+          <!-- Save Actions -->
+          <div
+            class="flex flex-col-reverse lg:flex-row justify-end space-y-4 space-y-reverse lg:space-y-0 lg:space-x-4 mt-6">
+            <button
+              class="w-full lg:w-auto px-8 py-3 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 whitespace-nowrap">
+              Save as Draft
+            </button>
+            <button type="button" id="saveBtn"
+              class="mt-4 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-md">
+              Save Property
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="js/urunEkle.js" defer></script>
+</body>
+
+</html>

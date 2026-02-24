@@ -1,0 +1,16 @@
+   :where([class^="ri-"])::before { content: "\f3c2"; }
+        .nav-card {
+            transition: all 0.3s ease;
+        }
+        .nav-card:hover {
+            transform: translateY(-4px);
+        }
+        .nav-icon {
+            transition: all 0.3s ease;
+        }
+        .nav-card:hover .nav-icon {
+            transform: scale(1.1);
+        }
+
+
+       

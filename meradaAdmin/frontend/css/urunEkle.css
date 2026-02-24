@@ -1,0 +1,49 @@
+
+   :where([class^="ri-"])::before {
+      content: "\f3c2";
+    }
+
+
+@media (max-width: 1024px) {
+      .tab-button {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+      }
+    }
+
+    .tab-button.active {
+      background-color: white;
+      color: #3b82f6;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .tab-button {
+      color: #6b7280;
+      transition: all 0.2s;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .checkbox-custom {
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+
+    

@@ -1,0 +1,127 @@
+  :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+      .container { 
+  max-width: 1100px; 
+  margin: 24px auto; 
+  padding: 0 16px; 
+}
+
+.grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+  gap: 18px; 
+}
+
+.card { 
+  background: white; 
+  border-radius: 12px; 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06); 
+  overflow: hidden; 
+  display: flex; 
+  flex-direction: column; 
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.aspect { 
+  aspect-ratio: 4/3; /* 📌 fotoğraf alanını büyüttüm */ 
+  overflow: hidden; 
+}
+
+.card img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  display: block; 
+}
+
+.p-6 { 
+  padding: 18px; 
+}
+
+.card-price { 
+  font-size: 1.5rem; /* 📌 fiyat büyük */
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.card-title { 
+  font-size: 1.2rem; /* 📌 başlık büyük ve bold */
+  font-weight: 600; 
+  color: #1f2937; 
+  margin-bottom: 10px;
+}
+
+.card-location { 
+  display: flex; 
+  align-items: center; 
+  font-size: 0.9rem; 
+  color: #6b7280; 
+  margin-bottom: 12px;
+}
+.card-location i { 
+  margin-right: 6px; 
+  font-size: 16px; 
+  color: #374151;
+}
+
+.card-features { 
+  display: flex; 
+  justify-content: space-between; 
+  font-size: 0.9rem; 
+  color: #4b5563;
+}
+.card-features div { 
+  display: flex; 
+  align-items: center; 
+  gap: 6px;
+}
+.card-features i { 
+  font-size: 18px; 
+  color: #4f46e5; /* 📌 ikonlar mavi */
+}
+
+.btn { 
+  cursor: pointer; 
+  padding: 10px 12px; 
+  border-radius: 8px; 
+  border: none; 
+}
+
+.btn-edit { 
+  background: #eef2ff; 
+  color: #4f46e5; 
+}
+
+.btn-delete { 
+  background: #fff0f0; 
+  color: #dc2626; 
+}
+.btn-delete:hover {
+  background: #fee2e2;
+  border-color: #f87171;
+  border:  1px solid;
+}
+
+.btn-edit:hover {
+  background: #e0e7ff;  
+  border-color: #a5b4fc;
+  border:  1px solid;
+}
+.modal-backdrop { 
+  position: fixed; 
+  inset: 0; 
+  background: rgba(0,0,0,0.5); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  z-index: 999; 
+}
+
+.hidden { display: none; }

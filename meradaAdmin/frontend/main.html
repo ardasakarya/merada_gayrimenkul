@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="https://static.readdy.ai/static/e.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merada Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#6B7280'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    
+</head>
+<body class="bg-gray-50 min-h-screen gradient-bg">
+   
+
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <p class="text-gray-600">Welcome, <span class="font-medium text-gray-900">Alexander Mitchell</span></p>
+                <div class="font-['Pacifico'] text-2xl text-primary">logo</div>
+                <div class="w-32"></div>
+            </div>
+         
+        </div>
+    </header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  
+  <!-- İlk bölüm -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 justify-center text-center">
+      <!-- Başlık -->
+      <h1 class="col-span-full text-2xl font-medium text-gray-900 mb-6">Merada Gayrimenkul</h1>
+
+      <!-- Add Property -->
+      <a href="urunEkle.html" class="nav-card bg-white p-6 rounded-lg shadow-sm hover:shadow-lg border border-gray-100 block cursor-pointer transition">
+          <div class="flex flex-col items-center">
+              <div class="nav-icon w-16 h-16 flex items-center justify-center bg-primary/5 rounded-full mb-4">
+                  <i class="ri-add-line text-2xl text-primary"></i>
+              </div>
+              <h3 class="text-lg font-medium text-gray-900">Add Property</h3>
+              <p class="mt-2 text-sm text-gray-500">List new properties in the system</p>
+          </div>
+      </a>
+
+      <!-- View Properties -->
+      <a href="Urunler.html" class="nav-card bg-white p-6 rounded-lg shadow-sm hover:shadow-lg border border-gray-100 block cursor-pointer transition">
+          <div class="flex flex-col items-center">
+              <div class="nav-icon w-16 h-16 flex items-center justify-center bg-primary/5 rounded-full mb-4">
+                  <i class="ri-building-2-line text-2xl text-primary"></i>
+              </div>
+              <h3 class="text-lg font-medium text-gray-900">View Properties</h3>
+              <p class="mt-2 text-sm text-gray-500">Manage existing property listings</p>
+          </div>
+      </a>
+  </div>
+
+  <!-- İkinci bölüm -->
+  <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 justify-center text-center">
+      <!-- Başlık -->
+      <h1 class="col-span-full text-2xl font-medium text-gray-900 mb-6">Merada Yönetim</h1>
+
+      <!-- Settings -->
+      <a href="settings.html" class="nav-card bg-white p-6 rounded-lg shadow-sm hover:shadow-lg border border-gray-100 block cursor-pointer transition">
+          <div class="flex flex-col items-center">
+              <div class="nav-icon w-16 h-16 flex items-center justify-center bg-primary/5 rounded-full mb-4">
+                  <i class="ri-settings-3-line text-2xl text-primary"></i>
+              </div>
+              <h3 class="text-lg font-medium text-gray-900">Settings</h3>
+              <p class="mt-2 text-sm text-gray-500">Configure system preferences</p>
+          </div>
+      </a>
+
+      <!-- Yönetim Properties -->
+      <a href="manage_properties.html" class="nav-card bg-white p-6 rounded-lg shadow-sm hover:shadow-lg border border-gray-100 block cursor-pointer transition">
+          <div class="flex flex-col items-center">
+              <div class="nav-icon w-16 h-16 flex items-center justify-center bg-primary/5 rounded-full mb-4">
+                  <i class="ri-building-2-line text-2xl text-primary"></i>
+              </div>
+              <h3 class="text-lg font-medium text-gray-900">View Properties</h3>
+              <p class="mt-2 text-sm text-gray-500">Manage existing property listings</p>
+          </div>
+      </a>
+  </div>
+
+</main>
+
+
+
+<script src="js/main.js"></script>
+</body>
+</html>

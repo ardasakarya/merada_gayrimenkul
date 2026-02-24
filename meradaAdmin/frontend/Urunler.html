@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="https://static.readdy.ai/static/e.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Listings - Real Estate Admin</title>
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <link rel="stylesheet" href="css/Urunler.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6',
+            secondary: '#6366f1'
+          },
+          borderRadius: {
+            'none': '0px',
+            'sm': '4px',
+            DEFAULT: '8px',
+            'md': '12px',
+            'lg': '16px',
+            'xl': '20px',
+            '2xl': '24px',
+            '3xl': '32px',
+            'full': '9999px',
+            'button': '8px'
+          }
+        }
+      }
+    }
+  </script>
+
+</head>
+
+<body class="bg-gray-50">
+
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <div class="lg:w-64 bg-white shadow-lg">
+      <div class="p-6">
+        <div class="font-['Pacifico'] text-2xl text-primary mb-8">logo</div>
+        <nav class="space-y-2">
+          <a href="urunEkle.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 rounded-lg">
+            <div class="w-5 h-5 flex items-center justify-center mr-3">
+              <i class="ri-home-4-line"></i>
+            </div>
+            Ürün Ekle
+          </a>
+          <a href="Urunler.html" class="flex items-center px-4 py-3 text-gray-900 bg-blue-100 rounded-lg shadow-lg">
+            <div class="w-5 h-5 flex items-center justify-center mr-3">
+              <i class="ri-user-line"></i>
+            </div>
+            Ürünler
+          </a>
+          <a href="main.html" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+            <div class="w-5 h-5 flex items-center justify-center mr-3">
+              <i class="ri-file-list-line"></i>
+            </div>
+            Anasayfa
+          </a>
+        </nav>
+      </div>
+    </div>
+
+ <div class="flex-1 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Sayfa Başlığı -->
+    <div class="flex justify-between items-center py-6">
+      <h1 class="text-2xl font-bold text-gray-900">Ürünler</h1>
+    </div>
+
+    <!-- Grid -->
+    <div id="propertyGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+      <!-- Kartlar buraya JS ile eklenecek -->
+    </div>
+  </div>
+</div>
+
+
+<!-- Edit Modal -->
+<div id="editModal" class="modal-backdrop hidden">
+  <div style="background:white; border-radius:8px; max-width:720px; width:100%; max-height:90vh; overflow:auto; padding:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <h2>İlan düzenle</h2>
+      <button id="closeEditBtn" class="btn">×</button>
+    </div>
+    <form id="editForm">
+      <div id="editFormContent"></div>
+      <div style="margin-top:12px; display:flex; gap:8px;">
+        <button type="submit" class="btn btn-edit">Kaydet</button>
+        <button type="button" id="cancelEdit" class="btn">İptal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div id="deleteModal" class="modal-backdrop hidden">
+  <div style="background:white; padding:16px; border-radius:8px; max-width:480px; width:100%;">
+    <h3>İlanı sil</h3>
+    <p>Bu ilanı silmek istediğinize emin misiniz? "<span id="propertyName"></span>"</p>
+    <div style="display:flex; gap:8px; margin-top:12px;">
+      <button id="cancelDelete" class="btn">Vazgeç</button>
+      <button id="confirmDeleteBtn" class="btn btn-delete">Sil</button>
+    </div>
+  </div>
+</div>
+
+
+
+</body>
+
+<script src="js/Urunler.js"></script>
+
+</html>
