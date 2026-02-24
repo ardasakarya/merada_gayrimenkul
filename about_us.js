@@ -1,4 +1,3 @@
-// HEADER YÜKLE
 function loadHeader() {
   return fetch("./components/header/header.html")
     .then(r => {
@@ -65,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
   loadHeader();
   loadFooter();
 });
-
    (function(){
     // Toggle flip on tap for touch devices
     document.querySelectorAll('article.group').forEach(function(card){
