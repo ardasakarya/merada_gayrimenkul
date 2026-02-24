@@ -38,6 +38,7 @@ function initHeaderMenu() {
   });
 }
 
+
 // FOOTER YÜKLE (istersen footer component de aynı mantık)
 function loadFooter() {
   return fetch("./components/footer/footer.html")
