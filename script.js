@@ -24,6 +24,7 @@ function loadHeader() {
     });
 }
 
+
 function initHeaderMenu() {
   const menuToggle = document.getElementById("menuToggle");
   const mobileMenu = document.getElementById("mobileMenu");
