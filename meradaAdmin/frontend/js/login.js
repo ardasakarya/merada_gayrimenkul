@@ -56,23 +56,22 @@ document.addEventListener('DOMContentLoaded', function() {
         showLoading(loginBtn, '.login-text');
 
         try {
-            const res = await fetch('http://127.0.0.1:5000/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
+            const res = await fetch("http://127.0.0.1:5000/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password }),
             });
 
             const data = await res.json();
 
             if (res.ok) {
-                // ✅ Giriş başarılı → token sakla ve yönlendir
-                localStorage.setItem('adminToken', data.token);
-                alert('Giriş başarılı!');
-                window.location.href = 'main.html'; // admin paneline yönlendir
+                // 🔐 Token kaydet
+                localStorage.setItem("adminToken", data.token);
+                // ✅ Admin panel ana sayfaya geç
+                window.location.href = "main.html";
             } else {
-                // ❌ Hatalı giriş
                 shakeForm(loginForm);
-                alert(data.error || 'Giriş başarısız!');
+                alert(data.error || "Giriş başarısız");
             }
         } catch (err) {
             console.error(err);

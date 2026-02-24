@@ -1,6 +1,6 @@
 // HEADER YÜKLE
 function loadHeader() {
-  return fetch("./components/header/header.html")
+  return fetch("/meradaGayrimenkul_frontend/components/header/header.html")
     .then(r => {
       if (!r.ok) throw new Error("Header yüklenemedi: " + r.status);
       return r.text();
@@ -40,7 +40,7 @@ function initHeaderMenu() {
 
 // FOOTER YÜKLE (istersen footer component de aynı mantık)
 function loadFooter() {
-  return fetch("./components/footer/footer.html")
+  return fetch("/meradaGayrimenkul_frontend/components/footer/footer.html")
     .then(r => {
       if (!r.ok) throw new Error("Footer yüklenemedi: " + r.status);
       return r.text();
@@ -84,7 +84,7 @@ function escapeHtml(s) {
     .replaceAll("'", "&#39;");
 }
 
-fetch("filter.html")
+fetch("/meradaGayrimenkul_frontend/components/filter/filter.html")
   .then(res => res.text())
   .then(html => {
     const container = document.getElementById("filterContainer");

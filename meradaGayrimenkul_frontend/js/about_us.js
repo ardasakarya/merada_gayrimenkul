@@ -1,5 +1,5 @@
 function loadHeader() {
-  return fetch("./components/header/header.html")
+  return fetch("/meradaGayrimenkul_frontend/components/header/header.html")
     .then(r => {
       if (!r.ok) throw new Error("Header yüklenemedi: " + r.status);
       return r.text();
@@ -39,7 +39,7 @@ function initHeaderMenu() {
 
 // FOOTER YÜKLE (istersen footer component de aynı mantık)
 function loadFooter() {
-  return fetch("./components/footer/footer.html")
+  return fetch("/meradaGayrimenkul_frontend/components/footer/footer.html")
     .then(r => {
       if (!r.ok) throw new Error("Footer yüklenemedi: " + r.status);
       return r.text();
@@ -112,7 +112,7 @@ const teamMembers = [
     name: "Onur Özdamar",
     title: "Kurucu",
     description: "Merada Gayrimenkul’ün kurucusu olarak şirketin vizyonunu ve stratejik yönünü belirlemektedir.",
-    image: "img/placeholder.png",
+    image: "/meradaGayrimenkul_frontend/img/placeholder.png",
     email: "onur@merada.com.tr",
     phone: "+90 (540) 328 00 33",
     whatsapp: "+905403280033"
@@ -121,7 +121,7 @@ const teamMembers = [
     name: "Taha Deniz",
     title: "Gayrimenkul Danışmanı",
     description: "Müşteri memnuniyeti odaklı yaklaşımıyla konut ve yatırım süreçlerinde profesyonel danışmanlık sunar.",
-    image: "img/placeholder.png",
+    image: "/meradaGayrimenkul_frontend/img/placeholder.png",
     email: "taha@meradagayrimenkul.com",
     phone: "+90 (532) 163 64 48",
     whatsapp: "+905321636448"
@@ -130,7 +130,7 @@ const teamMembers = [
     name: "İsmail Danışan",
     title: "Gayrimenkul Danışmanı",
     description: "Satın alma ve satış süreçlerinde güvenilir ve şeffaf çözümler sunar.",
-    image: "img/placeholder.png",
+    image: "/meradaGayrimenkul_frontend/img/placeholder.png",
     email: "ismail@meradagayrimenkul.com",
     phone: "+90 (552) 380 23 13",
     whatsapp: "+905523802313"
@@ -139,7 +139,7 @@ const teamMembers = [
     name: "Mahir Şenel",
     title: "Gayrimenkul Danışmanı",
     description: "Yatırım ve portföy yönetimi alanlarında uzmanlaşmıştır.",
-    image: "img/placeholder.png",
+    image: "/meradaGayrimenkul_frontend/img/placeholder.png",
     email: "mahir@meradagayrimenkul.com",
     phone: "+90 (535) 252 92 71",
     whatsapp: "+905352529271"
@@ -148,7 +148,7 @@ const teamMembers = [
     name: "Mücahit Danışan",
     title: "Gayrimenkul Danışmanı",
     description: "Alıcı ve satıcılar arasında güvene dayalı köprü kurar.",
-    image: "img/placeholder.png",
+    image: "/meradaGayrimenkul_frontend/img/placeholder.png",
     email: "mücahit@meradagayrimenkul.com",
     phone: "+90 (537) 606 33 13",
     whatsapp: "+905376063313"
@@ -157,7 +157,7 @@ const teamMembers = [
     name: "Beyza Güngör",
     title: "Ön Büro",
     description: "Ofis operasyonları ve müşteri iletişiminden sorumludur.",
-    image: "img/placeholder.png",
+    image: "/meradaGayrimenkul_frontend/img/placeholder.png",
     email: "beyza@meradagayrimenkul.com",
     phone: "+90 (506) 033 07 33",
     whatsapp: "+905060330733"

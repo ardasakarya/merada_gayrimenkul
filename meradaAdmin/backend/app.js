@@ -6,6 +6,7 @@ const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
 const db = require("./config/db");
+const jwt = require("jsonwebtoken");
 
 dotenv.config();
 const app = express();
@@ -13,6 +14,9 @@ const app = express();
 const BACKEND_URL = process.env.BACKEND_URL || "http://127.0.0.1:5000";
 const JWT_SECRET = process.env.JWT_SECRET || "change_this_secret";
 const APP_PORT = process.env.APP_PORT || 5000;
+const TOKEN_EXPIRES_IN = process.env.JWT_EXPIRES;
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 // ---------- Middleware ----------
 app.use(express.json({ limit: "20mb" }));
@@ -42,26 +46,20 @@ const normalizePhotoUrl = (p) => {
 
   let s = String(p).trim();
 
-  // ✅ "/uploads/http://...." veya "/uploads/https://...." gelirse baştaki "/uploads/"i kırp
   if (s.startsWith("/uploads/http://") || s.startsWith("/uploads/https://")) {
-    s = s.replace(/^\/uploads\//, ""); // "http://127.../uploads/abc.png"
+    s = s.replace(/^\/uploads\//, "");
   }
 
-  // ✅ "uploads/http://...." gelirse "uploads/"i kırp
   if (s.startsWith("uploads/http://") || s.startsWith("uploads/https://")) {
-    s = s.replace(/^uploads\//, ""); // "http://127.../uploads/abc.png"
+    s = s.replace(/^uploads\//, "");
   }
 
-  // ✅ Tam URL ise olduğu gibi dön
   if (s.startsWith("http://") || s.startsWith("https://")) return s;
 
-  // ✅ "/uploads/xxx"
   if (s.startsWith("/uploads/")) return `${BACKEND_URL}${s}`;
 
-  // ✅ "uploads/xxx"
   if (s.startsWith("uploads/")) return `${BACKEND_URL}/${s}`;
 
-  // ✅ sadece dosya adı veya "uploads\xxx"
   s = s.replace(/^uploads[\\/]/, "");
   return `${BACKEND_URL}/uploads/${s}`;
 };
@@ -77,9 +75,81 @@ const upload = multer({ storage });
 // ---------- Root ----------
 app.get("/", (req, res) => res.send("Express sunucu çalışıyor ✅"));
 
+/* ===========================
+   🔐 AUTH MIDDLEWARE + LOGIN
+   =========================== */
+
+// sadece admin token kontrolü
+function authAdmin(req, res, next) {
+  const authHeader = req.headers.authorization || "";
+  const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
+
+  if (!token) {
+    return res.status(401).json({ error: "Token gerekli" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded; // istersen burada kullanırsın
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: "Geçersiz veya süresi dolmuş token" });
+  }
+}
+
+// Giriş endpoint'i
+app.post("/login", (req, res) => {
+  const { username, password } = req.body || {};
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "Kullanıcı adı ve şifre zorunlu" });
+  }
+
+  if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
+    return res.status(401).json({ error: "Geçersiz kullanıcı adı veya şifre" });
+  }
+
+  const token = jwt.sign(
+    { username, role: "admin" },
+    JWT_SECRET,
+    { expiresIn: TOKEN_EXPIRES_IN }
+  );
+
+  return res.json({ token });
+});
+
+// ---------- Root ----------
+app.get("/", (req, res) => res.send("Express sunucu çalışıyor ✅"));
+
+// ---------- LOGIN ----------
+app.post("/login", (req, res) => {
+  const { username, password } = req.body || {};
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "Kullanıcı adı ve şifre zorunlu" });
+  }
+
+  if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
+    return res.status(401).json({ error: "Geçersiz kullanıcı adı veya şifre" });
+  }
+
+  try {
+    const token = jwt.sign(
+      { username },
+      JWT_SECRET,
+      { expiresIn: TOKEN_EXPIRES_IN } // .env: JWT_EXPIRES=1h
+    );
+
+    return res.json({ token });
+  } catch (err) {
+    console.error("❌ JWT oluşturulurken hata:", err);
+    return res.status(500).json({ error: "Sunucu hatası (token)" });
+  }
+});
 // =====================================================
 //                 PROPERTIES LIST/DETAIL
 // =====================================================
+// 👉 Bunlar herkese açık kalsın istiyorsan authAdmin EKLEME
 app.get("/properties", (req, res) => {
   const sql = `
     SELECT p.id, p.title, p.price, p.currency, p.description,
@@ -528,7 +598,6 @@ app.get("/properties/:id", (req, res) => {
         email: r.agent_email,
       },
 
-      // ✅ FOTO URL’LERİ ARTIK ÇİFTE EKLENMEZ
       photos: (() => {
         try {
           const arr = typeof r.photos === "string" ? JSON.parse(r.photos) : (r.photos || []);
@@ -545,14 +614,14 @@ app.get("/properties/:id", (req, res) => {
 // =====================================================
 //                 DELETE PROPERTY (FULL DELETE)
 // =====================================================
-app.delete("/properties/:id", (req, res) => {
+// 👉 BURAYI KORUMAK İÇİN authAdmin EKLEDİK
+app.delete("/properties/:id", authAdmin, (req, res) => {
   const id = Number(req.params.id);
   if (!Number.isFinite(id)) return res.status(400).json({ error: "Geçersiz ID" });
 
   db.getConnection((connErr, conn) => {
     if (connErr) return res.status(500).json({ error: "Veritabanı bağlantı hatası" });
 
-    // 1) property var mı? (yoksa 404)
     conn.query("SELECT id FROM properties WHERE id = ? LIMIT 1", [id], (pErr, pRows) => {
       if (pErr) {
         conn.release();
@@ -564,7 +633,6 @@ app.delete("/properties/:id", (req, res) => {
         return res.status(404).json({ error: "İlan bulunamadı" });
       }
 
-      // 2) Foto dosyalarını çek (diskten sileceğiz)
       conn.query("SELECT photo_url FROM property_photos WHERE property_id = ?", [id], (photoErr, photoRows) => {
         if (photoErr) {
           conn.release();
@@ -578,11 +646,10 @@ app.delete("/properties/:id", (req, res) => {
           .map(p => {
             const s = String(p).trim();
             const idx = s.lastIndexOf("/uploads/");
-            if (idx !== -1) return s.slice(idx + 9); // "/uploads/" sonrası
-            return s.replace(/^\/?uploads[\\/]/, ""); // "uploads\xx" / "/uploads/xx"
+            if (idx !== -1) return s.slice(idx + 9);
+            return s.replace(/^\/?uploads[\\/]/, "");
           });
 
-        // 3) Transaction ile DB temizliği
         conn.beginTransaction((txErr) => {
           if (txErr) {
             conn.release();
@@ -610,11 +677,10 @@ app.delete("/properties/:id", (req, res) => {
               return conn.commit(() => {
                 conn.release();
 
-                // 4) DB silindi -> dosyaları sil
                 let deletedCount = 0;
                 for (const file of photoFiles) {
                   try {
-                    const abs = path.join(uploadPath, file); // uploadPath senin dosyada var
+                    const abs = path.join(uploadPath, file);
                     if (fs.existsSync(abs)) {
                       fs.unlinkSync(abs);
                       deletedCount++;
@@ -649,9 +715,11 @@ app.delete("/properties/:id", (req, res) => {
 });
 
 
+// =====================================================
 //                 UPDATE PROPERTY (FULL UPDATE)
 // =====================================================
-app.put("/properties/:id", (req, res) => {
+// 👉 BURAYI KORUMAK İÇİN authAdmin EKLEDİK
+app.put("/properties/:id", authAdmin, (req, res) => {
   const id = Number(req.params.id);
   if (!Number.isFinite(id)) return res.status(400).json({ error: "Geçersiz id" });
 
@@ -822,12 +890,11 @@ app.put("/properties/:id", (req, res) => {
 });
 
 
-
 // =====================================================
 //                 ADD PROPERTY + PHOTO UPLOAD
 // =====================================================
-
-app.post("/add-property", (req, res) => {
+// 👉 BURAYI KORUMAK İÇİN authAdmin EKLEDİK
+app.post("/add-property", authAdmin, (req, res) => {
   const { title, price, currency, description, location, specifications, features, agent } = req.body;
 
   if (!title || !price || !currency || !description) {
@@ -1055,14 +1122,17 @@ app.post("/add-property", (req, res) => {
   });
 });
 
-app.post("/upload-photos", upload.array("photos", 20), (req, res) => {
+// =====================================================
+//                 UPLOAD PHOTOS
+// =====================================================
+// 👉 BURAYI KORUMAK İÇİN authAdmin EKLEDİK
+app.post("/upload-photos", authAdmin, upload.array("photos", 20), (req, res) => {
   const { propertyId } = req.body;
   const files = req.files || [];
 
   if (!propertyId) return res.status(400).json({ error: "propertyId zorunludur" });
   if (!files.length) return res.status(400).json({ error: "Yüklenecek fotoğraf bulunamadı" });
 
-  // DB'ye sadece dosya adını kaydet (en doğrusu bu)
   const values = files.map((f) => [propertyId, f.filename]);
   const sql =
     "INSERT INTO property_photos (property_id, photo_url, created_at) VALUES " +
@@ -1076,7 +1146,6 @@ app.post("/upload-photos", upload.array("photos", 20), (req, res) => {
       return res.status(500).json({ error: "Fotoğraflar veritabanına kaydedilemedi" });
     }
 
-    // response'ta tam URL döndür
     const urls = files.map((f) => normalizePhotoUrl(f.filename));
     res.json({ message: "✅ Fotoğraflar yüklendi", count: files.length, photos: urls });
   });
