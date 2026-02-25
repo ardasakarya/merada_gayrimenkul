@@ -1,4 +1,5 @@
-const mysql = require("mysql2/promise");
+// backend/config/db.js
+const mysql = require("mysql2");
 require("dotenv").config();
 
 const pool = mysql.createPool({
@@ -13,16 +14,15 @@ const pool = mysql.createPool({
   charset: "utf8mb4"
 });
 
-// bağlantı test
-(async () => {
-  try {
-    const conn = await pool.getConnection();
-    console.log("✅ MySQL Pool bağlantısı başarılı");
-    conn.release();
-  } catch (err) {
+// Bağlantı testi
+pool.getConnection((err, connection) => {
+  if (err) {
     console.error("❌ MySQL bağlantı hatası:", err);
     process.exit(1);
   }
-})();
+
+  if (connection) connection.release();
+  console.log("✅ MySQL Pool bağlantısı başarılı");
+});
 
 module.exports = pool;

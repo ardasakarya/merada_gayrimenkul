@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const TOKEN_KEY = "adminToken";
+    const API_URL = "http://127.0.0.1:5000"; // backend/server.js portun
+
     // === PASSWORD TOGGLE ===
     const toggleLoginPassword = document.getElementById('toggleLoginPassword');
     const loginPassword = document.getElementById('loginPassword');
@@ -56,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showLoading(loginBtn, '.login-text');
 
         try {
-            const res = await fetch("http://127.0.0.1:5000/login", {
+            const res = await fetch(`${API_URL}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password }),
@@ -65,9 +68,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await res.json();
 
             if (res.ok) {
-                // 🔐 Token kaydet
-                localStorage.setItem("adminToken", data.token);
-                // ✅ Admin panel ana sayfaya geç
+                // 🔐 Token kaydet (KEY: token)
+                 localStorage.setItem(TOKEN_KEY, data.token);
+
+                // ✅ Admin panel ana sayfa
                 window.location.href = "main.html";
             } else {
                 shakeForm(loginForm);

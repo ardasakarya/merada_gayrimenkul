@@ -1,4 +1,10 @@
 // urunEkle.js
+
+// === SABİTLER ===
+const API_URL = "http://127.0.0.1:5000"; // backend/server.js portun
+const TOKEN_KEY = "adminToken";          // login.js'te kaydettiğin anahtar
+
+// === YARDIMCI FONKSİYONLAR ===
 function setText(id, text) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -11,8 +17,9 @@ function setHTML(id, html) {
   el.innerHTML = html ?? "";
 }
 
+// === SAYFA YÜKLENİNCE ===
 document.addEventListener("DOMContentLoaded", function () {
-  // ---------- Price input format ----------
+  // ---------- Fiyat input format ---------- //
   const priceInput = document.getElementById("price");
   if (priceInput) {
     priceInput.addEventListener("input", function (e) {
@@ -39,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let selectedFiles = [];
 
-  // ---------- Photo preview ----------
+  // ---------- Fotoğraf önizleme ---------- //
   if (photoInput && previewContainer) {
     photoInput.addEventListener("change", () => {
       Array.from(photoInput.files).forEach((file) => {
@@ -71,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ---------- Maps (Label -> DB column) ----------
+  // ---------- Maps (Label -> DB column) ---------- //
   const interiorMap = {
     "ADSL": "adsl",
     "Ahşap Doğrama": "wood_joinery",
@@ -126,31 +133,30 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   const exteriorMap = {
-  "Araç Şarj İstasyonu": "ev_charging_station",
-  "24 Saat Güvenlik": "security_24h",
-  "Apartman Görevlisi": "janitor",
-  "Buhar Odası": "steam_room",
-  "Çocuk Oyun Parkı": "playground",
-  "Hamam": "hammam",
-  "Hidrofor": "hydrofor",
-  "Isı Yalıtımı": "thermal_insulation",
-  "Jeneratör": "generator",
-  "Kablo TV": "cable_tv",
-  "Kamera Sistemi": "camera_system",
-  "Kreş": "nursery",
-  "Yüzme Havuzu (Açık)": "open_pool",
-  "Yüzme Havuzu (Kapalı)": "indoor_pool",
-  "Özel Havuz": "private_pool",
-  "Sauna": "sauna",
-  "Ses Yalıtımı": "sound_insulation",
-  "Siding": "siding",
-  "Spor Alanı": "sports_area",
-  "Su Deposu": "water_tank",
-  "Tenis Kortu": "tennis_court",
-  "Uydu": "satellite",
-  "Yangın Merdiveni": "fire_escape",
-};
-
+    "Araç Şarj İstasyonu": "ev_charging_station",
+    "24 Saat Güvenlik": "security_24h",
+    "Apartman Görevlisi": "janitor",
+    "Buhar Odası": "steam_room",
+    "Çocuk Oyun Parkı": "playground",
+    "Hamam": "hammam",
+    "Hidrofor": "hydrofor",
+    "Isı Yalıtımı": "thermal_insulation",
+    "Jeneratör": "generator",
+    "Kablo TV": "cable_tv",
+    "Kamera Sistemi": "camera_system",
+    "Kreş": "nursery",
+    "Yüzme Havuzu (Açık)": "open_pool",
+    "Yüzme Havuzu (Kapalı)": "indoor_pool",
+    "Özel Havuz": "private_pool",
+    "Sauna": "sauna",
+    "Ses Yalıtımı": "sound_insulation",
+    "Siding": "siding",
+    "Spor Alanı": "sports_area",
+    "Su Deposu": "water_tank",
+    "Tenis Kortu": "tennis_court",
+    "Uydu": "satellite",
+    "Yangın Merdiveni": "fire_escape",
+  };
 
   const environmentalMap = {
     "Alışveriş Merkezi": "shopping_mall",
@@ -203,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "Göl": "lake",
     "Havuz": "pool",
     "Nehir": "river",
-    "park":"park",
+    "park": "park",
     "Şehir": "city",
   };
 
@@ -235,9 +241,10 @@ document.addEventListener("DOMContentLoaded", function () {
     "Kuzey": "north",
   };
 
-  // ---------- Helpers ----------
-  const buildDefaults = (columns) => columns.reduce((acc, c) => ((acc[c] = 0), acc), {});
-  const to01 = (obj) => Object.fromEntries(Object.entries(obj || {}).map(([k, v]) => [k, v ? 1 : 0]));
+  // ---------- Helper fonksiyonlar ---------- //
+  const buildDefaults = (columns) =>
+    columns.reduce((acc, c) => ((acc[c] = 0), acc), {});
+
   const val = (id) => document.getElementById(id)?.value ?? "";
   const num = (id) => {
     const v = document.getElementById(id)?.value;
@@ -250,8 +257,19 @@ document.addEventListener("DOMContentLoaded", function () {
       checked: !!cb.checked,
     }));
 
-  // ---------- Save ----------
+  // ---------- Kaydet (ADD PROPERTY) ---------- //
   saveBtn.addEventListener("click", async () => {
+    // 🔐 1) Token al
+    const token = localStorage.getItem(TOKEN_KEY);
+    console.log("adminToken:", token);
+
+    if (!token) {
+      alert("Oturum bulunamadı veya süresi dolmuş. Lütfen tekrar giriş yapın.");
+      // İstersen login'e gönder:
+      // window.location.href = "login.html";
+      return;
+    }
+
     const title = (form.title?.value || "").trim();
     const rawPrice = (form.price?.value || "").trim();
     const price = rawPrice.replace(/\./g, "");
@@ -287,7 +305,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Default 0
+    // Tüm özellikleri 0 ile başlat
     const interiorBooleans = buildDefaults(Object.values(interiorMap));
     const exteriorBooleans = buildDefaults(Object.values(exteriorMap));
     const environmentalBooleans = buildDefaults(Object.values(environmentalMap));
@@ -297,7 +315,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const housingTypeBooleans = buildDefaults(Object.values(housingTypeMap));
     const facadeBooleans = buildDefaults(Object.values(facadeMap));
 
-    // Read checks
+    // Checkbox okuma
     collectByName("ic_ozellikler[]").forEach((item) => {
       const key = interiorMap[item.text];
       if (key) interiorBooleans[key] = item.checked ? 1 : 0;
@@ -367,9 +385,13 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("📦 Gönderilecek veri:", payload);
 
     try {
-      const res = await fetch("http://127.0.0.1:5000/add-property", {
+      // 🔐 2) Tokenli add-property isteği
+      const res = await fetch(`${API_URL}/add-property`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(payload),
       });
 
@@ -379,13 +401,17 @@ document.addEventListener("DOMContentLoaded", function () {
       const propertyId = data.propertyId;
       if (!propertyId) throw new Error("propertyId bulunamadı");
 
+      // Fotoğraf yüklemesi varsa
       if (selectedFiles.length > 0) {
         const formData = new FormData();
         formData.append("propertyId", propertyId);
         selectedFiles.forEach((f) => formData.append("photos", f.file));
 
-        const photoRes = await fetch("http://127.0.0.1:5000/upload-photos", {
+        const photoRes = await fetch(`${API_URL}/upload-photos`, {
           method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`, // 🔐 Token burada da
+          },
           body: formData,
         });
 
@@ -404,7 +430,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // ---------- District / Neighborhood / Street ----------
+  // ---------- İlçe / Mahalle / Sokak ---------- //
   const neighborhoods = {
     Akdeniz: {
       Bahçe: ["1. Cadde", "2. Cadde", "Atatürk Sokak"],
@@ -453,7 +479,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ---------- Leaflet Map ----------
+  // ---------- Leaflet Harita ---------- //
   if (window.L && document.getElementById("map")) {
     const map = L.map("map").setView([36.8, 34.6], 12);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {

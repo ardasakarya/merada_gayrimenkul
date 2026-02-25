@@ -1,4 +1,5 @@
 const BACKEND = "http://127.0.0.1:5000";
+const TOKEN_KEY = "adminToken"; // login.js'te kaydettiğin anahtar
 let deletePropertyId = null;
 
 const FIELD_LABELS_TR = {
@@ -424,7 +425,7 @@ async function openEditModal(id) {
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         ${buildSection("Genel Bilgiler", `
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            ${buildField("title", "Balık", data.title || "")}
+            ${buildField("title", "Başlık", data.title || "")}
             ${buildField("price", "Fiyat", data.price ?? "", "number")}
             ${buildField("currency", "Para Birimi", data.currency ?? "₺")}
           </div>
@@ -550,10 +551,19 @@ async function onEditSubmit(e) {
   const fd = new FormData(e.target);
   const payload = buildEditPayload(fd);
 
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (!token) {
+    alert("Önce giriş yapmanız gerekiyor.");
+    return;
+  }
+
   try {
     const res = await fetch(`${BACKEND}/properties/${payload.id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(payload),
     });
 
@@ -570,31 +580,41 @@ async function onEditSubmit(e) {
 }
 
 async function onDeleteConfirm() {
-  if (!deletePropertyId) return;
-
-  const btn = document.getElementById("confirmDeleteBtn");
-  btn.disabled = true;
-  const oldText = btn.textContent;
-  btn.textContent = "Siliniyor...";
-
   try {
+    if (!deletePropertyId) {
+      alert("Silinecek ilan bulunamadı.");
+      return;
+    }
+
+    const token = localStorage.getItem(TOKEN_KEY); // "adminToken"
+
+    if (!token) {
+      alert("Önce giriş yapmanız gerekiyor.");
+      // İstersen login sayfasına da atabilirsin:
+      // window.location.href = "login.html";
+      return;
+    }
+
     const res = await fetch(`${BACKEND}/properties/${deletePropertyId}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,  // 🔐 authAdmin için şart
+      },
     });
 
-    const data = await res.json().catch(() => null);
-    if (!res.ok) throw new Error(data?.error || res.statusText);
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || "Silme başarısız");
+    }
 
-    alert("✅ İlan tamamen silindi");
+    alert("✅ İlan silindi");
     hideDeleteModal();
-    await loadProperties();
+    await loadProperties(); // listeyi yenile
+
   } catch (err) {
     console.error("Silme hatası:", err);
-    alert("Silme hatası: " + err.message);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = oldText;
+    alert(err.message || "Silme sırasında hata oluştu");
   }
 }
 
