@@ -1,4 +1,4 @@
-const API_BASE = `${window.location.protocol}//${window.location.hostname}:3000`;
+const API_BASE = `${window.location.protocol}//${window.location.hostname}:5000`;
 const IMAGE_BASE = `${window.location.protocol}//${window.location.hostname}:5000/uploads`;
 
 const el = (id) => document.getElementById(id);

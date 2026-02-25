@@ -269,7 +269,7 @@ async function loadDetail(propertyId) {
   setText("heating", data?.specifications?.heating_type ?? "-");
 
   // Agent photo (backend’de photo yoktu; default bas)
-  setSrc("agent_photo", "../backend/img/merada_zemin_siyah_logo.png");
+  setSrc("agent_photo", "/meradaGayrimenkul_frontend/img/merada_zemin siyah logo-1.png");
 
   // Location map
   renderMap(data.location);

@@ -4,6 +4,28 @@
 const API_URL = "http://127.0.0.1:5000"; // backend/server.js portun
 const TOKEN_KEY = "adminToken";          // login.js'te kaydettiğin anahtar
 
+
+const userMenuButton = document.getElementById("userMenuButton");
+  const userDropdown = document.getElementById("userDropdown");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  // Menü aç/kapat
+  userMenuButton.addEventListener("click", () => {
+    userDropdown.classList.toggle("hidden");
+  });
+
+  // Sayfa başka yere tıklanınca kapat
+  document.addEventListener("click", (e) => {
+    if (!userMenuButton.contains(e.target) && !userDropdown.contains(e.target)) {
+      userDropdown.classList.add("hidden");
+    }
+  });
+
+  // Çıkış işlemi
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("token"); // token'ı siliyoruz
+    window.location.href = "/meradaAdmin/frontend/login.html"; // login sayfasına yönlendir
+  });
 // === YARDIMCI FONKSİYONLAR ===
 function setText(id, text) {
   const el = document.getElementById(id);

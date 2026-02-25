@@ -47,7 +47,7 @@
 
     <div class="lg:w-64 bg-white shadow-lg lg:min-h-screen">
       <div class="p-6">
-        <div class="font-['Pacifico'] text-2xl text-primary mb-8">logo</div>
+        <img src="/meradaGayrimenkul_frontend/img/logo.png" alt="Merada Logo" class="h-10 w-auto  mx-auto">
         <nav class="space-y-2">
           <a href="urunEkle.html" class="flex items-center px-4 py-3 text-gray-900 bg-blue-100 rounded-lg shadow-lg ">
             <div class="w-5 h-5 flex items-center justify-center mr-3">
@@ -78,16 +78,30 @@
         <div
           class="px-4 lg:px-8 py-4 flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
           <div>
-            <h1 class="text-2xl font-bold text-gray-900">Add New Property</h1>
-            <p class="text-gray-600 mt-1">Create a new real estate listing</p>
+            <h1 class="text-2xl font-bold text-gray-900">Yeni İlan Ekle</h1>
+            <p class="text-gray-600 mt-1">
+              Yeni bir emlak ilanı oluşturun</p>
           </div>
           <div class="flex items-center space-x-4">
 
             <div class="flex items-center space-x-3">
-              <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                <i class="ri-user-line text-gray-600"></i>
-              </div>
-              <span class="text-gray-700">Admin User</span>
+             <div class="relative">
+  <!-- Kullanıcı İkonu -->
+  <div id="userMenuButton"
+       class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer">
+    <i class="ri-user-line text-gray-600"></i>
+  </div>
+
+  <!-- Dropdown Menü -->
+  <div id="userDropdown"
+       class="hidden absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg border z-50">
+    <button id="logoutBtn"
+            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 transition">
+      Çıkış Yap
+    </button>
+  </div>
+</div>
+
             </div>
           </div>
         </div>
@@ -616,7 +630,7 @@
       </div>
     </div>
   </div>
-  
+
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="js/urunEkle.js" defer></script>
 </body>
