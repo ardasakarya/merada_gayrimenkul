@@ -324,6 +324,18 @@ async function loadDetail(propertyId) {
   );
   setText("property_description", data.description || "");
 
+  const badge = document.getElementById("listing_badge");
+if (data.listing_type) {
+    if (data.listing_type === "kiralik") {
+        badge.textContent = "Kiralık";
+        badge.classList.remove("bg-green-500");
+        badge.classList.add("bg-blue-500");
+    } else {
+        badge.textContent = "Satılık";
+        badge.classList.remove("bg-blue-500");
+        badge.classList.add("bg-green-500");
+    }
+}
   // Specifications
   setText("listing_date", formattedDate);
   setText("gross_m2", data?.specifications?.gross_sqm ? `${data.specifications.gross_sqm} m²` : "-");
@@ -336,7 +348,7 @@ async function loadDetail(propertyId) {
   setText("heating", data?.specifications?.heating_type ?? "-");
 
   // Agent photo (backend’de photo yoktu; default bas)
-  setSrc("agent_photo", "../backend/img/merada_zemin_siyah_logo.png");
+  setSrc("agent_photo", "/meradaGayrimenkul_frontend/img/merada_zemin siyah logo-1.png");
 
   // Location map
   renderMap(data.location);

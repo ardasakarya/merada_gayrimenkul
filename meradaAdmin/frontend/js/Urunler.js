@@ -223,6 +223,23 @@ async function loadProperties() {
       img.className = "w-full h-48 object-cover object-center";
       aspect.appendChild(img);
 
+  
+// ✅ Satılık / Kiralık Badge (RENKLİ)
+const ltRaw = prop.listing_type || "";
+const lt = String(ltRaw).toLowerCase();
+const isRent = lt.includes("kira"); // 'kiralik', 'kira', 'kiralık' hepsini yakalar
+
+const badge = document.createElement("div");
+badge.textContent = isRent ? "Kiralık" : "Satılık";
+
+badge.className =
+  "absolute top-3 right-3 z-20 px-4 py-1.5 text-xs sm:text-sm font-bold " +
+  "rounded-lg shadow-xl tracking-wide " +
+  (isRent
+    ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white"
+    : "bg-gradient-to-r from-green-600 to-green-500 text-white");
+
+aspect.appendChild(badge);
       const body = document.createElement("div");
       body.className = "p-5";
       body.innerHTML = `
@@ -423,16 +440,27 @@ async function openEditModal(id) {
       <div class="hidden" id="boolKeysHolder" data-boolkeys='${escapeHtml(JSON.stringify(boolKeys))}'></div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        ${buildSection("Genel Bilgiler", `
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            ${buildField("title", "Başlık", data.title || "")}
-            ${buildField("price", "Fiyat", data.price ?? "", "number")}
-            ${buildField("currency", "Para Birimi", data.currency ?? "₺")}
-          </div>
-          <div class="mt-4">
-            ${buildTextarea("description", "Açıklama", data.description || "")}
-          </div>
-        `)}
+       ${buildSection("Genel Bilgiler", `
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    ${buildField("title", "Başlık", data.title || "")}
+    ${buildField("price", "Fiyat", data.price ?? "", "number")}
+    ${buildField("currency", "Para Birimi", data.currency ?? "₺")}
+
+    <!-- ✅ İlan Türü -->
+    <label class="block">
+      <div class="text-sm font-medium text-gray-700 mb-1">İlan Türü</div>
+      <select class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brandYellow"
+              name="listing_type">
+        <option value="satilik" ${String(data.listing_type).toLowerCase() === "satilik" ? "selected" : ""}>Satılık</option>
+        <option value="kiralik" ${String(data.listing_type).toLowerCase() === "kiralik" ? "selected" : ""}>Kiralık</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="mt-4">
+    ${buildTextarea("description", "Açıklama", data.description || "")}
+  </div>
+`)}
 
         ${buildSection("Fotoğraflar", `
           <div class="text-sm text-gray-600 mb-2">Her satıra 1 foto URL yaz. Kaydedince foto listesi yenilenir.</div>
@@ -475,6 +503,7 @@ function buildEditPayload(fd) {
     description: fd.get("description") || "",
     price: toNumberOrNull(fd.get("price")),
     currency: fd.get("currency") || "₺",
+    listing_type: (fd.get("listing_type") || "").toLowerCase() || "satilik",
     location: {},
     specifications: {},
     agent: {},

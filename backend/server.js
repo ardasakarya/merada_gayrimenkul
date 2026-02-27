@@ -295,7 +295,8 @@ app.post("/api/properties/filter", (req, res) => {
     const district = cleanStr(f.district);
     if (city) add("pl.city = ?", city);
     if (district) add("pl.district = ?", district);
-
+    const listing_type = cleanStr(f.listing_type);
+    if (listing_type) add("p.listing_type = ?", listing_type);
     const rooms = cleanStr(f.rooms);
     if (rooms) add("ps.rooms = ?", rooms);
 
@@ -351,6 +352,7 @@ app.post("/api/properties/filter", (req, res) => {
         p.description,
         p.price,
         p.currency,
+         p.listing_type,
         p.created_at,
 
         pl.city,
@@ -422,7 +424,7 @@ app.post("/api/properties/filter", (req, res) => {
    ======================= */
 app.get("/properties", (req, res) => {
   const sql = `
-    SELECT p.id, p.title, p.price, p.currency, p.description,
+    SELECT p.id, p.title, p.price, p.currency,p.listing_type, p.description,
            l.city, l.district, l.neighborhood, l.street_address,
            l.latitude, l.longitude,
            s.rooms, s.bathrooms, s.gross_sqm,
@@ -444,6 +446,7 @@ app.get("/properties", (req, res) => {
       title: r.title,
       price: r.price,
       currency: r.currency,
+      listing_type: r.listing_type,
       description: r.description,
       city: r.city,
       district: r.district,
@@ -475,6 +478,7 @@ app.get("/properties/:id", (req, res) => {
     p.description,
     p.price,
     p.currency,
+    p.listing_type,
     p.created_at,
 
     a.name   AS agent_name,
@@ -680,6 +684,7 @@ app.get("/properties/:id", (req, res) => {
       description: r.description,
       price: r.price,
       currency: r.currency,
+      listing_type: r.listing_type,
       created_at: r.created_at,
 
       location: {
@@ -1165,13 +1170,16 @@ app.put("/properties/:id", authAdmin, (req, res) => {
           return rollbackAndSend(404, "İlan bulunamadı");
         }
 
+              const listingTypeForUpdate = b.listing_type ?? b.listingType ?? null;
+
         await q(
-          "UPDATE properties SET title=?, description=?, price=?, currency=? WHERE id=?",
+          "UPDATE properties SET title=?, description=?, price=?, currency=?, listing_type=? WHERE id=?",
           [
             b.title ?? null,
             b.description ?? null,
             b.price ?? null,
             b.currency ?? null,
+            listingTypeForUpdate,
             id,
           ]
         );
@@ -1295,16 +1303,15 @@ app.post("/add-property", authAdmin, (req, res) => {
     price,
     currency,
     description,
+    listing_type,
     location,
     specifications,
     features,
     agent,
   } = req.body;
-
-  if (!title || !price || !currency || !description) {
-    return res.status(400).json({ error: "Zorunlu alanlar eksik" });
+  if (!title || !price || !currency || !description || !listing_type) {
+    return res.status(400).json({ error: "Zorunlu alanlar eksik (ilan türü dahil)" });
   }
-
   const loc = location || {};
   const spec = specifications || {};
   const feat = features || {};
@@ -1332,11 +1339,11 @@ app.post("/add-property", authAdmin, (req, res) => {
           .json({ error: "Transaction başlatılamadı" });
       }
 
-      const sqlProp =
-        "INSERT INTO properties (title, price, currency, description) VALUES (?, ?, ?, ?)";
+           const sqlProp =
+        "INSERT INTO properties (title, price, currency, listing_type, description) VALUES (?, ?, ?, ?, ?)";
       conn.query(
         sqlProp,
-        [title, price, currency, description],
+        [title, price, currency, listing_type, description],
         (err, result) => {
           if (err) {
             console.error("add-property err:", err);

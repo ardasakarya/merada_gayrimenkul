@@ -23,7 +23,7 @@ const userMenuButton = document.getElementById("userMenuButton");
 
   // Çıkış işlemi
   logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("token"); // token'ı siliyoruz
+    localStorage.removeItem(TOKEN_KEY); // token'ı siliyoruz
     window.location.href = "/meradaAdmin/frontend/login.html"; // login sayfasına yönlendir
   });
 // === YARDIMCI FONKSİYONLAR ===
@@ -297,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const price = rawPrice.replace(/\./g, "");
     const currency = form.currency?.value || "";
     const description = (form.description?.value || "").trim();
-
+ const listing_type = form.listing_type?.value || "";
     const agent_name = document.getElementById("agent_name")?.value.trim() || "";
     const agent_phone = document.getElementById("agent_phone")?.value.trim() || "";
     const agent_email = document.getElementById("agent_email")?.value.trim() || "";
@@ -322,8 +322,8 @@ document.addEventListener("DOMContentLoaded", function () {
       bathrooms: num("bathroomsCount"),
     };
 
-    if (!title || !price || !currency || !description) {
-      alert("Lütfen başlık, fiyat, para birimi ve açıklama alanlarını doldurun.");
+     if (!title || !price || !currency || !description || !listing_type) {
+      alert("Lütfen ilan türü dahil zorunlu alanları doldurun.");
       return;
     }
 
@@ -376,6 +376,7 @@ document.addEventListener("DOMContentLoaded", function () {
       price,
       currency,
       description,
+       listing_type,
       location: {
         city: "Mersin",
         district,

@@ -257,6 +257,20 @@ async function loadDetail(propertyId) {
   );
   setText("property_description", data.description || "");
 
+
+  const badge = document.getElementById("listing_badge");
+
+if (data.listing_type) {
+    if (data.listing_type === "kiralik") {
+        badge.textContent = "Kiralık";
+        badge.classList.remove("bg-green-500");
+        badge.classList.add("bg-blue-500");
+    } else {
+        badge.textContent = "Satılık";
+        badge.classList.remove("bg-blue-500");
+        badge.classList.add("bg-green-500");
+    }
+}
   // Specifications
   setText("listing_date", formattedDate);
   setText("gross_m2", data?.specifications?.gross_sqm ? `${data.specifications.gross_sqm} m²` : "-");

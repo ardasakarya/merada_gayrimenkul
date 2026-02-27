@@ -24,6 +24,19 @@ function escapeHtml(s) {
     .replaceAll("'", "&#39;");
 }
 
+/* 🔢 Fiyat format helper */
+function formatPriceTR(value) {
+  if (value === null || value === undefined || value === "") return "-";
+
+  // Rakam dışı karakterleri temizle (virgül, nokta, para birimi vs.)
+  const numeric = String(value).replace(/[^\d.-]/g, "");
+  const n = Number(numeric);
+  if (!Number.isFinite(n)) return "-";
+
+  // 1000000 -> 1.000.000
+  return n.toLocaleString("tr-TR", { maximumFractionDigits: 0 });
+}
+
 function togglePanel(forceOpen) {
   const panel = el("filterPanel");
   const btn = el("filterToggle");
@@ -72,12 +85,14 @@ function collectFeatures() {
     access: []
   };
 
-  document.querySelectorAll('input[type="checkbox"][data-group][data-key]').forEach((cb) => {
-    if (!cb.checked) return;
-    const g = cb.getAttribute("data-group");
-    const k = cb.getAttribute("data-key");
-    if (groups[g]) groups[g].push(k);
-  });
+  document
+    .querySelectorAll('input[type="checkbox"][data-group][data-key]')
+    .forEach((cb) => {
+      if (!cb.checked) return;
+      const g = cb.getAttribute("data-group");
+      const k = cb.getAttribute("data-key");
+      if (groups[g]) groups[g].push(k);
+    });
 
   return groups;
 }
@@ -86,6 +101,7 @@ function getFilters() {
   return {
     city: cleanStr(el("city")?.value),
     district: cleanStr(el("district")?.value),
+    listing_type: cleanStr(el("listing_type")?.value),
     rooms: cleanStr(el("rooms")?.value),
     price_min: cleanNum(el("price_min")?.value),
     price_max: cleanNum(el("price_max")?.value),
@@ -105,8 +121,12 @@ function getFilters() {
 }
 
 function resetUI() {
-  const setVal = (id, v = "") => { if (el(id)) el(id).value = v; };
-  const setChk = (id, v = false) => { if (el(id)) el(id).checked = v; };
+  const setVal = (id, v = "") => {
+    if (el(id)) el(id).value = v;
+  };
+  const setChk = (id, v = false) => {
+    if (el(id)) el(id).checked = v;
+  };
 
   setVal("city", "Mersin");
   setVal("district");
@@ -121,12 +141,17 @@ function resetUI() {
   setVal("floor_location");
   setVal("heating_type");
 
-  ["loan_status", "exchange_status", "balcony", "furnished"].forEach((id) => setChk(id, false));
-  document.querySelectorAll('input[type="checkbox"][data-group][data-key]').forEach((cb) => {
-    cb.checked = false;
-  });
+  ["loan_status", "exchange_status", "balcony", "furnished"].forEach((id) =>
+    setChk(id, false)
+  );
+  document
+    .querySelectorAll('input[type="checkbox"][data-group][data-key]')
+    .forEach((cb) => {
+      cb.checked = false;
+    });
 }
 
+/* 🔧 Kartları fallback olarak çizen fonksiyon (fiyat burada düzeltildi) */
 function renderMainCardsFallback(list) {
   const grid = el("gridView") || el("grid");
   const listView = el("listView");
@@ -136,80 +161,146 @@ function renderMainCardsFallback(list) {
   if (listView) listView.innerHTML = "";
 
   if (!Array.isArray(list) || list.length === 0) {
-    grid.innerHTML = '<div class="text-center text-gray-500 py-12 col-span-full">Hiç ilan bulunamadı.</div>';
-    if (listView) listView.innerHTML = '<div class="text-center text-gray-500 py-12">Hiç ilan bulunamadı.</div>';
+    grid.innerHTML =
+      '<div class="text-center text-gray-500 py-12 col-span-full">Hiç ilan bulunamadı.</div>';
+    if (listView)
+      listView.innerHTML =
+        '<div class="text-center text-gray-500 py-12">Hiç ilan bulunamadı.</div>';
     return;
   }
 
- list.forEach((prop) => {
-  const rawPhoto = prop.cover_photo || prop.photo;
+  list.forEach((prop) => {
+    // 🔹 Fotoğraf URL'si
+    const rawPhoto = prop.cover_photo || prop.photo;
+    let imageUrl = "img/placeholder.png";
 
-  // Varsayılan placeholder
-  let imageUrl = "img/placeholder.png";
-
-  if (rawPhoto) {
-    if (/^https?:\/\//i.test(rawPhoto)) {
-      // Zaten tam URL ise
-      imageUrl = rawPhoto;
-    } else {
-      // Sadece dosya adı geldiyse: 5000/uploads/... formatına çevir
-      const cleaned = String(rawPhoto).replace(/^\/+/, ""); // baştaki /'leri temizle
-      imageUrl = `${IMAGE_BASE}/${cleaned}`;
+    if (rawPhoto) {
+      if (/^https?:\/\//i.test(rawPhoto)) {
+        imageUrl = rawPhoto;
+      } else {
+        const cleaned = String(rawPhoto).replace(/^\/+/, "");
+        imageUrl = `${IMAGE_BASE}/${cleaned}`;
+      }
     }
-  }
 
-  const card = document.createElement("div");
-  card.className = "bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-lg transition-all cursor-pointer";
-  card.innerHTML = `
+    // 🔹 İlan Türü: satılık / kiralık
+    const ltRaw = prop.listing_type || "";
+    const lt = String(ltRaw).toLowerCase();
+    const isRent = lt === "kiralik" || lt === "kira";
+    const badgeText = isRent ? "Kiralık" : "Satılık";
+
+    // Grid ve list için badge class'ları
+    const badgeClassGrid =
+      "absolute top-3 right-3 z-20 px-4 py-1.5 text-xs sm:text-sm font-bold " +
+      "rounded-lg shadow-xl tracking-wide " +
+      (isRent
+        ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white"
+        : "bg-gradient-to-r from-green-600 to-green-500 text-white");
+
+    const badgeClassList =
+      "inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold " +
+      (isRent
+        ? "bg-blue-100 text-blue-700 border border-blue-200"
+        : "bg-green-100 text-green-700 border border-green-200");
+
+    // 💰 Fiyatı formatla
+    const rawPrice = prop.price;
+    const formattedPrice = formatPriceTR(rawPrice);
+    const currencySymbol = "₺";
+
+    // =========================
+    // 🧱 GRID KART (kutulu görünüm)
+    // =========================
+    const card = document.createElement("div");
+    card.className =
+      "bg-white rounded-lg shadow-sm border overflow-hidden hover:shadow-lg transition-all cursor-pointer";
+    card.innerHTML = `
       <div class="relative">
-        <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(prop.title || "photo")}" class="w-full h-48 object-cover object-center">
+        <img src="${escapeHtml(imageUrl)}"
+             alt="${escapeHtml(prop.title || "photo")}"
+             class="w-full h-48 object-cover object-center">
+
+        <!-- ✅ Satılık / Kiralık Badge (GRID) -->
+        <div class="${badgeClassGrid}">
+          ${badgeText}
+        </div>
       </div>
+
       <div class="p-5">
-        <div class="text-2xl font-bold text-gray-900 mb-2">${escapeHtml(prop.currency ?? "")}${escapeHtml(prop.price ?? "-")}</div>
-        <h3 class="text-lg font-semibold text-gray-800 mb-3">${escapeHtml(prop.title || "-")}</h3>
+        <div class="text-2xl font-bold text-gray-900 mb-2">
+          ${formattedPrice} ${currencySymbol}
+        </div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-3">
+          ${escapeHtml(prop.title || "-")}
+        </h3>
         <div class="flex items-center text-gray-500 text-sm mb-4">
           <i class="ri-map-pin-line text-base mr-2"></i>
-          <span>${[prop.city, prop.district, prop.neighborhood].filter(Boolean).map(escapeHtml).join(" / ")}</span>
+          <span>
+            ${[prop.city, prop.district, prop.neighborhood]
+              .filter(Boolean)
+              .map(escapeHtml)
+              .join(" / ")}
+          </span>
         </div>
       </div>
     `;
-  card.addEventListener("click", () => {
-    window.location.href = `emlak_detay.html?id=${prop.id}`;
-  });
-  grid.appendChild(card);
+    card.addEventListener("click", () => {
+      window.location.href = `emlak_detay.html?id=${prop.id}`;
+    });
+    grid.appendChild(card);
 
-  if (listView) {
-    const row = document.createElement("a");
-    row.href = `emlak_detay.html?id=${prop.id}`;
-    row.className = "block";
-    row.innerHTML = `
+    // =========================
+    // 📋 LİSTE KART (satırlı görünüm)
+    // =========================
+    if (listView) {
+      const row = document.createElement("a");
+      row.href = `emlak_detay.html?id=${prop.id}`;
+      row.className = "block";
+      row.innerHTML = `
         <div class="flex items-center bg-white rounded-lg shadow-sm border px-3 py-2 h-20 hover:shadow-md transition-all">
           <div class="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden">
-            <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(prop.title || "-")}" class="w-full h-full object-cover object-center">
+            <img src="${escapeHtml(imageUrl)}"
+                 alt="${escapeHtml(prop.title || "-")}"
+                 class="w-full h-full object-cover object-center">
           </div>
           <div class="flex-1 ml-3 overflow-hidden">
-            <div class="text-sm font-semibold text-gray-800 truncate">${escapeHtml(prop.title || "-")}</div>
+            <div class="flex items-center justify-between gap-2">
+              <div class="text-sm font-semibold text-gray-800 truncate">
+                ${escapeHtml(prop.title || "-")}
+              </div>
+              <!-- ✅ Satılık / Kiralık Badge (LIST) -->
+              <span class="${badgeClassList}">${badgeText}</span>
+            </div>
             <div class="flex gap-3 text-xs text-gray-600 mt-1 whitespace-nowrap overflow-hidden overflow-x-auto">
-              <span><i class="ri-ruler-line mr-1"></i>${escapeHtml(prop.net_sqm ?? "-")} m²</span>
-              <span><i class="ri-map-pin-line mr-1"></i>${escapeHtml(prop.city || "")}</span>
-              <span><i class="ri-hotel-bed-line mr-1"></i>${escapeHtml(prop.rooms ?? "-")} Oda</span>
+              <span><i class="ri-ruler-line mr-1"></i>${escapeHtml(
+                prop.net_sqm ?? "-"
+              )} m²</span>
+              <span><i class="ri-map-pin-line mr-1"></i>${escapeHtml(
+                prop.city || ""
+              )}</span>
+              <span><i class="ri-hotel-bed-line mr-1"></i>${escapeHtml(
+                prop.rooms ?? "-"
+              )} Oda</span>
             </div>
           </div>
-          <div class="text-sm font-bold text-gray-900 ml-2 whitespace-nowrap">${escapeHtml(prop.currency ?? "")}${escapeHtml(prop.price ?? "-")}</div>
+          <div class="text-sm font-bold text-gray-900 ml-2 whitespace-nowrap">
+            ${formattedPrice} ${currencySymbol}
+          </div>
         </div>
       `;
-    listView.appendChild(row);
-  }
-});
-
+      listView.appendChild(row);
+    }
+  });
 }
 
 function renderResults(data) {
   if (typeof window.renderProperties === "function") {
+    // Eğer emlak_urunler.js içinden özel bir render fonksiyonun varsa onu kullan
     window.renderProperties(data);
     return;
   }
 
+  // Aksi halde bu fallback renderer çalışır
   renderMainCardsFallback(data);
 }
 
