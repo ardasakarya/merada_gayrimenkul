@@ -172,6 +172,8 @@ fetch("/meradaGayrimenkul_frontend/components/filter/filter.html")
 // ANA LİSTEYİ YÜKLE
 // =======================
 async function loadProperties(filters = {}) {
+
+  
   try {
     const query = new URLSearchParams(filters).toString();
     const res = await fetch(`${BACKEND}/properties?${query}`);

@@ -128,7 +128,7 @@ function resetUI() {
     if (el(id)) el(id).checked = v;
   };
 
-  setVal("city", "Mersin");
+  setVal("city");
   setVal("district");
   setVal("rooms");
   setVal("price_min");

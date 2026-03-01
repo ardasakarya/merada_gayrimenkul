@@ -296,8 +296,6 @@ async function loadDetail(propertyId) {
   const data = await res.json();
   console.log("DETAY DATA:", data);
 
-  // Fotoğrafları absolute URL yap
-  
   // Galeri bas
   renderGallery(data);
 
@@ -317,25 +315,39 @@ async function loadDetail(propertyId) {
 
   // Başlık / fiyat / açıklama
   setText("property_title", data.title || "");
-  const priceNum = Number(String(data.price ?? "").replace(/\D/g, "")) || 0;
+
+  const rawPrice = data.price;
+  let priceNum = Number(rawPrice);
+
+  if (!Number.isFinite(priceNum)) {
+    priceNum = 0;
+  }
+
+  const formattedPrice = priceNum.toLocaleString("tr-TR", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+
   setText(
     "property_price",
-    `${data.currency ?? "₺"} ${priceNum.toLocaleString("tr-TR")}`
+    `${data.currency ?? "₺"} ${formattedPrice}`
   );
+
   setText("property_description", data.description || "");
 
   const badge = document.getElementById("listing_badge");
-if (data.listing_type) {
+  if (badge && data.listing_type) {
     if (data.listing_type === "kiralik") {
-        badge.textContent = "Kiralık";
-        badge.classList.remove("bg-green-500");
-        badge.classList.add("bg-blue-500");
+      badge.textContent = "Kiralık";
+      badge.classList.remove("bg-green-500");
+      badge.classList.add("bg-blue-500");
     } else {
-        badge.textContent = "Satılık";
-        badge.classList.remove("bg-blue-500");
-        badge.classList.add("bg-green-500");
+      badge.textContent = "Satılık";
+      badge.classList.remove("bg-blue-500");
+      badge.classList.add("bg-green-500");
     }
-}
+  }
+
   // Specifications
   setText("listing_date", formattedDate);
   setText("gross_m2", data?.specifications?.gross_sqm ? `${data.specifications.gross_sqm} m²` : "-");
@@ -365,7 +377,6 @@ if (data.listing_type) {
   const housingType = data.housingType || {};
   const facade = data.facade || {};         // ✅ backend: views
 
-  // Eğer senin HTML’de bu id’ler varsa, otomatik renklendirir:
   const interiorIds = [
     "wifi", "adsl", "fiber", "smart_home", "alarm_burglar", "alarm_fire", "steel_door",
     "american_door", "wood_joinery", "aluminum_joinery", "pvc_joinery", "parquet",
