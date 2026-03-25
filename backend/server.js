@@ -24,6 +24,9 @@ const TOKEN_EXPIRES_IN = process.env.JWT_EXPIRES || "1h";
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
+// 🔹 Proje kök klasörü: /home/meradaco/merada_app
+const ROOT_DIR = path.join(__dirname, "..");
+
 /* =======================
    MIDDLEWARE
    ======================= */
@@ -47,6 +50,9 @@ if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
 }
 app.use("/uploads", express.static(uploadPath));
+
+// 🔹 Projeyi kökten statik servis et (index.html dahil)
+app.use(express.static(ROOT_DIR));
 
 const publicPath = path.join(__dirname, "public");
 if (fs.existsSync(publicPath)) {
@@ -217,7 +223,11 @@ const upload = multer({ storage });
 /* =======================
    SAĞLIK / ROOT
    ======================= */
-app.get("/", (req, res) => res.send("Express sunucu çalışıyor ✅"));
+app.get("/", (req, res) => {
+  // 🔹 / isteğinde kök klasördeki index.html’i gönder
+  res.sendFile(path.join(ROOT_DIR, "index.html"));
+});
+
 app.get("/health", (req, res) => res.json({ ok: true }));
 
 /* =======================
@@ -1170,7 +1180,7 @@ app.put("/properties/:id", authAdmin, (req, res) => {
           return rollbackAndSend(404, "İlan bulunamadı");
         }
 
-              const listingTypeForUpdate = b.listing_type ?? b.listingType ?? null;
+        const listingTypeForUpdate = b.listing_type ?? b.listingType ?? null;
 
         await q(
           "UPDATE properties SET title=?, description=?, price=?, currency=?, listing_type=? WHERE id=?",
@@ -1339,7 +1349,7 @@ app.post("/add-property", authAdmin, (req, res) => {
           .json({ error: "Transaction başlatılamadı" });
       }
 
-           const sqlProp =
+      const sqlProp =
         "INSERT INTO properties (title, price, currency, listing_type, description) VALUES (?, ?, ?, ?, ?)";
       conn.query(
         sqlProp,

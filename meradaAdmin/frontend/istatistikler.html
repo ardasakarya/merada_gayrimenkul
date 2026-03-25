@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Merada Yönetim | İstatistikler</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            merada: {
+              50: '#f6f8f3',
+              100: '#e7ecdf',
+              200: '#d7e0ca',
+              300: '#bcc9a8',
+              400: '#9bae80',
+              500: '#7f945d',
+              600: '#667747',
+              700: '#4e5c35',
+              800: '#394427',
+              900: '#24301a'
+            }
+          },
+          boxShadow: {
+            soft: '0 10px 30px rgba(15, 23, 42, 0.06)',
+            card: '0 20px 40px rgba(15, 23, 42, 0.08)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+  <div class="min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="hidden xl:flex w-24 border-r border-slate-200 bg-white flex-col items-center py-6 sticky top-0 h-screen">
+      <div class="w-12 h-12 rounded-2xl bg-merada-900 text-white flex items-center justify-center font-bold text-lg shadow-soft">
+        M
+      </div>
+
+      <nav class="mt-10 flex flex-col items-center gap-4">
+        <a href="main.html" class="w-12 h-12 rounded-2xl bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center text-xl" title="Dashboard">🏠</a>
+        <a href="Urunler.html" class="w-12 h-12 rounded-2xl bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center text-xl" title="İlanlar">🏢</a>
+        <a href="istatistikler.html" class="w-12 h-12 rounded-2xl bg-merada-900 text-white shadow-soft flex items-center justify-center text-xl" title="İstatistikler">📈</a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1">
+      <!-- Header -->
+      <section class="border-b border-slate-200 bg-white">
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+            <div>
+              <p class="text-sm font-semibold tracking-[0.18em] uppercase text-merada-700">Merada Yönetim</p>
+              <h1 class="mt-2 text-3xl md:text-4xl font-extrabold text-slate-900">Fiyat Geçmişi ve İlan İstatistikleri</h1>
+              <p class="mt-3 text-slate-500 max-w-3xl">
+                Fiyat değişimleri, işlem yapan kullanıcılar, eski ve yeni fiyatlar ile ilan hareketlerini sade ve hızlı bir ekranda takip et.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-3">
+              <button id="btnRefresh" class="px-4 py-3 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 font-medium transition">
+                Veriyi Yenile
+              </button>
+              <button id="btnExport" class="px-4 py-3 rounded-2xl bg-merada-900 text-white hover:bg-merada-800 font-semibold transition shadow-soft">
+                CSV Dışa Aktar
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        <!-- Summary -->
+        <section id="summaryCards" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4"></section>
+
+        <!-- Top row -->
+        <section class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <!-- Chart -->
+          <div class="xl:col-span-2 bg-white border border-slate-200 rounded-3xl shadow-soft p-5 lg:p-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
+              <div>
+                <h2 class="text-xl font-bold text-slate-900">Fiyat Değişim Trendi</h2>
+                <p class="text-sm text-slate-500 mt-1">Hover ile değerleri görüntüleyebilirsin</p>
+              </div>
+
+              <div class="inline-flex bg-slate-100 p-1 rounded-2xl">
+                <button class="chart-range-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white text-slate-900 shadow-sm" data-range="6">6 Ay</button>
+                <button class="chart-range-btn px-4 py-2 rounded-xl text-sm font-semibold text-slate-500" data-range="12">12 Ay</button>
+              </div>
+            </div>
+
+            <div class="relative">
+              <div id="chartTooltip" class="hidden absolute z-20 px-3 py-2 rounded-xl bg-slate-900 text-white text-xs shadow-lg pointer-events-none"></div>
+              <div id="chartArea" class="w-full h-[320px] rounded-2xl bg-slate-50 border border-slate-100 p-3"></div>
+            </div>
+          </div>
+
+          <!-- Recent -->
+          <div class="bg-white border border-slate-200 rounded-3xl shadow-soft p-5 lg:p-6">
+            <div class="flex items-center justify-between mb-5">
+              <div>
+                <h2 class="text-xl font-bold text-slate-900">Son Hareketler</h2>
+                <p class="text-sm text-slate-500 mt-1">En son fiyat değişimleri</p>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-merada-50 text-merada-800 font-semibold">Güncel</span>
+            </div>
+
+            <div id="recentActivity" class="space-y-3 max-h-[320px] overflow-auto pr-1 scrollbar-thin"></div>
+          </div>
+        </section>
+
+        <!-- Filters -->
+        <section class="bg-white border border-slate-200 rounded-3xl shadow-soft p-5 lg:p-6">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5">
+            <div>
+              <h2 class="text-xl font-bold text-slate-900">Filtreler</h2>
+              <p class="text-sm text-slate-500 mt-1">Arama ve temel filtreleme</p>
+            </div>
+
+            <button id="btnClearFilters" class="px-4 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 transition font-medium w-full lg:w-auto">
+              Temizle
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
+            <div class="xl:col-span-2">
+              <label class="block text-sm font-semibold text-slate-700 mb-2">İlan Ara</label>
+              <input id="searchInput" type="text" placeholder="Başlık, portföy no, lokasyon..." class="w-full h-12 px-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-merada-100 focus:border-merada-400 transition" />
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">Değişim</label>
+              <select id="changeTypeFilter" class="w-full h-12 px-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-merada-100 focus:border-merada-400 transition bg-white">
+                <option value="">Tümü</option>
+                <option value="increase">Artış</option>
+                <option value="decrease">Düşüş</option>
+                <option value="neutral">Düzeltme</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">İşlemi Yapan</label>
+              <select id="userFilter" class="w-full h-12 px-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-merada-100 focus:border-merada-400 transition bg-white">
+                <option value="">Tümü</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">Başlangıç</label>
+              <input id="startDateFilter" type="date" class="w-full h-12 px-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-merada-100 focus:border-merada-400 transition" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Table -->
+        <section class="bg-white border border-slate-200 rounded-3xl shadow-soft overflow-hidden">
+          <div class="px-5 lg:px-6 py-5 border-b border-slate-100 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+            <div>
+              <h2 class="text-xl font-bold text-slate-900">Fiyat Geçmişi</h2>
+              <p class="text-sm text-slate-500 mt-1">Detayları görüntülemek için satırdaki butona bas</p>
+            </div>
+            <span id="tableCount" class="text-sm text-slate-500">0 kayıt</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-sm">
+              <thead class="bg-slate-50 text-slate-600">
+                <tr>
+                  <th class="text-left px-5 py-4 font-semibold">İlan</th>
+                  <th class="text-left px-5 py-4 font-semibold">Eski</th>
+                  <th class="text-left px-5 py-4 font-semibold">Yeni</th>
+                  <th class="text-left px-5 py-4 font-semibold">Fark</th>
+                  <th class="text-left px-5 py-4 font-semibold">Sebep</th>
+                  <th class="text-left px-5 py-4 font-semibold">Tarih</th>
+                  <th class="text-left px-5 py-4 font-semibold">Kullanıcı</th>
+                  <th class="text-left px-5 py-4 font-semibold">Detay</th>
+                </tr>
+              </thead>
+              <tbody id="historyTableBody" class="divide-y divide-slate-100 bg-white"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Drawer -->
+  <div id="detailDrawer" class="fixed inset-0 z-50 hidden">
+    <div id="drawerOverlay" class="absolute inset-0 bg-slate-900/40"></div>
+
+    <div class="absolute right-0 top-0 h-full w-full max-w-xl bg-white shadow-2xl border-l border-slate-200 flex flex-col">
+      <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+        <div>
+          <p class="text-xs tracking-[0.18em] uppercase text-merada-700 font-semibold">Değişim Detayı</p>
+          <h3 class="text-2xl font-bold text-slate-900 mt-1">Kayıt Bilgisi</h3>
+        </div>
+        <button id="closeDrawer" class="w-11 h-11 rounded-2xl bg-slate-100 hover:bg-slate-200 transition text-lg">✕</button>
+      </div>
+
+      <div id="drawerContent" class="flex-1 overflow-auto p-6 space-y-5 scrollbar-thin"></div>
+    </div>
+  </div>
+
+  <script src="/meradaAdmin/frontend/js/istatistikler.js"></script>
+</body>
+</html>
