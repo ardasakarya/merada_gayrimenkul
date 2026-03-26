@@ -1,150 +1,27 @@
 (() => {
-  const sampleHistory = [
-    {
-      id: 1,
-      listingId: 101,
-      portfolioNo: "MRD-101",
-      title: "Yenişehir 3+1 Lüks Daire",
-      location: "Mersin / Yenişehir",
-      owner: {
-        name: "Ahmet Yılmaz",
-        phone: "0532 111 22 33",
-        email: "ahmetyilmaz@example.com"
-      },
-      oldPrice: 3250000,
-      newPrice: 3490000,
-      changeType: "increase",
-      reason: "Piyasa artışı ve iç tadilat sonrası güncelleme",
-      changedAt: "2026-03-18T10:45:00",
-      changedBy: "Admin Arda",
-      notes: "Salon ve mutfak tamamen yenilendi."
-    },
-    {
-      id: 2,
-      listingId: 102,
-      portfolioNo: "MRD-102",
-      title: "Mezitli Deniz Manzaralı 2+1",
-      location: "Mersin / Mezitli",
-      owner: {
-        name: "Fatma Kara",
-        phone: "0533 987 45 67",
-        email: "fatmakara@example.com"
-      },
-      oldPrice: 4180000,
-      newPrice: 3995000,
-      changeType: "decrease",
-      reason: "Hızlı satış için fiyat düşürüldü",
-      changedAt: "2026-03-17T15:10:00",
-      changedBy: "Editör Merve",
-      notes: "Satış sürecini hızlandırmak için indirim yapıldı."
-    },
-    {
-      id: 3,
-      listingId: 103,
-      portfolioNo: "MRD-103",
-      title: "Erdemli Yazlık Bahçeli Villa",
-      location: "Mersin / Erdemli",
-      owner: {
-        name: "Hasan Doğan",
-        phone: "0536 222 10 90",
-        email: "hasandogan@example.com"
-      },
-      oldPrice: 7850000,
-      newPrice: 8250000,
-      changeType: "increase",
-      reason: "Sezon başlangıcı ve yoğun talep",
-      changedAt: "2026-03-15T12:25:00",
-      changedBy: "Admin Arda",
-      notes: "Yaz dönemi öncesi fiyat optimizasyonu."
-    },
-    {
-      id: 4,
-      listingId: 104,
-      portfolioNo: "MRD-104",
-      title: "Toroslar Yatırımlık 1+1",
-      location: "Mersin / Toroslar",
-      owner: {
-        name: "Elif Demir",
-        phone: "0541 987 12 34",
-        email: "elifdemir@example.com"
-      },
-      oldPrice: 1750000,
-      newPrice: 1750000,
-      changeType: "neutral",
-      reason: "Sistemsel alan düzenlemesi",
-      changedAt: "2026-03-13T09:05:00",
-      changedBy: "Operasyon User",
-      notes: "Net fiyat değişmedi."
-    },
-    {
-      id: 5,
-      listingId: 105,
-      portfolioNo: "MRD-105",
-      title: "Akdeniz Merkezi Konumda Ofis",
-      location: "Mersin / Akdeniz",
-      owner: {
-        name: "Murat Güneş",
-        phone: "0552 456 77 90",
-        email: "muratgunes@example.com"
-      },
-      oldPrice: 2590000,
-      newPrice: 2790000,
-      changeType: "increase",
-      reason: "Ticari bölge değeri arttı",
-      changedAt: "2026-03-10T16:40:00",
-      changedBy: "Editör Merve",
-      notes: "Benzer portföy analizi sonrası güncellendi."
-    },
-    {
-      id: 6,
-      listingId: 106,
-      portfolioNo: "MRD-106",
-      title: "Tarsus Geniş Aile Dairesi",
-      location: "Mersin / Tarsus",
-      owner: {
-        name: "Zehra Şahin",
-        phone: "0531 998 41 52",
-        email: "zehrasahin@example.com"
-      },
-      oldPrice: 2980000,
-      newPrice: 2890000,
-      changeType: "decrease",
-      reason: "Alıcı geri bildirimine göre revize edildi",
-      changedAt: "2026-03-08T11:15:00",
-      changedBy: "Admin Arda",
-      notes: "Pazarlık payı azaltıldı."
-    }
-  ];
+const cfg = window.MERADA_CONFIG || {};
+const RAW_API =
+  cfg.API_URL ||
+  "http://127.0.0.1:5000";
 
-  const chartData = {
-    6: [
-      { label: "Eki", value: 8 },
-      { label: "Kas", value: 11 },
-      { label: "Ara", value: 7 },
-      { label: "Oca", value: 14 },
-      { label: "Şub", value: 13 },
-      { label: "Mar", value: 18 }
-    ],
-    12: [
-      { label: "Nis", value: 4 },
-      { label: "May", value: 5 },
-      { label: "Haz", value: 6 },
-      { label: "Tem", value: 5 },
-      { label: "Ağu", value: 7 },
-      { label: "Eyl", value: 10 },
-      { label: "Eki", value: 8 },
-      { label: "Kas", value: 11 },
-      { label: "Ara", value: 7 },
-      { label: "Oca", value: 14 },
-      { label: "Şub", value: 13 },
-      { label: "Mar", value: 18 }
-    ]
-  };
-
+const API_BASE = RAW_API.replace(/\/+$/, "");
+const TOKEN_KEY = cfg.TOKEN_KEY || "adminToken";
   const state = {
     currentRange: 6,
-    records: [...sampleHistory],
-    filteredRecords: [...sampleHistory]
+    records: [],
+    filteredRecords: [],
+    overview: {
+      totalProperties: 0,
+      totalChanges: 0,
+      increaseCount: 0,
+      decreaseCount: 0,
+      neutralCount: 0,
+      totalVolume: 0
+    },
+    chartData: {
+      6: [],
+      12: []
+    }
   };
 
   const el = {
@@ -158,6 +35,7 @@
     changeTypeFilter: document.getElementById("changeTypeFilter"),
     userFilter: document.getElementById("userFilter"),
     startDateFilter: document.getElementById("startDateFilter"),
+    endDateFilter: document.getElementById("endDateFilter"),
     btnClearFilters: document.getElementById("btnClearFilters"),
     btnRefresh: document.getElementById("btnRefresh"),
     btnExport: document.getElementById("btnExport"),
@@ -167,13 +45,26 @@
     drawerContent: document.getElementById("drawerContent")
   };
 
-  function formatPrice(value) {
-    return `${Number(value || 0).toLocaleString("tr-TR")} ₺`;
+  function getToken() {
+    return localStorage.getItem(TOKEN_KEY);
+  }
+
+  function authHeaders() {
+    const token = getToken();
+    return {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    };
+  }
+
+  function formatPrice(value, currency = "₺") {
+    return `${Number(value || 0).toLocaleString("tr-TR")} ${currency === "TRY" ? "₺" : currency}`;
   }
 
   function formatDate(value) {
     if (!value) return "-";
     const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "-";
     return new Intl.DateTimeFormat("tr-TR", {
       day: "2-digit",
       month: "2-digit",
@@ -195,6 +86,7 @@
   function timeAgo(value) {
     const now = new Date();
     const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "-";
     const diffMs = now - date;
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
     const diffDays = Math.floor(diffHours / 24);
@@ -205,12 +97,13 @@
   }
 
   function getChangeAmount(record) {
-    return (record.newPrice || 0) - (record.oldPrice || 0);
+    return Number(record.newPrice || 0) - Number(record.oldPrice || 0);
   }
 
   function getChangePercent(record) {
-    if (!record.oldPrice) return 0;
-    return (getChangeAmount(record) / record.oldPrice) * 100;
+    const oldPrice = Number(record.oldPrice || 0);
+    if (!oldPrice) return 0;
+    return (getChangeAmount(record) / oldPrice) * 100;
   }
 
   function getChangeBadge(type) {
@@ -223,38 +116,163 @@
     return `<span class="inline-flex items-center px-3 py-1 rounded-full bg-amber-50 text-amber-700 font-semibold text-xs">Düzeltme</span>`;
   }
 
-  function renderSummaryCards() {
-    if (!el.summaryCards) return;
+  function monthLabel(dateStr) {
+    const d = new Date(dateStr);
+    return new Intl.DateTimeFormat("tr-TR", { month: "short" }).format(d);
+  }
 
-    const records = state.filteredRecords;
+  function buildChartData(records, monthsCount) {
+    const now = new Date();
+    const buckets = [];
+
+    for (let i = monthsCount - 1; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+      buckets.push({
+        key,
+        label: monthLabel(d),
+        value: 0
+      });
+    }
+
+    records.forEach(item => {
+      const d = new Date(item.changedAt);
+      if (Number.isNaN(d.getTime())) return;
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+      const bucket = buckets.find(x => x.key === key);
+      if (bucket) bucket.value += 1;
+    });
+
+    return buckets.map(({ label, value }) => ({ label, value }));
+  }
+
+  function recalcOverview(records) {
     const totalChanges = records.length;
     const increaseCount = records.filter(item => item.changeType === "increase").length;
     const decreaseCount = records.filter(item => item.changeType === "decrease").length;
+    const neutralCount = records.filter(item => item.changeType === "neutral").length;
     const totalVolume = records.reduce((sum, item) => sum + Math.abs(getChangeAmount(item)), 0);
 
+    return {
+      totalProperties: state.overview.totalProperties || 0,
+      totalChanges,
+      increaseCount,
+      decreaseCount,
+      neutralCount,
+      totalVolume
+    };
+  }
+
+  async function fetchStatsData() {
+    const token = getToken();
+    if (!token) {
+      alert("Oturum bulunamadı. Lütfen tekrar giriş yapın.");
+      return;
+    }
+
+    try {
+      const [overviewRes, historyRes] = await Promise.all([
+        fetch(`${API_BASE}/api/stats/dashboard`, {
+          headers: authHeaders()
+        }),
+        fetch(`${API_BASE}/api/price-history`, {
+          headers: authHeaders()
+        })
+      ]);
+
+      if (!overviewRes.ok) {
+        const err = await overviewRes.json().catch(() => ({}));
+        throw new Error(err.error || "İstatistik özeti alınamadı");
+      }
+
+      if (!historyRes.ok) {
+        const err = await historyRes.json().catch(() => ({}));
+        throw new Error(err.error || "Fiyat geçmişi alınamadı");
+      }
+
+      const overview = await overviewRes.json();
+      const history = await historyRes.json();
+
+      state.overview = {
+        totalProperties: Number(overview.totalProperties || 0),
+        totalChanges: Number(overview.totalChanges || 0),
+        increaseCount: Number(overview.increaseCount || 0),
+        decreaseCount: Number(overview.decreaseCount || 0),
+        neutralCount: Number(overview.neutralCount || 0),
+        totalVolume: Number(overview.totalVolume || 0)
+      };
+
+      state.records = Array.isArray(history)
+        ? history.map((item, index) => ({
+            id: item.id ?? index + 1,
+            listingId: item.listingId ?? "",
+            portfolioNo: item.portfolioNo || item.listingId || "",
+            title: item.title || "Başlıksız İlan",
+            location: item.location || "-",
+            owner: {
+              name: item.owner?.name || "",
+              phone: item.owner?.phone || "",
+              email: item.owner?.email || ""
+            },
+            oldPrice: Number(item.oldPrice || 0),
+            newPrice: Number(item.newPrice || 0),
+            currency: item.currency || "TRY",
+            changeType: item.changeType || "neutral",
+            reason: item.reason || "-",
+            changedAt: item.changedAt || null,
+            changedBy: item.changedBy || "-",
+            notes: item.notes || ""
+          }))
+        : [];
+
+      state.filteredRecords = [...state.records];
+      state.chartData[6] = buildChartData(state.records, 6);
+      state.chartData[12] = buildChartData(state.records, 12);
+
+      renderUserOptions();
+      renderSummaryCards();
+      renderChart();
+      renderRecentActivity();
+      renderTable();
+    } catch (err) {
+      console.error("istatistik verisi alınamadı:", err);
+      alert(err.message || "Veriler alınamadı.");
+    }
+  }
+
+  function renderSummaryCards() {
+    if (!el.summaryCards) return;
+
+    const dynamicOverview = recalcOverview(state.filteredRecords);
     const cards = [
       {
-        title: "Toplam Kayıt",
-        value: totalChanges,
-        note: "Seçili filtreye göre",
+        title: "Toplam İlan",
+        value: dynamicOverview.totalProperties,
+        note: "Veritabanındaki aktif ilan sayısı",
         tone: "bg-slate-900 text-white"
       },
       {
+        title: "Toplam Değişim",
+        value: dynamicOverview.totalChanges,
+        note: "Filtreye uyan kayıt",
+        tone: "bg-white text-slate-900 border border-slate-200"
+      },
+      {
         title: "Artış",
-        value: increaseCount,
+        value: dynamicOverview.increaseCount,
         note: "Fiyatı yükselen ilanlar",
         tone: "bg-white text-slate-900 border border-slate-200"
       },
       {
         title: "Düşüş",
-        value: decreaseCount,
+        value: dynamicOverview.decreaseCount,
         note: "Fiyatı düşen ilanlar",
         tone: "bg-white text-slate-900 border border-slate-200"
       },
       {
         title: "Toplam Hacim",
-        value: formatPrice(totalVolume),
-        note: "Farkların toplamı",
+        value: formatPrice(dynamicOverview.totalVolume),
+        note: "Mutlak farkların toplamı",
         tone: "bg-merada-50 text-merada-900 border border-merada-100"
       }
     ];
@@ -274,6 +292,16 @@
     const padding = { top: 20, right: 20, bottom: 40, left: 20 };
     const innerWidth = width - padding.left - padding.right;
     const innerHeight = height - padding.top - padding.bottom;
+
+    if (!data.length) {
+      return `
+        <svg viewBox="0 0 ${width} ${height}" class="w-full h-full">
+          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#64748b" font-size="16">
+            Grafik verisi yok
+          </text>
+        </svg>
+      `;
+    }
 
     const maxValue = Math.max(...data.map(d => d.value), 1);
     const minValue = 0;
@@ -315,10 +343,8 @@
         </defs>
 
         ${gridSvg}
-
         <path d="${areaPath}" fill="url(#areaGradient)"></path>
         <path d="${linePath}" fill="none" stroke="#24301a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
-
         ${pointsSvg}
         ${labelsSvg}
       </svg>
@@ -356,8 +382,7 @@
 
   function renderChart() {
     if (!el.chartArea) return;
-
-    const data = chartData[state.currentRange] || [];
+    const data = state.chartData[state.currentRange] || [];
     el.chartArea.innerHTML = buildLineChartSVG(data);
 
     document.querySelectorAll(".chart-range-btn").forEach(btn => {
@@ -378,27 +403,33 @@
       .sort((a, b) => new Date(b.changedAt) - new Date(a.changedAt))
       .slice(0, 6);
 
-    el.recentActivity.innerHTML = rows.map(item => {
-      const amount = getChangeAmount(item);
-      const amountClass = amount > 0 ? "text-emerald-600" : amount < 0 ? "text-rose-600" : "text-amber-600";
+    el.recentActivity.innerHTML = rows.length
+      ? rows.map(item => {
+          const amount = getChangeAmount(item);
+          const amountClass = amount > 0 ? "text-emerald-600" : amount < 0 ? "text-rose-600" : "text-amber-600";
 
-      return `
-        <button data-detail-id="${item.id}" class="detail-trigger w-full text-left p-4 rounded-2xl border border-slate-200 hover:border-merada-300 hover:bg-slate-50 transition">
-          <div class="flex items-start justify-between gap-3">
-            <div class="min-w-0">
-              <h4 class="font-bold text-slate-900 truncate">${escapeHtml(item.title)}</h4>
-              <p class="text-sm text-slate-500 mt-1">${escapeHtml(item.changedBy)} • ${timeAgo(item.changedAt)}</p>
-            </div>
-            ${getChangeBadge(item.changeType)}
-          </div>
+          return `
+            <button data-detail-id="${item.id}" class="detail-trigger w-full text-left p-4 rounded-2xl border border-slate-200 hover:border-merada-300 hover:bg-slate-50 transition">
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0">
+                  <h4 class="font-bold text-slate-900 truncate">${escapeHtml(item.title)}</h4>
+                  <p class="text-sm text-slate-500 mt-1">${escapeHtml(item.changedBy)} • ${timeAgo(item.changedAt)}</p>
+                </div>
+                ${getChangeBadge(item.changeType)}
+              </div>
 
-          <div class="mt-3 text-sm flex items-center justify-between gap-3">
-            <span class="text-slate-500">${formatPrice(item.oldPrice)} → ${formatPrice(item.newPrice)}</span>
-            <span class="font-bold ${amountClass}">${amount > 0 ? "+" : ""}${formatPrice(amount)}</span>
-          </div>
-        </button>
+              <div class="mt-3 text-sm flex items-center justify-between gap-3">
+                <span class="text-slate-500">${formatPrice(item.oldPrice, item.currency)} → ${formatPrice(item.newPrice, item.currency)}</span>
+                <span class="font-bold ${amountClass}">${amount > 0 ? "+" : ""}${formatPrice(amount, item.currency)}</span>
+              </div>
+            </button>
+          `;
+        }).join("")
+      : `
+        <div class="p-6 rounded-2xl bg-slate-50 text-slate-500 text-sm">
+          Son hareket bulunamadı.
+        </div>
       `;
-    }).join("");
   }
 
   function renderTable() {
@@ -435,23 +466,23 @@
           <td class="px-5 py-4 align-top">
             <div class="min-w-[240px]">
               <div class="font-bold text-slate-900">${escapeHtml(item.title)}</div>
-              <div class="text-xs text-slate-500 mt-1">${escapeHtml(item.portfolioNo)} • ${escapeHtml(item.location)}</div>
+              <div class="text-xs text-slate-500 mt-1">${escapeHtml(String(item.portfolioNo || "-"))} • ${escapeHtml(item.location || "-")}</div>
             </div>
           </td>
 
-          <td class="px-5 py-4 whitespace-nowrap font-medium">${formatPrice(item.oldPrice)}</td>
-          <td class="px-5 py-4 whitespace-nowrap font-semibold text-slate-900">${formatPrice(item.newPrice)}</td>
+          <td class="px-5 py-4 whitespace-nowrap font-medium">${formatPrice(item.oldPrice, item.currency)}</td>
+          <td class="px-5 py-4 whitespace-nowrap font-semibold text-slate-900">${formatPrice(item.newPrice, item.currency)}</td>
 
           <td class="px-5 py-4">
-            <div class="font-bold ${amountClass}">${amount > 0 ? "+" : ""}${formatPrice(amount)}</div>
+            <div class="font-bold ${amountClass}">${amount > 0 ? "+" : ""}${formatPrice(amount, item.currency)}</div>
             <div class="text-xs text-slate-500 mt-1">${percent > 0 ? "+" : ""}${percent.toFixed(2)}%</div>
           </td>
 
-          <td class="px-5 py-4 text-slate-600 min-w-[220px]">${escapeHtml(item.reason)}</td>
+          <td class="px-5 py-4 text-slate-600 min-w-[220px]">${escapeHtml(item.reason || "-")}</td>
           <td class="px-5 py-4 whitespace-nowrap text-slate-500">${formatDate(item.changedAt)}</td>
           <td class="px-5 py-4 whitespace-nowrap">
             <span class="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold">
-              ${escapeHtml(item.changedBy)}
+              ${escapeHtml(item.changedBy || "-")}
             </span>
           </td>
           <td class="px-5 py-4">
@@ -466,7 +497,7 @@
 
   function renderUserOptions() {
     if (!el.userFilter) return;
-    const users = [...new Set(state.records.map(item => item.changedBy))];
+    const users = [...new Set(state.records.map(item => item.changedBy).filter(Boolean))];
 
     el.userFilter.innerHTML = `
       <option value="">Tümü</option>
@@ -479,15 +510,17 @@
     const changeType = el.changeTypeFilter?.value || "";
     const user = el.userFilter?.value || "";
     const startDate = el.startDateFilter?.value || "";
+    const endDate = el.endDateFilter?.value || "";
 
     state.filteredRecords = state.records.filter(item => {
       const searchable = [
         item.title,
         item.portfolioNo,
         item.location,
-        item.owner.name,
+        item.owner?.name,
         item.changedBy,
-        item.reason
+        item.reason,
+        item.notes
       ].join(" ").toLowerCase();
 
       const changedDate = new Date(item.changedAt);
@@ -496,8 +529,9 @@
       const matchesType = !changeType || item.changeType === changeType;
       const matchesUser = !user || item.changedBy === user;
       const matchesStart = !startDate || changedDate >= new Date(`${startDate}T00:00:00`);
+      const matchesEnd = !endDate || changedDate <= new Date(`${endDate}T23:59:59`);
 
-      return matchesSearch && matchesType && matchesUser && matchesStart;
+      return matchesSearch && matchesType && matchesUser && matchesStart && matchesEnd;
     });
 
     renderSummaryCards();
@@ -517,66 +551,50 @@
 
     el.drawerContent.innerHTML = `
       <div class="rounded-3xl bg-slate-900 text-white p-5">
-        <p class="text-xs uppercase tracking-[0.18em] text-white/70">${escapeHtml(item.portfolioNo)}</p>
+        <p class="text-xs uppercase tracking-[0.18em] text-white/70">${escapeHtml(String(item.portfolioNo || "-"))}</p>
         <h4 class="mt-2 text-2xl font-extrabold">${escapeHtml(item.title)}</h4>
-        <p class="mt-2 text-white/70">${escapeHtml(item.location)}</p>
+        <p class="mt-2 text-white/70">${escapeHtml(item.location || "-")}</p>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5">
           <div class="rounded-2xl bg-white/10 p-4">
             <p class="text-white/60 text-sm">Eski Fiyat</p>
-            <p class="mt-2 text-lg font-bold">${formatPrice(item.oldPrice)}</p>
+            <p class="mt-2 text-lg font-bold">${formatPrice(item.oldPrice, item.currency)}</p>
           </div>
           <div class="rounded-2xl bg-white/10 p-4">
             <p class="text-white/60 text-sm">Yeni Fiyat</p>
-            <p class="mt-2 text-lg font-bold">${formatPrice(item.newPrice)}</p>
+            <p class="mt-2 text-lg font-bold">${formatPrice(item.newPrice, item.currency)}</p>
           </div>
           <div class="rounded-2xl bg-white/10 p-4">
             <p class="text-white/60 text-sm">Fark</p>
-            <p class="mt-2 text-lg font-bold ${amountClass}">${amount > 0 ? "+" : ""}${formatPrice(amount)}</p>
-            <p class="text-sm text-white/70 mt-1">${percent > 0 ? "+" : ""}${percent.toFixed(2)}%</p>
+            <p class="mt-2 text-lg font-bold ${amountClass}">${amount > 0 ? "+" : ""}${formatPrice(amount, item.currency)}</p>
+            <p class="text-xs text-white/70 mt-1">${percent > 0 ? "+" : ""}${percent.toFixed(2)}%</p>
           </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 gap-4">
+      <div class="mt-6 space-y-5">
         <div class="rounded-3xl border border-slate-200 p-5">
-          <h5 class="text-lg font-bold text-slate-900">İşlem Bilgileri</h5>
-          <div class="mt-4 space-y-3 text-sm">
-            <div>
-              <p class="text-slate-500">İşlemi Yapan</p>
-              <p class="font-semibold text-slate-900 mt-1">${escapeHtml(item.changedBy)}</p>
-            </div>
-            <div>
-              <p class="text-slate-500">İşlem Tarihi</p>
-              <p class="font-semibold text-slate-900 mt-1">${formatDate(item.changedAt)}</p>
-            </div>
-            <div>
-              <p class="text-slate-500">Değişim Nedeni</p>
-              <p class="font-semibold text-slate-900 mt-1">${escapeHtml(item.reason)}</p>
-            </div>
-            <div>
-              <p class="text-slate-500">Not</p>
-              <p class="font-semibold text-slate-900 mt-1">${escapeHtml(item.notes || "-")}</p>
-            </div>
+          <h5 class="font-bold text-slate-900 mb-3">Mülk Sahibi</h5>
+          <div class="space-y-2 text-sm">
+            <p><span class="font-semibold">Ad Soyad:</span> ${escapeHtml(item.owner?.name || "-")}</p>
+            <p><span class="font-semibold">Telefon:</span> ${escapeHtml(item.owner?.phone || "-")}</p>
+            <p><span class="font-semibold">E-posta:</span> ${escapeHtml(item.owner?.email || "-")}</p>
           </div>
         </div>
 
         <div class="rounded-3xl border border-slate-200 p-5">
-          <h5 class="text-lg font-bold text-slate-900">Mülk Sahibi</h5>
-          <div class="mt-4 space-y-3 text-sm">
-            <div>
-              <p class="text-slate-500">Ad Soyad</p>
-              <p class="font-semibold text-slate-900 mt-1">${escapeHtml(item.owner.name)}</p>
-            </div>
-            <div>
-              <p class="text-slate-500">Telefon</p>
-              <p class="font-semibold text-slate-900 mt-1">${escapeHtml(item.owner.phone)}</p>
-            </div>
-            <div>
-              <p class="text-slate-500">E-posta</p>
-              <p class="font-semibold text-slate-900 mt-1">${escapeHtml(item.owner.email)}</p>
-            </div>
+          <h5 class="font-bold text-slate-900 mb-3">İşlem Bilgisi</h5>
+          <div class="space-y-2 text-sm">
+            <p><span class="font-semibold">Değişim Türü:</span> ${getChangeBadge(item.changeType)}</p>
+            <p><span class="font-semibold">İşlemi Yapan:</span> ${escapeHtml(item.changedBy || "-")}</p>
+            <p><span class="font-semibold">Tarih:</span> ${formatDate(item.changedAt)}</p>
+            <p><span class="font-semibold">Sebep:</span> ${escapeHtml(item.reason || "-")}</p>
           </div>
+        </div>
+
+        <div class="rounded-3xl border border-slate-200 p-5">
+          <h5 class="font-bold text-slate-900 mb-3">Notlar</h5>
+          <p class="text-sm text-slate-600 whitespace-pre-line">${escapeHtml(item.notes || "-")}</p>
         </div>
       </div>
     `;
@@ -596,6 +614,7 @@
     if (el.changeTypeFilter) el.changeTypeFilter.value = "";
     if (el.userFilter) el.userFilter.value = "";
     if (el.startDateFilter) el.startDateFilter.value = "";
+    if (el.endDateFilter) el.endDateFilter.value = "";
     applyFilters();
   }
 
@@ -613,6 +632,8 @@
       "Mülk Sahibi",
       "Eski Fiyat",
       "Yeni Fiyat",
+      "Değişim Tutarı",
+      "Değişim Yüzdesi",
       "Değişim Türü",
       "Değişim Nedeni",
       "İşlemi Yapan",
@@ -620,16 +641,18 @@
     ];
 
     const csvRows = rows.map(item => [
-      item.portfolioNo,
-      item.title,
-      item.location,
-      item.owner.name,
-      item.oldPrice,
-      item.newPrice,
-      item.changeType,
-      item.reason,
-      item.changedBy,
-      item.changedAt
+      item.portfolioNo || "",
+      item.title || "",
+      item.location || "",
+      item.owner?.name || "",
+      item.oldPrice || 0,
+      item.newPrice || 0,
+      getChangeAmount(item),
+      getChangePercent(item).toFixed(2),
+      item.changeType || "",
+      item.reason || "",
+      item.changedBy || "",
+      item.changedAt || ""
     ]);
 
     const csvContent = [headers, ...csvRows]
@@ -655,13 +678,11 @@
     if (el.changeTypeFilter) el.changeTypeFilter.addEventListener("change", applyFilters);
     if (el.userFilter) el.userFilter.addEventListener("change", applyFilters);
     if (el.startDateFilter) el.startDateFilter.addEventListener("change", applyFilters);
+    if (el.endDateFilter) el.endDateFilter.addEventListener("change", applyFilters);
     if (el.btnClearFilters) el.btnClearFilters.addEventListener("click", clearFilters);
 
     if (el.btnRefresh) {
-      el.btnRefresh.addEventListener("click", () => {
-        applyFilters();
-        renderChart();
-      });
+      el.btnRefresh.addEventListener("click", fetchStatsData);
     }
 
     if (el.btnExport) el.btnExport.addEventListener("click", exportReport);
@@ -687,12 +708,8 @@
   }
 
   function init() {
-    renderUserOptions();
-    renderSummaryCards();
-    renderChart();
-    renderRecentActivity();
-    renderTable();
     bindEvents();
+    fetchStatsData();
   }
 
   if (document.readyState === "loading") {

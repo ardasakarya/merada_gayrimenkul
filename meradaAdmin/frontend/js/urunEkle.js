@@ -301,7 +301,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const agent_name = document.getElementById("agent_name")?.value.trim() || "";
     const agent_phone = document.getElementById("agent_phone")?.value.trim() || "";
     const agent_email = document.getElementById("agent_email")?.value.trim() || "";
-
+const owner_name = document.getElementById("owner_name")?.value.trim() || "";
+const owner_phone = document.getElementById("owner_phone")?.value.trim() || "";
+const owner_email = document.getElementById("owner_email")?.value.trim() || "";
     const district = val("district");
     const neighborhood = val("neighborhood");
     const street = val("street");
@@ -403,6 +405,11 @@ document.addEventListener("DOMContentLoaded", function () {
         phone: agent_phone,
         email: agent_email,
       },
+      owner: {
+  name: owner_name,
+  phone: owner_phone,
+  email: owner_email,
+},
     };
 
     console.log("📦 Gönderilecek veri:", payload);

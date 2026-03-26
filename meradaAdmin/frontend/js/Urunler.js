@@ -27,7 +27,12 @@ const FIELD_LABELS_TR = {
   name: "Danışman Adı",
   phone: "Danışman Telefon",
   email: "Danışman E-posta",
-
+owner_name: "Mülk Sahibi Adı",
+owner_phone: "Mülk Sahibi Telefon",
+owner_email: "Mülk Sahibi E-posta",
+reason: "Fiyat Değişim Nedeni",
+notes: "Not",
+changed_by: "Düzenleyen",
   // interior
   adsl: "ADSL",
   wood_joinery: "Ahşap Doğrama",
@@ -324,20 +329,24 @@ function closeEditModal() {
 }
 
 function buildField(name, label, value, type = "text") {
-  const inputBase = "w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brandYellow";
+  const inputBase =
+    "w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-800 " +
+    "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition";
   return `
     <label class="block">
-      <div class="text-sm font-medium text-gray-700 mb-1">${escapeHtml(label)}</div>
+      <div class="text-sm font-semibold text-gray-700 mb-2">${escapeHtml(label)}</div>
       <input class="${inputBase}" name="${escapeHtml(name)}" type="${type}" value="${escapeHtml(value ?? "")}">
     </label>
   `;
 }
 
 function buildTextarea(name, label, value) {
-  const inputBase = "w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brandYellow";
+  const inputBase =
+    "w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-800 " +
+    "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition";
   return `
     <label class="block">
-      <div class="text-sm font-medium text-gray-700 mb-1">${escapeHtml(label)}</div>
+      <div class="text-sm font-semibold text-gray-700 mb-2">${escapeHtml(label)}</div>
       <textarea class="${inputBase} min-h-[120px]" name="${escapeHtml(name)}">${escapeHtml(value ?? "")}</textarea>
     </label>
   `;
@@ -345,8 +354,8 @@ function buildTextarea(name, label, value) {
 
 function buildCheckbox(name, label, checked) {
   return `
-    <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-gray-50">
-      <input type="checkbox" class="h-5 w-5" name="${escapeHtml(name)}" ${checked ? "checked" : ""}>
+    <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition">
+      <input type="checkbox" class="h-4 w-4 accent-blue-600" name="${escapeHtml(name)}" ${checked ? "checked" : ""}>
       <span class="text-sm text-gray-800">${escapeHtml(label)}</span>
     </label>
   `;
@@ -354,10 +363,12 @@ function buildCheckbox(name, label, checked) {
 
 function buildSection(title, inner) {
   return `
-    <div class="bg-white rounded-2xl border border-gray-200 p-4 sm:p-5">
-      <div class="text-base font-semibold text-gray-900 mb-4">${escapeHtml(title)}</div>
+    <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-base font-bold text-gray-900">${escapeHtml(title)}</h3>
+      </div>
       ${inner}
-    </div>
+    </section>
   `;
 }
 
@@ -402,7 +413,7 @@ async function openEditModal(id) {
     const spec = data.specifications || {};
     const agent = data.agent || {};
     const photos = Array.isArray(data.photos) ? data.photos : [];
-
+const owner = data.owner || {};
     const interior = data.interior_features || {};
     const exterior = data.exterior_features || {};
     const environmental = data.environmental_features || {};
@@ -435,59 +446,86 @@ async function openEditModal(id) {
     collectBoolKeys("facade", facade);
 
     const form = document.getElementById("editFormContent");
-    form.innerHTML = `
-      <input type="hidden" name="id" value="${Number(data.id)}">
-      <div class="hidden" id="boolKeysHolder" data-boolkeys='${escapeHtml(JSON.stringify(boolKeys))}'></div>
+  form.innerHTML = `
+  <input type="hidden" name="id" value="${Number(data.id)}">
+  <div class="hidden" id="boolKeysHolder" data-boolkeys='${escapeHtml(JSON.stringify(boolKeys))}'></div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-       ${buildSection("Genel Bilgiler", `
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    ${buildField("title", "Başlık", data.title || "")}
-    ${buildField("price", "Fiyat", data.price ?? "", "number")}
-    ${buildField("currency", "Para Birimi", data.currency ?? "₺")}
+  <div class="space-y-6">
 
-    <!-- ✅ İlan Türü -->
-    <label class="block">
-      <div class="text-sm font-medium text-gray-700 mb-1">İlan Türü</div>
-      <select class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brandYellow"
-              name="listing_type">
-        <option value="satilik" ${String(data.listing_type).toLowerCase() === "satilik" ? "selected" : ""}>Satılık</option>
-        <option value="kiralik" ${String(data.listing_type).toLowerCase() === "kiralik" ? "selected" : ""}>Kiralık</option>
-      </select>
-    </label>
-  </div>
+    ${buildSection("Genel Bilgiler", `
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        ${buildField("title", "Başlık", data.title || "")}
+        ${buildField("price", "Fiyat", data.price ?? "", "number")}
+        ${buildField("currency", "Para Birimi", data.currency ?? "₺")}
+        <label class="block">
+          <div class="text-sm font-semibold text-gray-700 mb-2">İlan Türü</div>
+          <select
+            class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            name="listing_type">
+            <option value="satilik" ${String(data.listing_type).toLowerCase() === "satilik" ? "selected" : ""}>Satılık</option>
+            <option value="kiralik" ${String(data.listing_type).toLowerCase() === "kiralik" ? "selected" : ""}>Kiralık</option>
+          </select>
+        </label>
+      </div>
 
-  <div class="mt-4">
-    ${buildTextarea("description", "Açıklama", data.description || "")}
-  </div>
-`)}
+      <div class="mt-4">
+        ${buildTextarea("description", "Açıklama", data.description || "")}
+      </div>
+    `)}
 
-        ${buildSection("Fotoğraflar", `
-          <div class="text-sm text-gray-600 mb-2">Her satıra 1 foto URL yaz. Kaydedince foto listesi yenilenir.</div>
-          <textarea class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brandYellow min-h-[140px]" name="photos_text">${escapeHtml(photos.join("\n"))}</textarea>
-          <div class="mt-4 flex gap-2 overflow-x-auto">
-            ${photos.map((p) => `<img src="${escapeHtml(p)}" class="w-20 h-20 object-cover rounded-xl border" alt="photo">`).join("")}
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      ${renderGroup("location", "Lokasyon Bilgileri", location, numberKeys)}
+      ${renderGroup("spec", "İlan Detayları", spec, numberKeys)}
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      ${renderGroup("agent", "Danışman Bilgileri", agent, numberKeys)}
+      ${renderGroup("owner", "Mülk Sahibi Bilgileri", owner, numberKeys)}
+    </div>
+
+    ${buildSection("Fiyat Güncelleme Bilgileri", `
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        ${buildField("meta__reason", "Fiyat Değişim Nedeni", "", "text")}
+        ${buildField("meta__changed_by", "Düzenleyen Kişi", "", "text")}
+      </div>
+      <div class="mt-4">
+        ${buildTextarea("meta__notes", "Not", "")}
+      </div>
+      <p class="text-xs text-gray-500 mt-3">
+        Bu alanlar özellikle fiyat değişikliği yapıldığında history tablosuna kaydetmek için kullanılabilir.
+      </p>
+    `)}
+
+    ${buildSection("Fotoğraflar", `
+      <div class="text-sm text-gray-600 mb-3">
+        Her satıra 1 fotoğraf URL yaz. Kaydettiğinde mevcut fotoğraf listesi güncellenir.
+      </div>
+      <textarea
+        class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[140px]"
+        name="photos_text">${escapeHtml(photos.join("\n"))}</textarea>
+
+      <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+        ${photos.map((p) => `
+          <div class="rounded-xl overflow-hidden border border-gray-200 bg-white">
+            <img src="${escapeHtml(p)}" class="w-full h-24 object-cover" alt="photo">
           </div>
-        `)}
+        `).join("")}
       </div>
+    `)}
 
-      <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        ${renderGroup("location", "Lokasyon", location, numberKeys)}
-        ${renderGroup("spec", "İlan Bilgileri", spec, numberKeys)}
-        ${renderGroup("agent", "Danışman", agent, numberKeys)}
-      </div>
+    <div class="grid grid-cols-1 gap-6">
+      ${renderGroup("interior", "İç Özellikler", interior, numberKeys)}
+      ${renderGroup("exterior", "Dış Özellikler", exterior, numberKeys)}
+      ${renderGroup("environmental", "Çevre Özellikleri", environmental, numberKeys)}
+      ${renderGroup("transportation", "Ulaşım Özellikleri", transportation, numberKeys)}
+      ${renderGroup("views", "Manzara Özellikleri", views, numberKeys)}
+      ${renderGroup("accessibility", "Erişilebilirlik", accessibility, numberKeys)}
+      ${renderGroup("housingType", "Konut Tipi", housingType, numberKeys)}
+      ${renderGroup("facade", "Cephe", facade, numberKeys)}
+    </div>
 
-      <div class="mt-6 grid grid-cols-1 gap-6">
-        ${renderGroup("interior", "İç Özellikler", interior, numberKeys)}
-        ${renderGroup("exterior", "Dış Özellikler", exterior, numberKeys)}
-        ${renderGroup("environmental", "Çevre Özellikler", environmental, numberKeys)}
-        ${renderGroup("transportation", "Ulaşım Özellikler", transportation, numberKeys)}
-        ${renderGroup("views", "Manzara Özellikler", views, numberKeys)}
-        ${renderGroup("accessibility", "Erişilebilirlik", accessibility, numberKeys)}
-        ${renderGroup("housingType", "Konut Tipi", housingType, numberKeys)}
-        ${renderGroup("facade", "Cephe", facade, numberKeys)}
-      </div>
-    `;
+  </div>
+`;
 
     document.getElementById("editModal").classList.remove("hidden");
   } catch (err) {
@@ -497,26 +535,30 @@ async function openEditModal(id) {
 }
 
 function buildEditPayload(fd) {
-  const payload = {
-    id: Number(fd.get("id")),
-    title: fd.get("title") || "",
-    description: fd.get("description") || "",
-    price: toNumberOrNull(fd.get("price")),
-    currency: fd.get("currency") || "₺",
-    listing_type: (fd.get("listing_type") || "").toLowerCase() || "satilik",
-    location: {},
-    specifications: {},
-    agent: {},
-    interior_features: {},
-    exterior_features: {},
-    environmental_features: {},
-    transportation: {},
-    views: {},
-    accessibility: {},
-    housingType: {},
-    facade: {},
-    photos: parsePhotosText(fd.get("photos_text")),
-  };
+const payload = {
+  id: Number(fd.get("id")),
+  title: fd.get("title") || "",
+  description: fd.get("description") || "",
+  price: toNumberOrNull(fd.get("price")),
+  currency: fd.get("currency") || "₺",
+  listing_type: (fd.get("listing_type") || "").toLowerCase() || "satilik",
+  reason: fd.get("meta__reason") || "",
+  notes: fd.get("meta__notes") || "",
+  changed_by: fd.get("meta__changed_by") || "",
+  location: {},
+  specifications: {},
+  agent: {},
+  owner: {},
+  interior_features: {},
+  exterior_features: {},
+  environmental_features: {},
+  transportation: {},
+  views: {},
+  accessibility: {},
+  housingType: {},
+  facade: {},
+  photos: parsePhotosText(fd.get("photos_text")),
+};
 
   const numberByGroup = {
     location: new Set(["latitude", "longitude"]),
@@ -537,17 +579,19 @@ function buildEditPayload(fd) {
       }
     };
 
-    if (group === "location") applyValue(payload.location, "location");
-    if (group === "spec") applyValue(payload.specifications, "spec");
-    if (group === "agent") applyValue(payload.agent, "agent");
-    if (group === "interior") payload.interior_features[prop] = 1;
-    if (group === "exterior") payload.exterior_features[prop] = 1;
-    if (group === "environmental") payload.environmental_features[prop] = 1;
-    if (group === "transportation") payload.transportation[prop] = 1;
-    if (group === "views") payload.views[prop] = 1;
-    if (group === "accessibility") payload.accessibility[prop] = 1;
-    if (group === "housingType") payload.housingType[prop] = 1;
-    if (group === "facade") payload.facade[prop] = 1;
+   if (group === "location") applyValue(payload.location, "location");
+if (group === "spec") applyValue(payload.specifications, "spec");
+if (group === "agent") applyValue(payload.agent, "agent");
+if (group === "owner") applyValue(payload.owner, "owner");
+if (group === "meta") payload[prop] = strVal === "" ? null : strVal;
+if (group === "interior") payload.interior_features[prop] = 1;
+if (group === "exterior") payload.exterior_features[prop] = 1;
+if (group === "environmental") payload.environmental_features[prop] = 1;
+if (group === "transportation") payload.transportation[prop] = 1;
+if (group === "views") payload.views[prop] = 1;
+if (group === "accessibility") payload.accessibility[prop] = 1;
+if (group === "housingType") payload.housingType[prop] = 1;
+if (group === "facade") payload.facade[prop] = 1;
   }
 
   const holder = document.getElementById("boolKeysHolder");

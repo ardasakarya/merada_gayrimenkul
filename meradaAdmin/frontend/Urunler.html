@@ -89,19 +89,36 @@
 
 
 <!-- Edit Modal -->
-<div id="editModal" class="modal-backdrop hidden">
-  <div style="background:white; border-radius:8px; max-width:720px; width:100%; max-height:90vh; overflow:auto; padding:16px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <h2>İlan düzenle</h2>
-      <button id="closeEditBtn" class="btn">×</button>
-    </div>
-    <form id="editForm">
-      <div id="editFormContent"></div>
-      <div style="margin-top:12px; display:flex; gap:8px;">
-        <button type="submit" class="btn btn-edit">Kaydet</button>
-        <button type="button" id="cancelEdit" class="btn">İptal</button>
+<div id="editModal" class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-[2px] overflow-y-auto">
+  <div class="min-h-screen flex items-start justify-center p-4 sm:p-6">
+    <div class="w-full max-w-6xl bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+      
+      <div class="flex items-center justify-between px-6 py-4 border-b bg-gray-50 sticky top-0 z-10">
+        <div>
+          <h2 class="text-xl font-bold text-gray-900">İlan Düzenle</h2>
+          <p class="text-sm text-gray-500 mt-1">İlan bilgilerini düzenleyip kaydedebilirsiniz.</p>
+        </div>
+        <button id="closeEditBtn"
+          class="w-10 h-10 rounded-full border border-gray-300 hover:bg-gray-100 text-gray-600 text-xl flex items-center justify-center">
+          ×
+        </button>
       </div>
-    </form>
+
+      <form id="editForm">
+        <div id="editFormContent" class="p-6 bg-gray-50"></div>
+
+        <div class="flex flex-col sm:flex-row gap-3 justify-end px-6 py-4 border-t bg-white sticky bottom-0">
+          <button type="button" id="cancelEdit"
+            class="px-5 py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium">
+            İptal
+          </button>
+          <button type="submit"
+            class="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-sm">
+            Kaydet
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 

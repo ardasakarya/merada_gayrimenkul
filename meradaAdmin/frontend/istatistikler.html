@@ -48,7 +48,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen">
   <div class="min-h-screen flex">
-    <!-- Sidebar -->
     <aside class="hidden xl:flex w-24 border-r border-slate-200 bg-white flex-col items-center py-6 sticky top-0 h-screen">
       <div class="w-12 h-12 rounded-2xl bg-merada-900 text-white flex items-center justify-center font-bold text-lg shadow-soft">
         M
@@ -61,9 +60,7 @@
       </nav>
     </aside>
 
-    <!-- Main -->
     <main class="flex-1">
-      <!-- Header -->
       <section class="border-b border-slate-200 bg-white">
         <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
@@ -71,7 +68,7 @@
               <p class="text-sm font-semibold tracking-[0.18em] uppercase text-merada-700">Merada Yönetim</p>
               <h1 class="mt-2 text-3xl md:text-4xl font-extrabold text-slate-900">Fiyat Geçmişi ve İlan İstatistikleri</h1>
               <p class="mt-3 text-slate-500 max-w-3xl">
-                Fiyat değişimleri, işlem yapan kullanıcılar, eski ve yeni fiyatlar ile ilan hareketlerini sade ve hızlı bir ekranda takip et.
+                Veritabanındaki ilan sayısı, fiyat değişimleri, yüzdesel değişim, işlem yapan kullanıcılar ve geçmiş kayıtları burada listelenir.
               </p>
             </div>
 
@@ -88,17 +85,14 @@
       </section>
 
       <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        <!-- Summary -->
-        <section id="summaryCards" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4"></section>
+        <section id="summaryCards" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4"></section>
 
-        <!-- Top row -->
         <section class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          <!-- Chart -->
           <div class="xl:col-span-2 bg-white border border-slate-200 rounded-3xl shadow-soft p-5 lg:p-6">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
               <div>
-                <h2 class="text-xl font-bold text-slate-900">Fiyat Değişim Trendi</h2>
-                <p class="text-sm text-slate-500 mt-1">Hover ile değerleri görüntüleyebilirsin</p>
+                <h2 class="text-xl font-bold text-slate-900">Aylık Fiyat Değişim Trendi</h2>
+                <p class="text-sm text-slate-500 mt-1">Kayıt bazlı aylık değişim sayısı</p>
               </div>
 
               <div class="inline-flex bg-slate-100 p-1 rounded-2xl">
@@ -113,7 +107,6 @@
             </div>
           </div>
 
-          <!-- Recent -->
           <div class="bg-white border border-slate-200 rounded-3xl shadow-soft p-5 lg:p-6">
             <div class="flex items-center justify-between mb-5">
               <div>
@@ -127,7 +120,6 @@
           </div>
         </section>
 
-        <!-- Filters -->
         <section class="bg-white border border-slate-200 rounded-3xl shadow-soft p-5 lg:p-6">
           <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-5">
             <div>
@@ -140,10 +132,10 @@
             </button>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-4">
             <div class="xl:col-span-2">
               <label class="block text-sm font-semibold text-slate-700 mb-2">İlan Ara</label>
-              <input id="searchInput" type="text" placeholder="Başlık, portföy no, lokasyon..." class="w-full h-12 px-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-merada-100 focus:border-merada-400 transition" />
+              <input id="searchInput" type="text" placeholder="Başlık, ilan no, lokasyon, mülk sahibi..." class="w-full h-12 px-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-merada-100 focus:border-merada-400 transition" />
             </div>
 
             <div>
@@ -167,15 +159,19 @@
               <label class="block text-sm font-semibold text-slate-700 mb-2">Başlangıç</label>
               <input id="startDateFilter" type="date" class="w-full h-12 px-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-merada-100 focus:border-merada-400 transition" />
             </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-2">Bitiş</label>
+              <input id="endDateFilter" type="date" class="w-full h-12 px-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-merada-100 focus:border-merada-400 transition" />
+            </div>
           </div>
         </section>
 
-        <!-- Table -->
         <section class="bg-white border border-slate-200 rounded-3xl shadow-soft overflow-hidden">
           <div class="px-5 lg:px-6 py-5 border-b border-slate-100 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
             <div>
               <h2 class="text-xl font-bold text-slate-900">Fiyat Geçmişi</h2>
-              <p class="text-sm text-slate-500 mt-1">Detayları görüntülemek için satırdaki butona bas</p>
+              <p class="text-sm text-slate-500 mt-1">Satırdaki butonla detay açılır</p>
             </div>
             <span id="tableCount" class="text-sm text-slate-500">0 kayıt</span>
           </div>
@@ -202,7 +198,6 @@
     </main>
   </div>
 
-  <!-- Drawer -->
   <div id="detailDrawer" class="fixed inset-0 z-50 hidden">
     <div id="drawerOverlay" class="absolute inset-0 bg-slate-900/40"></div>
 
@@ -215,7 +210,7 @@
         <button id="closeDrawer" class="w-11 h-11 rounded-2xl bg-slate-100 hover:bg-slate-200 transition text-lg">✕</button>
       </div>
 
-      <div id="drawerContent" class="flex-1 overflow-auto p-6 space-y-5 scrollbar-thin"></div>
+      <div id="drawerContent" class="p-6 overflow-y-auto flex-1 scrollbar-thin"></div>
     </div>
   </div>
 

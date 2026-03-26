@@ -69,11 +69,13 @@ const cleanStr = (v) => {
   const s = String(v).trim();
   return s ? s : null;
 };
+
 const cleanNum = (v) => {
   if (v === undefined || v === null || v === "") return null;
   const n = Number(v);
   return Number.isFinite(n) ? n : null;
 };
+
 const isChecked = (v) => v === 1 || v === true || v === "1";
 
 // floor_location gibi INT kolonlar için güvenli cast
@@ -81,6 +83,27 @@ const toIntOrNull = (v) => {
   if (v === undefined || v === null || v === "") return null;
   const n = parseInt(v, 10);
   return Number.isNaN(n) ? null : n;
+};
+
+const toFloatOrNull = (v) => {
+  if (v === undefined || v === null || v === "") return null;
+  const n = parseFloat(v);
+  return Number.isNaN(n) ? null : n;
+};
+
+const toNumberOrNull = (v) => {
+  if (v === undefined || v === null || v === "") return null;
+  const s = String(v).replace(/\./g, "").replace(",", ".");
+  const n = Number(s);
+  return Number.isNaN(n) ? null : n;
+};
+
+const getChangeType = (oldPrice, newPrice) => {
+  const oldP = Number(oldPrice || 0);
+  const newP = Number(newPrice || 0);
+  if (newP > oldP) return "increase";
+  if (newP < oldP) return "decrease";
+  return "neutral";
 };
 
 // Fotoğraf URL normalizasyonu
@@ -224,7 +247,6 @@ const upload = multer({ storage });
    SAĞLIK / ROOT
    ======================= */
 app.get("/", (req, res) => {
-  // 🔹 / isteğinde kök klasördeki index.html’i gönder
   res.sendFile(path.join(ROOT_DIR, "index.html"));
 });
 
@@ -233,8 +255,6 @@ app.get("/health", (req, res) => res.json({ ok: true }));
 /* =======================
    AUTH MIDDLEWARE + LOGIN
    ======================= */
-
-// Sadece admin token kontrolü
 function authAdmin(req, res, next) {
   const authHeader = req.headers.authorization || "";
   const token = authHeader.startsWith("Bearer ")
@@ -256,7 +276,6 @@ function authAdmin(req, res, next) {
   }
 }
 
-// Tek bir LOGIN endpoint (duplicate'ler silindi)
 app.post("/login", (req, res) => {
   const { username, password } = req.body || {};
 
@@ -300,13 +319,14 @@ app.post("/api/properties/filter", (req, res) => {
       values.push(val);
     };
 
-    // --- Temel filtreler --- //
     const city = cleanStr(f.city);
     const district = cleanStr(f.district);
     if (city) add("pl.city = ?", city);
     if (district) add("pl.district = ?", district);
+
     const listing_type = cleanStr(f.listing_type);
     if (listing_type) add("p.listing_type = ?", listing_type);
+
     const rooms = cleanStr(f.rooms);
     if (rooms) add("ps.rooms = ?", rooms);
 
@@ -339,7 +359,6 @@ app.post("/api/properties/filter", (req, res) => {
     if (isChecked(f.balcony)) where.push("ps.balcony = 1");
     if (isChecked(f.furnished)) where.push("ps.furnished = 1");
 
-    // --- Dinamik özellik filtreleri --- //
     const features = f.features || {};
     for (const group of Object.keys(FEATURE_MAP)) {
       const selected = Array.isArray(features[group]) ? features[group] : [];
@@ -362,7 +381,7 @@ app.post("/api/properties/filter", (req, res) => {
         p.description,
         p.price,
         p.currency,
-         p.listing_type,
+        p.listing_type,
         p.created_at,
 
         pl.city,
@@ -394,6 +413,7 @@ app.post("/api/properties/filter", (req, res) => {
         p.description,
         p.price,
         p.currency,
+        p.listing_type,
         p.created_at,
         pl.city,
         pl.district,
@@ -434,11 +454,29 @@ app.post("/api/properties/filter", (req, res) => {
    ======================= */
 app.get("/properties", (req, res) => {
   const sql = `
-    SELECT p.id, p.title, p.price, p.currency,p.listing_type, p.description,
-           l.city, l.district, l.neighborhood, l.street_address,
-           l.latitude, l.longitude,
-           s.rooms, s.bathrooms, s.gross_sqm,
-           (SELECT photo_url FROM property_photos WHERE property_id = p.id ORDER BY id ASC LIMIT 1) AS photo_url
+    SELECT
+      p.id,
+      p.title,
+      p.price,
+      p.currency,
+      p.listing_type,
+      p.description,
+      l.city,
+      l.district,
+      l.neighborhood,
+      l.street_address,
+      l.latitude,
+      l.longitude,
+      s.rooms,
+      s.bathrooms,
+      s.gross_sqm,
+      (
+        SELECT photo_url
+        FROM property_photos
+        WHERE property_id = p.id
+        ORDER BY id ASC
+        LIMIT 1
+      ) AS photo_url
     FROM properties p
     LEFT JOIN property_location l ON l.property_id = p.id
     LEFT JOIN property_specifications s ON s.property_id = p.id
@@ -482,209 +520,217 @@ app.get("/properties/:id", (req, res) => {
   const propertyId = req.params.id;
 
   const sql = `
-  SELECT 
-    p.id,
-    p.title,
-    p.description,
-    p.price,
-    p.currency,
-    p.listing_type,
-    p.created_at,
+    SELECT 
+      p.id,
+      p.title,
+      p.description,
+      p.price,
+      p.currency,
+      p.listing_type,
+      p.created_at,
 
-    a.name   AS agent_name,
-    a.phone  AS agent_phone,
-    a.email  AS agent_email,
+      a.name   AS agent_name,
+      a.phone  AS agent_phone,
+      a.email  AS agent_email,
 
-    l.city,
-    l.district,
-    l.neighborhood,
-    l.street,
-    l.street_address,
-    l.zip_code,
-    l.latitude,
-    l.longitude,
+      o.name   AS owner_name,
+      o.phone  AS owner_phone,
+      o.email  AS owner_email,
 
-    s.listing_date        AS listingDate,
-    s.gross_sqm           AS grossSqm,
-    s.net_sqm             AS netSqm,
-    s.rooms               AS rooms,
-    s.building_age        AS buildingAge,
-    s.floors              AS totalFloors,
-    s.floor_location      AS floorLocation,
-    s.heating_type        AS heatingType,
-    s.bathrooms           AS bathrooms,
+      l.city,
+      l.district,
+      l.neighborhood,
+      l.street,
+      l.street_address,
+      l.zip_code,
+      l.latitude,
+      l.longitude,
 
-    i.adsl,
-    i.wood_joinery,
-    i.smart_home,
-    i.alarm_burglar,
-    i.alarm_fire,
-    i.turkish_wc,
-    i.aluminum_joinery,
-    i.american_door,
-    i.built_in_oven,
-    i.barbecue,
-    i.white_goods,
-    i.painted,
-    i.dishwasher,
-    i.refrigerator,
-    i.dryer,
-    i.washing_machine,
-    i.laundry_room,
-    i.steel_door,
-    i.shower_cabin,
-    i.wallpaper,
-    i.ensuite_bathroom,
-    i.fiber,
-    i.dressing_room,
-    i.built_in_closet,
-    i.video_intercom,
-    i.hilton_bathroom,
-    i.intercom_system,
-    i.double_glazing,
-    i.jacuzzi,
-    i.cornice,
-    i.pantry,
-    i.air_conditioning,
-    i.bathtub,
-    i.laminate_floor,
-    i.marley,
-    i.furnished,
-    i.built_in_kitchen,
-    i.natural_gas_kitchen,
-    i.shutter,
-    i.parquet,
-    i.pvc_joinery,
-    i.ceramic_floor,
-    i.set_top_stove,
-    i.spot_lighting,
-    i.water_heater,
-    i.fireplace,
-    i.terrace,
-    i.vestiaire,
-    i.wifi,
-    i.biometric_system,
+      s.listing_date        AS listingDate,
+      s.gross_sqm           AS grossSqm,
+      s.net_sqm             AS netSqm,
+      s.rooms               AS rooms,
+      s.building_age        AS buildingAge,
+      s.floors              AS totalFloors,
+      s.floor_location      AS floorLocation,
+      s.heating_type        AS heatingType,
+      s.bathrooms           AS bathrooms,
 
-    e.ev_charging_station,
-    e.security_24h,
-    e.janitor,
-    e.steam_room,
-    e.playground,
-    e.hammam,
-    e.hydrofor,
-    e.thermal_insulation,
-    e.generator,
-    e.cable_tv,
-    e.camera_system,
-    e.nursery,
-    e.open_pool,
-    e.indoor_pool,
-    e.sauna,
-    e.sound_insulation,
-    e.siding,
-    e.sports_area,
-    e.water_tank,
-    e.tennis_court,
-    e.satellite,
-    e.fire_escape,
+      i.adsl,
+      i.wood_joinery,
+      i.smart_home,
+      i.alarm_burglar,
+      i.alarm_fire,
+      i.turkish_wc,
+      i.aluminum_joinery,
+      i.american_door,
+      i.built_in_oven,
+      i.barbecue,
+      i.white_goods,
+      i.painted,
+      i.dishwasher,
+      i.refrigerator,
+      i.dryer,
+      i.washing_machine,
+      i.laundry_room,
+      i.steel_door,
+      i.shower_cabin,
+      i.wallpaper,
+      i.ensuite_bathroom,
+      i.fiber,
+      i.dressing_room,
+      i.built_in_closet,
+      i.video_intercom,
+      i.hilton_bathroom,
+      i.intercom_system,
+      i.double_glazing,
+      i.jacuzzi,
+      i.cornice,
+      i.pantry,
+      i.air_conditioning,
+      i.bathtub,
+      i.laminate_floor,
+      i.marley,
+      i.furnished,
+      i.built_in_kitchen,
+      i.natural_gas_kitchen,
+      i.shutter,
+      i.parquet,
+      i.pvc_joinery,
+      i.ceramic_floor,
+      i.set_top_stove,
+      i.spot_lighting,
+      i.water_heater,
+      i.fireplace,
+      i.terrace,
+      i.vestiaire,
+      i.wifi,
+      i.biometric_system,
 
-    env.shopping_mall,
-    env.municipality,
-    env.mosque,
-    env.cemevi,
-    env.seafront,
-    env.pharmacy,
-    env.entertainment_center,
-    env.fair,
-    env.lakefront,
-    env.hospital,
-    env.synagogue,
-    env.primary_school,
-    env.fire_station,
-    env.church,
-    env.high_school,
-    env.market,
-    env.park,
-    env.beach,
-    env.police_station,
-    env.health_center,
-    env.street_market,
-    env.gym,
-    env.city_center,
-    env.university,
+      e.ev_charging_station,
+      e.security_24h,
+      e.janitor,
+      e.steam_room,
+      e.playground,
+      e.hammam,
+      e.hydrofor,
+      e.thermal_insulation,
+      e.generator,
+      e.cable_tv,
+      e.camera_system,
+      e.nursery,
+      e.open_pool,
+      e.indoor_pool,
+      e.private_pool,
+      e.sauna,
+      e.sound_insulation,
+      e.siding,
+      e.sports_area,
+      e.water_tank,
+      e.tennis_court,
+      e.satellite,
+      e.fire_escape,
 
-    r.main_road,
-    r.avenue,
-    r.dolmus,
-    r.e5,
-    r.airport,
-    r.marmaray,
-    r.metro,
-    r.metrobus,
-    r.minibus,
-    r.bus_stop,
-    r.coast,
-    r.tem,
-    r.train_station,
-    r.tram,
+      env.shopping_mall,
+      env.municipality,
+      env.mosque,
+      env.cemevi,
+      env.seafront,
+      env.pharmacy,
+      env.entertainment_center,
+      env.fair,
+      env.lakefront,
+      env.hospital,
+      env.synagogue,
+      env.primary_school,
+      env.fire_station,
+      env.church,
+      env.high_school,
+      env.market,
+      env.park,
+      env.beach,
+      env.police_station,
+      env.health_center,
+      env.street_market,
+      env.gym,
+      env.city_center,
+      env.university,
 
-    v.bosporus,
-    v.sea,
-    v.nature,
-    v.lake,
-    v.pool,
-    v.river,
-    v.park,
-    v.city,
+      r.main_road,
+      r.avenue,
+      r.dolmus,
+      r.e5,
+      r.airport,
+      r.marmaray,
+      r.metro,
+      r.metrobus,
+      r.minibus,
+      r.bus_stop,
+      r.coast,
+      r.tem,
+      r.train_station,
+      r.tram,
 
-    acc.accessible_parking,
-    acc.accessible_kitchen,
-    acc.wide_corridor,
-    acc.accessible_wc,
-    acc.accessible_elevator,
-    acc.accessible_bathroom,
-    acc.ramp,
-    acc.handrails,
+      v.bosporus,
+      v.sea,
+      v.nature,
+      v.lake,
+      v.pool,
+      v.river,
+      v.park,
+      v.city,
 
-    ht.duplex,
-    ht.top_floor,
-    ht.middle_floor,
-    ht.garden_duplex,
-    ht.roof_duplex,
-    ht.reverse_duplex,
-    ht.triplex,
+      acc.accessible_parking,
+      acc.accessible_kitchen,
+      acc.wide_corridor,
+      acc.accessible_wc,
+      acc.accessible_elevator,
+      acc.accessible_bathroom,
+      acc.ramp,
+      acc.handrails,
 
-    f.west,
-    f.east,
-    f.south,
-    f.north,
+      ht.duplex,
+      ht.top_floor,
+      ht.middle_floor,
+      ht.garden_duplex,
+      ht.roof_duplex,
+      ht.reverse_duplex,
+      ht.triplex,
 
-    (SELECT JSON_ARRAYAGG(photo_url) 
-     FROM property_photos 
-     WHERE property_id = p.id) AS photos
+      f.west,
+      f.east,
+      f.south,
+      f.north,
 
-  FROM properties p
-  LEFT JOIN property_location l ON l.property_id = p.id
-  LEFT JOIN property_specifications s ON s.property_id = p.id
-  LEFT JOIN property_interior_features i ON i.property_id = p.id
-  LEFT JOIN property_exterior_features e ON e.property_id = p.id
-  LEFT JOIN property_environmental_features env ON env.property_id = p.id
-  LEFT JOIN property_transportation_features r ON r.property_id = p.id
-  LEFT JOIN property_view_features v ON v.property_id = p.id
-  LEFT JOIN property_accessibility_features acc ON acc.property_id = p.id
-  LEFT JOIN property_housing_type ht ON ht.property_id = p.id
-  LEFT JOIN property_facade f ON f.property_id = p.id
-  LEFT JOIN property_agent a ON a.property_id = p.id
-  WHERE p.id = ?;
-`;
+      (SELECT JSON_ARRAYAGG(photo_url) 
+       FROM property_photos 
+       WHERE property_id = p.id) AS photos
+
+    FROM properties p
+    LEFT JOIN property_location l ON l.property_id = p.id
+    LEFT JOIN property_specifications s ON s.property_id = p.id
+    LEFT JOIN property_interior_features i ON i.property_id = p.id
+    LEFT JOIN property_exterior_features e ON e.property_id = p.id
+    LEFT JOIN property_environmental_features env ON env.property_id = p.id
+    LEFT JOIN property_transportation_features r ON r.property_id = p.id
+    LEFT JOIN property_view_features v ON v.property_id = p.id
+    LEFT JOIN property_accessibility_features acc ON acc.property_id = p.id
+    LEFT JOIN property_housing_type ht ON ht.property_id = p.id
+    LEFT JOIN property_facade f ON f.property_id = p.id
+    LEFT JOIN property_agent a ON a.property_id = p.id
+    LEFT JOIN property_owner o ON o.property_id = p.id
+    WHERE p.id = ?
+  `;
 
   db.query(sql, [propertyId], (err, rows) => {
     if (err) {
       console.error("❌ DB Hatası:", err);
       return res.status(500).json({ error: "DB Hatası" });
     }
-    if (!rows || rows.length === 0)
+
+    if (!rows || rows.length === 0) {
       return res.status(404).json({ error: "İlan bulunamadı" });
+    }
 
     const r = rows[0];
 
@@ -788,6 +834,7 @@ app.get("/properties/:id", (req, res) => {
         nursery: r.nursery,
         open_pool: r.open_pool,
         indoor_pool: r.indoor_pool,
+        private_pool: r.private_pool,
         sauna: r.sauna,
         sound_insulation: r.sound_insulation,
         siding: r.siding,
@@ -887,19 +934,134 @@ app.get("/properties/:id", (req, res) => {
         email: r.agent_email,
       },
 
+      owner: {
+        name: r.owner_name,
+        phone: r.owner_phone,
+        email: r.owner_email,
+      },
+
       photos: (() => {
         try {
           const arr =
             typeof r.photos === "string"
               ? JSON.parse(r.photos)
               : r.photos || [];
-          return (arr || [])
-            .filter(Boolean)
-            .map(normalizePhotoUrl);
+          return (arr || []).filter(Boolean).map(normalizePhotoUrl);
         } catch {
           return [];
         }
       })(),
+    });
+  });
+});
+
+/* =======================
+   PRICE HISTORY (ADMIN)
+   GET /api/price-history
+   ======================= */
+app.get("/api/price-history", authAdmin, (req, res) => {
+  const sql = `
+    SELECT
+      pph.id,
+      pph.property_id AS listingId,
+      p.title,
+      p.description,
+      p.listing_type,
+
+      p.id AS portfolioNo,
+
+      pl.city,
+      pl.district,
+      pl.neighborhood,
+
+      pph.owner_name,
+      pph.owner_phone,
+      pph.owner_email,
+
+      pph.old_price AS oldPrice,
+      pph.new_price AS newPrice,
+      pph.currency,
+      pph.change_type AS changeType,
+      pph.reason,
+      pph.notes,
+      pph.changed_by AS changedBy,
+      pph.changed_at AS changedAt
+
+    FROM property_price_history pph
+    LEFT JOIN properties p ON p.id = pph.property_id
+    LEFT JOIN property_location pl ON pl.property_id = p.id
+    ORDER BY pph.changed_at DESC, pph.id DESC
+  `;
+
+  db.query(sql, (err, rows) => {
+    if (err) {
+      console.error("❌ price history err:", err);
+      return res.status(500).json({ error: "Fiyat geçmişi alınamadı" });
+    }
+
+    const mapped = (rows || []).map((r) => ({
+      id: r.id,
+      listingId: r.listingId,
+      portfolioNo: r.portfolioNo || r.listingId || "",
+      title: r.title,
+      description: r.description,
+      listing_type: r.listing_type,
+      location: [r.city, r.district, r.neighborhood].filter(Boolean).join(" / "),
+      owner: {
+        name: r.owner_name,
+        phone: r.owner_phone,
+        email: r.owner_email,
+      },
+      oldPrice: Number(r.oldPrice || 0),
+      newPrice: Number(r.newPrice || 0),
+      currency: r.currency || "TRY",
+      changeType: r.changeType || "neutral",
+      reason: r.reason || "",
+      notes: r.notes || "",
+      changedBy: r.changedBy || "",
+      changedAt: r.changedAt
+    }));
+
+    res.json(mapped);
+  });
+});
+
+app.get("/api/stats/dashboard", authAdmin, (req, res) => {
+  const sqlTotalProperties = `SELECT COUNT(*) AS totalProperties FROM properties`;
+
+  const sqlHistorySummary = `
+    SELECT
+      COUNT(*) AS totalChanges,
+      SUM(CASE WHEN change_type = 'increase' THEN 1 ELSE 0 END) AS increaseCount,
+      SUM(CASE WHEN change_type = 'decrease' THEN 1 ELSE 0 END) AS decreaseCount,
+      SUM(CASE WHEN change_type = 'neutral' THEN 1 ELSE 0 END) AS neutralCount,
+      SUM(ABS(COALESCE(new_price, 0) - COALESCE(old_price, 0))) AS totalVolume
+    FROM property_price_history
+  `;
+
+  db.query(sqlTotalProperties, (err1, rows1) => {
+    if (err1) {
+      console.error("❌ stats total properties err:", err1);
+      return res.status(500).json({ error: "Toplam ilan sayısı alınamadı" });
+    }
+
+    db.query(sqlHistorySummary, (err2, rows2) => {
+      if (err2) {
+        console.error("❌ stats summary err:", err2);
+        return res.status(500).json({ error: "İstatistik özeti alınamadı" });
+      }
+
+      const totalProperties = Number(rows1?.[0]?.totalProperties || 0);
+      const summary = rows2?.[0] || {};
+
+      return res.json({
+        totalProperties,
+        totalChanges: Number(summary.totalChanges || 0),
+        increaseCount: Number(summary.increaseCount || 0),
+        decreaseCount: Number(summary.decreaseCount || 0),
+        neutralCount: Number(summary.neutralCount || 0),
+        totalVolume: Number(summary.totalVolume || 0)
+      });
     });
   });
 });
@@ -910,14 +1072,14 @@ app.get("/properties/:id", (req, res) => {
    ======================= */
 app.delete("/properties/:id", authAdmin, (req, res) => {
   const id = Number(req.params.id);
-  if (!Number.isFinite(id))
+  if (!Number.isFinite(id)) {
     return res.status(400).json({ error: "Geçersiz ID" });
+  }
 
   db.getConnection((connErr, conn) => {
-    if (connErr)
-      return res
-        .status(500)
-        .json({ error: "Veritabanı bağlantı hatası" });
+    if (connErr) {
+      return res.status(500).json({ error: "Veritabanı bağlantı hatası" });
+    }
 
     conn.query(
       "SELECT id FROM properties WHERE id = ? LIMIT 1",
@@ -928,6 +1090,7 @@ app.delete("/properties/:id", authAdmin, (req, res) => {
           console.error("❌ properties select err:", pErr);
           return res.status(500).json({ error: "DB Hatası" });
         }
+
         if (!pRows || pRows.length === 0) {
           conn.release();
           return res.status(404).json({ error: "İlan bulunamadı" });
@@ -940,9 +1103,7 @@ app.delete("/properties/:id", authAdmin, (req, res) => {
             if (photoErr) {
               conn.release();
               console.error("❌ photo select err:", photoErr);
-              return res
-                .status(500)
-                .json({ error: "Fotoğraflar okunamadı" });
+              return res.status(500).json({ error: "Fotoğraflar okunamadı" });
             }
 
             const photoFiles = (photoRows || [])
@@ -958,54 +1119,24 @@ app.delete("/properties/:id", authAdmin, (req, res) => {
             conn.beginTransaction((txErr) => {
               if (txErr) {
                 conn.release();
-                return res
-                  .status(500)
-                  .json({ error: "Transaction başlatılamadı" });
+                return res.status(500).json({ error: "Transaction başlatılamadı" });
               }
 
               const steps = [
+                ["DELETE FROM property_price_history WHERE property_id = ?", [id]],
+                ["DELETE FROM property_owner WHERE property_id = ?", [id]],
                 ["DELETE FROM property_agent WHERE property_id = ?", [id]],
                 ["DELETE FROM property_facade WHERE property_id = ?", [id]],
-                [
-                  "DELETE FROM property_housing_type WHERE property_id = ?",
-                  [id],
-                ],
-                [
-                  "DELETE FROM property_accessibility_features WHERE property_id = ?",
-                  [id],
-                ],
-                [
-                  "DELETE FROM property_view_features WHERE property_id = ?",
-                  [id],
-                ],
-                [
-                  "DELETE FROM property_transportation_features WHERE property_id = ?",
-                  [id],
-                ],
-                [
-                  "DELETE FROM property_environmental_features WHERE property_id = ?",
-                  [id],
-                ],
-                [
-                  "DELETE FROM property_exterior_features WHERE property_id = ?",
-                  [id],
-                ],
-                [
-                  "DELETE FROM property_interior_features WHERE property_id = ?",
-                  [id],
-                ],
-                [
-                  "DELETE FROM property_specifications WHERE property_id = ?",
-                  [id],
-                ],
-                [
-                  "DELETE FROM property_location WHERE property_id = ?",
-                  [id],
-                ],
-                [
-                  "DELETE FROM property_photos WHERE property_id = ?",
-                  [id],
-                ],
+                ["DELETE FROM property_housing_type WHERE property_id = ?", [id]],
+                ["DELETE FROM property_accessibility_features WHERE property_id = ?", [id]],
+                ["DELETE FROM property_view_features WHERE property_id = ?", [id]],
+                ["DELETE FROM property_transportation_features WHERE property_id = ?", [id]],
+                ["DELETE FROM property_environmental_features WHERE property_id = ?", [id]],
+                ["DELETE FROM property_exterior_features WHERE property_id = ?", [id]],
+                ["DELETE FROM property_interior_features WHERE property_id = ?", [id]],
+                ["DELETE FROM property_specifications WHERE property_id = ?", [id]],
+                ["DELETE FROM property_location WHERE property_id = ?", [id]],
+                ["DELETE FROM property_photos WHERE property_id = ?", [id]],
                 ["DELETE FROM properties WHERE id = ?", [id]],
               ];
 
@@ -1023,11 +1154,7 @@ app.delete("/properties/:id", authAdmin, (req, res) => {
                           deletedCount++;
                         }
                       } catch (e) {
-                        console.warn(
-                          "⚠️ Dosya silinemedi:",
-                          file,
-                          e.message
-                        );
+                        console.warn("⚠️ Dosya silinemedi:", file, e.message);
                       }
                     }
 
@@ -1070,19 +1197,19 @@ app.delete("/properties/:id", authAdmin, (req, res) => {
    ======================= */
 app.put("/properties/:id", authAdmin, (req, res) => {
   const id = Number(req.params.id);
-  if (!Number.isFinite(id))
+  if (!Number.isFinite(id)) {
     return res.status(400).json({ error: "Geçersiz id" });
+  }
 
   const b = req.body || {};
   if (b.id !== undefined && Number(b.id) !== id) {
-    return res
-      .status(400)
-      .json({ error: "Body id ile URL id uyuşmuyor" });
+    return res.status(400).json({ error: "Body id ile URL id uyuşmuyor" });
   }
 
   const loc = b.location || {};
   const spec = b.specifications || {};
   const agent = b.agent || {};
+  const owner = b.owner || {};
 
   const featureGroups = [
     {
@@ -1102,7 +1229,7 @@ app.put("/properties/:id", authAdmin, (req, res) => {
       tableCandidates: ["property_transportation_features"],
     },
     {
-      bodyKeys: ["views"],
+      bodyKeys: ["views", "view"],
       tableCandidates: ["property_view_features"],
     },
     {
@@ -1129,8 +1256,9 @@ app.put("/properties/:id", authAdmin, (req, res) => {
     : [];
 
   db.getConnection((connErr, conn) => {
-    if (connErr)
+    if (connErr) {
       return res.status(500).json({ error: "DB bağlantı hatası" });
+    }
 
     const q = (sql, params = []) =>
       new Promise((resolve, reject) => {
@@ -1147,6 +1275,7 @@ app.put("/properties/:id", authAdmin, (req, res) => {
     };
 
     const tableExistenceCache = new Map();
+
     const resolveExistingTable = async (candidates = []) => {
       for (const tableName of candidates) {
         if (tableExistenceCache.has(tableName)) {
@@ -1155,8 +1284,7 @@ app.put("/properties/:id", authAdmin, (req, res) => {
         }
 
         const rows = await q("SHOW TABLES LIKE ?", [tableName]);
-        const exists =
-          Array.isArray(rows) && rows.length > 0;
+        const exists = Array.isArray(rows) && rows.length > 0;
         tableExistenceCache.set(tableName, exists);
         if (exists) return tableName;
       }
@@ -1166,29 +1294,36 @@ app.put("/properties/:id", authAdmin, (req, res) => {
     conn.beginTransaction(async (txErr) => {
       if (txErr) {
         conn.release();
-        return res
-          .status(500)
-          .json({ error: "Transaction açılamadı" });
+        return res.status(500).json({ error: "Transaction açılamadı" });
       }
 
       try {
         const exists = await q(
-          "SELECT id FROM properties WHERE id = ? LIMIT 1",
+          "SELECT id, price, currency FROM properties WHERE id = ? LIMIT 1",
           [id]
         );
+
         if (!exists || exists.length === 0) {
           return rollbackAndSend(404, "İlan bulunamadı");
         }
 
+        const currentProperty = exists[0];
+        const oldPrice = Number(currentProperty.price || 0);
+        const newPrice =
+          b.price !== undefined && b.price !== null
+            ? Number(String(b.price).replace(/\./g, ""))
+            : oldPrice;
+
         const listingTypeForUpdate = b.listing_type ?? b.listingType ?? null;
+        const finalCurrency = b.currency ?? currentProperty.currency ?? "TRY";
 
         await q(
           "UPDATE properties SET title=?, description=?, price=?, currency=?, listing_type=? WHERE id=?",
           [
             b.title ?? null,
             b.description ?? null,
-            b.price ?? null,
-            b.currency ?? null,
+            newPrice,
+            finalCurrency,
             listingTypeForUpdate,
             id,
           ]
@@ -1196,21 +1331,18 @@ app.put("/properties/:id", authAdmin, (req, res) => {
 
         const upsertByPropertyId = async (table, valuesObj) => {
           const clean = Object.fromEntries(
-            Object.entries(valuesObj || {}).filter(
-              ([k]) => k !== "property_id"
-            )
+            Object.entries(valuesObj || {}).filter(([k]) => k !== "property_id")
           );
           const keys = Object.keys(clean);
           if (keys.length === 0) return;
 
-          const updateRes = await q(
-            `UPDATE ${table} SET ? WHERE property_id=?`,
-            [clean, id]
-          );
+          const updateRes = await q(`UPDATE ${table} SET ? WHERE property_id=?`, [
+            clean,
+            id,
+          ]);
+
           if (!updateRes || updateRes.affectedRows === 0) {
-            await q(`INSERT INTO ${table} SET ?`, [
-              { property_id: id, ...clean },
-            ]);
+            await q(`INSERT INTO ${table} SET ?`, [{ property_id: id, ...clean }]);
           }
         };
 
@@ -1219,10 +1351,10 @@ app.put("/properties/:id", authAdmin, (req, res) => {
           city: loc.city ?? null,
           neighborhood: loc.neighborhood ?? null,
           street: loc.street ?? null,
-          street_address: loc.street_address ?? null,
-          zip_code: loc.zip_code ?? null,
-          latitude: loc.latitude ?? null,
-          longitude: loc.longitude ?? null,
+          street_address: loc.street_address ?? loc.streetAddress ?? null,
+          zip_code: loc.zip_code ?? loc.zipCode ?? null,
+          latitude: toFloatOrNull(loc.latitude),
+          longitude: toFloatOrNull(loc.longitude),
         });
 
         await upsertByPropertyId("property_specifications", {
@@ -1233,7 +1365,6 @@ app.put("/properties/:id", authAdmin, (req, res) => {
           listing_date: spec.listing_date ?? null,
           building_age: spec.building_age ?? null,
           floors: spec.floors ?? null,
-          // 🔧 Burada 'on' gibi saçma değerleri NULL'a çeviriyoruz
           floor_location: toIntOrNull(spec.floor_location),
           heating_type: spec.heating_type ?? null,
         });
@@ -1244,6 +1375,12 @@ app.put("/properties/:id", authAdmin, (req, res) => {
           email: agent.email ?? null,
         });
 
+        await upsertByPropertyId("property_owner", {
+          name: owner.name ?? null,
+          phone: owner.phone ?? null,
+          email: owner.email ?? null,
+        });
+
         for (const group of featureGroups) {
           let payload = {};
           for (const bodyKey of group.bodyKeys) {
@@ -1252,6 +1389,7 @@ app.put("/properties/:id", authAdmin, (req, res) => {
               break;
             }
           }
+
           if (Object.keys(payload).length > 0) {
             const existingTable = await resolveExistingTable(
               group.tableCandidates || []
@@ -1279,6 +1417,42 @@ app.put("/properties/:id", authAdmin, (req, res) => {
           }
         }
 
+        if (oldPrice !== newPrice) {
+          await q(
+            `
+            INSERT INTO property_price_history
+            (
+              property_id,
+              owner_name,
+              owner_phone,
+              owner_email,
+              old_price,
+              new_price,
+              currency,
+              change_type,
+              reason,
+              notes,
+              changed_by,
+              changed_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+            `,
+            [
+              id,
+              owner.name || null,
+              owner.phone || null,
+              owner.email || null,
+              oldPrice,
+              newPrice,
+              finalCurrency,
+              getChangeType(oldPrice, newPrice),
+              b.reason || "Fiyat güncellendi",
+              b.notes || null,
+              req.user?.username || "admin",
+            ]
+          );
+        }
+
         conn.commit((cErr) => {
           if (cErr) return rollbackAndSend(500, cErr.message);
           conn.release();
@@ -1290,7 +1464,9 @@ app.put("/properties/:id", authAdmin, (req, res) => {
               "property_location",
               "property_specifications",
               "property_agent",
+              "property_owner",
               "features",
+              ...(oldPrice !== newPrice ? ["property_price_history"] : []),
               ...(Array.isArray(b.photos) ? ["property_photos"] : []),
             ],
           });
@@ -1318,13 +1494,19 @@ app.post("/add-property", authAdmin, (req, res) => {
     specifications,
     features,
     agent,
+    owner,
   } = req.body;
+
   if (!title || !price || !currency || !description || !listing_type) {
-    return res.status(400).json({ error: "Zorunlu alanlar eksik (ilan türü dahil)" });
+    return res
+      .status(400)
+      .json({ error: "Zorunlu alanlar eksik (ilan türü dahil)" });
   }
+
   const loc = location || {};
   const spec = specifications || {};
   const feat = features || {};
+  const ownerData = owner || {};
 
   const interior = feat.interior || {};
   const exterior = feat.exterior || {};
@@ -1336,42 +1518,42 @@ app.post("/add-property", authAdmin, (req, res) => {
   const facade = feat.facade || {};
 
   db.getConnection((connErr, conn) => {
-    if (connErr)
-      return res
-        .status(500)
-        .json({ error: "Veritabanı bağlantı hatası" });
+    if (connErr) {
+      return res.status(500).json({ error: "Veritabanı bağlantı hatası" });
+    }
 
     conn.beginTransaction((txErr) => {
       if (txErr) {
         conn.release();
-        return res
-          .status(500)
-          .json({ error: "Transaction başlatılamadı" });
+        return res.status(500).json({ error: "Transaction başlatılamadı" });
       }
+
+      const rollbackWith = (message, err) => {
+        if (err) console.error(message, err);
+        return conn.rollback(() => {
+          conn.release();
+          res.status(500).json({ error: message });
+        });
+      };
 
       const sqlProp =
         "INSERT INTO properties (title, price, currency, listing_type, description) VALUES (?, ?, ?, ?, ?)";
+
       conn.query(
         sqlProp,
-        [title, price, currency, listing_type, description],
+        [title, toNumberOrNull(price), currency, listing_type, description],
         (err, result) => {
           if (err) {
-            console.error("add-property err:", err);
-            return conn.rollback(() => {
-              conn.release();
-              res
-                .status(500)
-                .json({ error: "İlan eklenemedi" });
-            });
+            return rollbackWith("İlan eklenemedi", err);
           }
 
           const propertyId = result.insertId;
 
           const sqlLoc = `
-          INSERT INTO property_location
-          (property_id, district, city, neighborhood, street, street_address, zip_code, latitude, longitude)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `;
+            INSERT INTO property_location
+            (property_id, district, city, neighborhood, street, street_address, zip_code, latitude, longitude)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          `;
 
           conn.query(
             sqlLoc,
@@ -1381,27 +1563,32 @@ app.post("/add-property", authAdmin, (req, res) => {
               loc.city || "Mersin",
               loc.neighborhood || null,
               loc.street || null,
-              loc.streetAddress || null,
-              loc.zipCode || null,
-              loc.latitude ? parseFloat(loc.latitude) : null,
-              loc.longitude ? parseFloat(loc.longitude) : null,
+              loc.streetAddress || loc.street_address || null,
+              loc.zipCode || loc.zip_code || null,
+              toFloatOrNull(loc.latitude),
+              toFloatOrNull(loc.longitude),
             ],
             (locErr) => {
               if (locErr) {
-                console.error("location insert err:", locErr);
-                return conn.rollback(() => {
-                  conn.release();
-                  res
-                    .status(500)
-                    .json({ error: "Lokasyon eklenemedi" });
-                });
+                return rollbackWith("Lokasyon eklenemedi", locErr);
               }
 
               const sqlSpec = `
-              INSERT INTO property_specifications
-              (property_id, rooms, bathrooms, gross_sqm, net_sqm, listing_date, building_age, floor_location, heating_type)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            `;
+                INSERT INTO property_specifications
+                (
+                  property_id,
+                  rooms,
+                  bathrooms,
+                  gross_sqm,
+                  net_sqm,
+                  listing_date,
+                  building_age,
+                  floors,
+                  floor_location,
+                  heating_type
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+              `;
 
               conn.query(
                 sqlSpec,
@@ -1413,317 +1600,270 @@ app.post("/add-property", authAdmin, (req, res) => {
                   spec.net_sqm || null,
                   spec.listing_date || null,
                   spec.building_age || null,
-                  // 🔧 burada da sorun çıkmasın diye cast ediyoruz
+                  spec.floors || null,
                   toIntOrNull(spec.floor_location),
                   spec.heating_type || null,
                 ],
                 (specErr) => {
                   if (specErr) {
-                    console.error("spec insert err:", specErr);
-                    return conn.rollback(() => {
-                      conn.release();
-                      res.status(500).json({
-                        error: "Specifications eklenemedi",
-                      });
-                    });
+                    return rollbackWith("Specifications eklenemedi", specErr);
                   }
 
-                  const interiorData = {
-                    property_id: propertyId,
-                    ...interior,
-                  };
+                  const interiorData = { property_id: propertyId, ...interior };
                   conn.query(
                     "INSERT INTO property_interior_features SET ?",
                     interiorData,
                     (intErr) => {
                       if (intErr) {
-                        console.error(
-                          "Interior insert error:",
-                          intErr
-                        );
-                        return conn.rollback(() => {
-                          conn.release();
-                          res.status(500).json({
-                            error:
-                              "Interior features eklenemedi",
-                          });
-                        });
+                        return rollbackWith("Interior features eklenemedi", intErr);
                       }
 
-                      const exteriorData = {
-                        property_id: propertyId,
-                        ...exterior,
-                      };
+                      const exteriorData = { property_id: propertyId, ...exterior };
                       conn.query(
                         "INSERT INTO property_exterior_features SET ?",
                         exteriorData,
                         (extErr) => {
                           if (extErr) {
-                            console.error(
-                              "Exterior insert error:",
-                              extErr
-                            );
-                            return conn.rollback(() => {
-                              conn.release();
-                              res.status(500).json({
-                                error:
-                                  "Exterior features eklenemedi",
-                              });
-                            });
+                            return rollbackWith("Exterior features eklenemedi", extErr);
                           }
 
-                          const { notes, ...environmentalRest } =
-                            environmental || {};
+                          const { notes, ...environmentalRest } = environmental || {};
                           const envData = {
                             property_id: propertyId,
                             ...environmentalRest,
                           };
+
                           conn.query(
                             "INSERT INTO property_environmental_features SET ?",
                             envData,
                             (envErr) => {
                               if (envErr) {
-                                console.error(
-                                  "Environmental insert error:",
+                                return rollbackWith(
+                                  "Environmental features eklenemedi",
                                   envErr
                                 );
-                                return conn.rollback(() => {
-                                  conn.release();
-                                  res.status(500).json({
-                                    error:
-                                      "Environmental features eklenemedi",
-                                  });
-                                });
                               }
 
                               const transportData = {
                                 property_id: propertyId,
                                 ...transportation,
                               };
+
                               conn.query(
                                 "INSERT INTO property_transportation_features SET ?",
                                 transportData,
                                 (transportErr) => {
                                   if (transportErr) {
-                                    console.error(
-                                      "Transportation insert error:",
+                                    return rollbackWith(
+                                      "Transportation features eklenemedi",
                                       transportErr
                                     );
-                                    return conn.rollback(() => {
-                                      conn.release();
-                                      res.status(500).json({
-                                        error:
-                                          "Transportation features eklenemedi",
-                                      });
-                                    });
                                   }
 
                                   const viewData = {
                                     property_id: propertyId,
                                     ...view,
                                   };
+
                                   conn.query(
                                     "INSERT INTO property_view_features SET ?",
                                     viewData,
                                     (viewErr) => {
                                       if (viewErr) {
-                                        console.error(
-                                          "View insert error:",
+                                        return rollbackWith(
+                                          "View features eklenemedi",
                                           viewErr
-                                        );
-                                        return conn.rollback(
-                                          () => {
-                                            conn.release();
-                                            res.status(
-                                              500
-                                            ).json({
-                                              error:
-                                                "View features eklenemedi",
-                                            });
-                                          }
                                         );
                                       }
 
-                                      const accessData =
-                                        {
-                                          property_id:
-                                            propertyId,
-                                          ...accessibility,
-                                        };
+                                      const accessData = {
+                                        property_id: propertyId,
+                                        ...accessibility,
+                                      };
+
                                       conn.query(
                                         "INSERT INTO property_accessibility_features SET ?",
                                         accessData,
                                         (accessErr) => {
                                           if (accessErr) {
-                                            console.error(
-                                              "Accessibility insert error:",
+                                            return rollbackWith(
+                                              "Accessibility features eklenemedi",
                                               accessErr
-                                            );
-                                            return conn.rollback(
-                                              () => {
-                                                conn.release();
-                                                res.status(
-                                                  500
-                                                ).json({
-                                                  error:
-                                                    "Accessibility features eklenemedi",
-                                                });
-                                              }
                                             );
                                           }
 
-                                          const housingData =
-                                            {
-                                              property_id:
-                                                propertyId,
-                                              ...housingType,
-                                            };
+                                          const housingData = {
+                                            property_id: propertyId,
+                                            ...housingType,
+                                          };
+
                                           conn.query(
                                             "INSERT INTO property_housing_type SET ?",
                                             housingData,
                                             (housingErr) => {
-                                              if (
-                                                housingErr
-                                              ) {
-                                                console.error(
-                                                  "Housing type insert error:",
+                                              if (housingErr) {
+                                                return rollbackWith(
+                                                  "Housing type eklenemedi",
                                                   housingErr
-                                                );
-                                                return conn.rollback(
-                                                  () => {
-                                                    conn.release();
-                                                    res
-                                                      .status(
-                                                        500
-                                                      )
-                                                      .json({
-                                                        error:
-                                                          "Housing type eklenemedi",
-                                                      });
-                                                  }
                                                 );
                                               }
 
-                                              const facadeData =
-                                                {
-                                                  property_id:
-                                                    propertyId,
-                                                  ...facade,
-                                                };
+                                              const facadeData = {
+                                                property_id: propertyId,
+                                                ...facade,
+                                              };
+
                                               conn.query(
                                                 "INSERT INTO property_facade SET ?",
                                                 facadeData,
                                                 (facadeErr) => {
-                                                  if (
-                                                    facadeErr
-                                                  ) {
-                                                    console.error(
-                                                      "Facade insert error:",
+                                                  if (facadeErr) {
+                                                    return rollbackWith(
+                                                      "Facade eklenemedi",
                                                       facadeErr
-                                                    );
-                                                    return conn.rollback(
-                                                      () => {
-                                                        conn.release();
-                                                        res
-                                                          .status(
-                                                            500
-                                                          )
-                                                          .json({
-                                                            error:
-                                                              "Facade eklenemedi",
-                                                          });
-                                                      }
                                                     );
                                                   }
 
-                                                  const insertAgent =
-                                                    (cb) => {
-                                                      if (
-                                                        !agent
-                                                      )
-                                                        return cb();
-                                                      const sqlAgent = `
-                                    INSERT INTO property_agent (property_id, name, phone, email)
-                                    VALUES (?, ?, ?, ?)
-                                  `;
-                                                      conn.query(
-                                                        sqlAgent,
-                                                        [
-                                                          propertyId,
-                                                          agent.name ||
-                                                            null,
-                                                          agent.phone ||
-                                                            null,
-                                                          agent.email ||
-                                                            null,
-                                                        ],
-                                                        (
-                                                          agentErr
-                                                        ) =>
-                                                          cb(
-                                                            agentErr ||
-                                                              null
-                                                          )
-                                                      );
-                                                    };
+                                                  const insertAgent = (cb) => {
+                                                    if (
+                                                      !agent ||
+                                                      (!agent.name &&
+                                                        !agent.phone &&
+                                                        !agent.email)
+                                                    ) {
+                                                      return cb();
+                                                    }
 
-                                                  insertAgent(
-                                                    (agentErr) => {
-                                                      if (
+                                                    const sqlAgent = `
+                                                      INSERT INTO property_agent
+                                                      (property_id, name, phone, email)
+                                                      VALUES (?, ?, ?, ?)
+                                                    `;
+
+                                                    conn.query(
+                                                      sqlAgent,
+                                                      [
+                                                        propertyId,
+                                                        agent.name || null,
+                                                        agent.phone || null,
+                                                        agent.email || null,
+                                                      ],
+                                                      (agentErr) => cb(agentErr || null)
+                                                    );
+                                                  };
+
+                                                  const insertOwner = (cb) => {
+                                                    if (
+                                                      !ownerData ||
+                                                      (!ownerData.name &&
+                                                        !ownerData.phone &&
+                                                        !ownerData.email)
+                                                    ) {
+                                                      return cb();
+                                                    }
+
+                                                    const sqlOwner = `
+                                                      INSERT INTO property_owner
+                                                      (property_id, name, phone, email)
+                                                      VALUES (?, ?, ?, ?)
+                                                    `;
+
+                                                    conn.query(
+                                                      sqlOwner,
+                                                      [
+                                                        propertyId,
+                                                        ownerData.name || null,
+                                                        ownerData.phone || null,
+                                                        ownerData.email || null,
+                                                      ],
+                                                      (ownerErr) => cb(ownerErr || null)
+                                                    );
+                                                  };
+
+                                                  const insertFirstPriceHistory = (cb) => {
+                                                    const initialPrice = Number(
+                                                      toNumberOrNull(price) || 0
+                                                    );
+
+                                                    const sqlHistory = `
+                                                      INSERT INTO property_price_history
+                                                      (
+                                                        property_id,
+                                                        owner_name,
+                                                        owner_phone,
+                                                        owner_email,
+                                                        old_price,
+                                                        new_price,
+                                                        currency,
+                                                        change_type,
+                                                        reason,
+                                                        notes,
+                                                        changed_by,
+                                                        changed_at
+                                                      )
+                                                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+                                                    `;
+
+                                                    conn.query(
+                                                      sqlHistory,
+                                                      [
+                                                        propertyId,
+                                                        ownerData.name || null,
+                                                        ownerData.phone || null,
+                                                        ownerData.email || null,
+                                                        0,
+                                                        initialPrice,
+                                                        currency || "TRY",
+                                                        getChangeType(0, initialPrice),
+                                                        "İlk ilan oluşturuldu",
+                                                        notes || null,
+                                                        req.user?.username || "admin",
+                                                      ],
+                                                      (historyErr) => cb(historyErr || null)
+                                                    );
+                                                  };
+
+                                                  insertAgent((agentErr) => {
+                                                    if (agentErr) {
+                                                      return rollbackWith(
+                                                        "Danışman kaydedilemedi",
                                                         agentErr
-                                                      ) {
-                                                        return conn.rollback(
-                                                          () => {
-                                                            conn.release();
-                                                            res
-                                                              .status(
-                                                                500
-                                                              )
-                                                              .json({
-                                                                error:
-                                                                  "Danışman kaydedilemedi",
-                                                              });
-                                                          }
+                                                      );
+                                                    }
+
+                                                    insertOwner((ownerErr) => {
+                                                      if (ownerErr) {
+                                                        return rollbackWith(
+                                                          "Mülk sahibi kaydedilemedi",
+                                                          ownerErr
                                                         );
                                                       }
 
-                                                      conn.commit(
-                                                        (
-                                                          commitErr
-                                                        ) => {
-                                                          if (
-                                                            commitErr
-                                                          ) {
-                                                            console.error(
-                                                              "commit err:",
-                                                              commitErr
-                                                            );
-                                                            return conn.rollback(
-                                                              () => {
-                                                                conn.release();
-                                                                res
-                                                                  .status(
-                                                                    500
-                                                                  )
-                                                                  .json({
-                                                                    error:
-                                                                      "Commit hatası",
-                                                                  });
-                                                              }
-                                                            );
-                                                          }
-                                                          conn.release();
-                                                          res.json(
-                                                            {
-                                                              message:
-                                                                "✅ İlan eklendi",
-                                                              propertyId,
-                                                            }
+                                                      insertFirstPriceHistory((historyErr) => {
+                                                        if (historyErr) {
+                                                          return rollbackWith(
+                                                            "İlk fiyat geçmişi kaydedilemedi",
+                                                            historyErr
                                                           );
                                                         }
-                                                      );
-                                                    }
-                                                  );
+
+                                                        conn.commit((commitErr) => {
+                                                          if (commitErr) {
+                                                            return rollbackWith(
+                                                              "Commit hatası",
+                                                              commitErr
+                                                            );
+                                                          }
+
+                                                          conn.release();
+                                                          res.json({
+                                                            message: "✅ İlan eklendi",
+                                                            propertyId,
+                                                          });
+                                                        });
+                                                      });
+                                                    });
+                                                  });
                                                 }
                                               );
                                             }
@@ -1762,14 +1902,13 @@ app.post(
     const { propertyId } = req.body;
     const files = req.files || [];
 
-    if (!propertyId)
-      return res
-        .status(400)
-        .json({ error: "propertyId zorunludur" });
-    if (!files.length)
-      return res.status(400).json({
-        error: "Yüklenecek fotoğraf bulunamadı",
-      });
+    if (!propertyId) {
+      return res.status(400).json({ error: "propertyId zorunludur" });
+    }
+
+    if (!files.length) {
+      return res.status(400).json({ error: "Yüklenecek fotoğraf bulunamadı" });
+    }
 
     const values = files.map((f) => [propertyId, f.filename]);
     const sql =
@@ -1786,9 +1925,7 @@ app.post(
         });
       }
 
-      const urls = files.map((f) =>
-        normalizePhotoUrl(f.filename)
-      );
+      const urls = files.map((f) => normalizePhotoUrl(f.filename));
       res.json({
         message: "✅ Fotoğraflar yüklendi",
         count: files.length,
