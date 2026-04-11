@@ -1,7 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="https://static.readdy.ai/static/e.js"></script>
+
+<head>
+    <script src="https://static.readdy.ai/static/e.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Merada Admin Panel</title>
@@ -33,71 +34,115 @@
             }
         }
     </script>
-    
+
 </head>
+
 <body class="bg-gray-50 min-h-screen gradient-bg">
-   
 
-    <header class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="flex items-center justify-between">
-               <img 
-  src="/meradaGayrimenkul_frontend/img/logo.png" 
-  alt="Merada Logo" 
-  class="h-10 w-auto  mx-auto">
-               
-                <div class="w-32"></div>
-            </div>
-         
+
+<header class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+        
+        <div class="flex items-center justify-between">
+            
+            <!-- Sol boşluk -->
+            <div class="w-32"></div>
+
+            <!-- Logo -->
+            <img src="/meradaGayrimenkul_frontend/img/logo.png"
+                 alt="Merada Logo"
+                 class="h-12 w-auto absolute left-1/2 -translate-x-1/2">
+
+            <!-- Sağ boşluk -->
+            <div class="w-32"></div>
+
         </div>
-    </header>
 
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-  
-  <!-- İlk bölüm -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 justify-center text-center">
-      <!-- Başlık -->
-      <h1 class="col-span-full text-2xl font-medium text-gray-900 mb-6">Merada Gayrimenkul</h1>
+    </div>
+</header>
 
-      <!-- Add Property -->
-      <a href="urunEkle.html" class="nav-card bg-white p-6 rounded-lg shadow-sm hover:shadow-lg border border-gray-100 block cursor-pointer transition">
-          <div class="flex flex-col items-center">
-              <div class="nav-icon w-16 h-16 flex items-center justify-center bg-primary/5 rounded-full mb-4">
-                  <i class="ri-add-line text-2xl text-primary"></i>
-              </div>
-              <h3 class="text-lg font-medium text-gray-900">Add Property</h3>
-              <p class="mt-2 text-sm text-gray-500">List new properties in the system</p>
-          </div>
-      </a>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-      <!-- View Properties -->
-      <a href="Urunler.html" class="nav-card bg-white p-6 rounded-lg shadow-sm hover:shadow-lg border border-gray-100 block cursor-pointer transition">
-          <div class="flex flex-col items-center">
-              <div class="nav-icon w-16 h-16 flex items-center justify-center bg-primary/5 rounded-full mb-4">
-                  <i class="ri-building-2-line text-2xl text-primary"></i>
-              </div>
-              <h3 class="text-lg font-medium text-gray-900">View Properties</h3>
-              <p class="mt-2 text-sm text-gray-500">Manage existing property listings</p>
-          </div>
-      </a>
-  </div>
+        <!-- İlk bölüm -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-  <!-- İkinci bölüm
-  <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 justify-center text-center">
-     
-      <h1 class="col-span-full text-2xl font-medium text-gray-900 mb-6">Merada Yönetim</h1>
+    <!-- Üst Alan -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
+        <!-- Başlık -->
+        <h1 class="col-span-full text-2xl sm:text-3xl font-semibold text-gray-900 mb-2">
+            Merada Gayrimenkul
+        </h1>
 
-     
-      <a href="settings.html" class="nav-card bg-white p-6 rounded-lg shadow-sm hover:shadow-lg border border-gray-100 block cursor-pointer transition">
-          <div class="flex flex-col items-center">
-              <div class="nav-icon w-16 h-16 flex items-center justify-center bg-primary/5 rounded-full mb-4">
-                  <i class="ri-settings-3-line text-2xl text-primary"></i>
-              </div>
-              <h3 class="text-lg font-medium text-gray-900">Settings</h3>
-              <p class="mt-2 text-sm text-gray-500">Configure system preferences</p>
-          </div>
-      </a>
+        <!-- Add Property -->
+        <a href="urunEkle.html"
+            class="nav-card group bg-white p-6 sm:p-8 rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 block cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:border-blue-200">
+            <div class="flex flex-col items-center">
+                <div
+                    class="nav-icon w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-blue-50 rounded-2xl mb-5 transition-all duration-300 group-hover:bg-blue-100 group-hover:scale-110 group-hover:rotate-6">
+                    <i class="ri-add-line text-2xl sm:text-3xl text-blue-600 transition-all duration-300 group-hover:text-blue-700"></i>
+                </div>
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-900 group-hover:text-blue-700 transition">
+                    İlan Ekle
+                </h3>
+                <p class="mt-2 text-sm sm:text-base text-gray-500 leading-relaxed">
+                    Sisteme yeni emlak ilanları ekleyin ve portföyünüzü büyütün.
+                </p>
+            </div>
+        </a>
 
+        <!-- View Properties -->
+        <a href="Urunler.html"
+            class="nav-card group bg-white p-6 sm:p-8 rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 block cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:border-violet-200">
+            <div class="flex flex-col items-center">
+                <div
+                    class="nav-icon w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-violet-50 rounded-2xl mb-5 transition-all duration-300 group-hover:bg-violet-100 group-hover:scale-110 group-hover:-rotate-6">
+                    <i class="ri-building-2-line text-2xl sm:text-3xl text-violet-600 transition-all duration-300 group-hover:text-violet-700"></i>
+                </div>
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-900 group-hover:text-violet-700 transition">
+                    Tüm İlanları Gör
+                </h3>
+                <p class="mt-2 text-sm sm:text-base text-gray-500 leading-relaxed">
+                    Mevcut emlak ilanlarını görüntüleyin, düzenleyin ve yönetin.
+                </p>
+            </div>
+        </a>
+    </div>
+
+    <!-- İstatistikler Alanı -->
+    <div class="mt-14 flex flex-col items-center text-center">
+        <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-6">
+            İstatistikler
+        </h1>
+
+        <a href="istatistikler.html"
+            class="nav-card group w-full max-w-md bg-white p-6 sm:p-8 rounded-2xl shadow-sm hover:shadow-2xl border border-gray-100 block cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:border-emerald-200">
+            <div class="flex flex-col items-center">
+
+                <!-- Icon -->
+                <div
+                    class="nav-icon w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-emerald-50 rounded-2xl mb-5 transition-all duration-300 group-hover:bg-emerald-100 group-hover:scale-110 group-hover:rotate-6">
+                    <i class="ri-bar-chart-box-line text-2xl sm:text-3xl text-emerald-600 transition-all duration-300 group-hover:text-emerald-700"></i>
+                </div>
+
+                <!-- Başlık -->
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-900 group-hover:text-emerald-700 transition">
+                    İstatistikler
+                </h3>
+
+                <!-- Açıklama -->
+                <p class="mt-2 text-sm sm:text-base text-gray-500 leading-relaxed">
+                    Tüm ilan performansınızı analiz edin ve verilerinizi tek ekrandan yönetin.
+                </p>
+
+                <!-- Slogan -->
+                <p class="mt-3 text-xs sm:text-sm text-emerald-600 font-medium">
+                    Verilerle yönetin, daha hızlı büyüyün 🚀
+                </p>
+            </div>
+        </a>
+    </div>
+</div>
+            <!-- İkinci bölüm
       
       <a href="manage_properties.html" class="nav-card bg-white p-6 rounded-lg shadow-sm hover:shadow-lg border border-gray-100 block cursor-pointer transition">
           <div class="flex flex-col items-center">
@@ -109,12 +154,13 @@
           </div>
       </a>
     -->
-  </div>
+        </div>
 
-</main>
+    </main>
 
 
 
-<script src="js/main.js"></script>
+    <script src="js/main.js"></script>
 </body>
+
 </html>

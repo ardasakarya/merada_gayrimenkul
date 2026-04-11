@@ -1,5 +1,19 @@
 // urunEkle.js
+ const links = document.querySelectorAll(".menu-item");
+  const currentPage = window.location.pathname.split("/").pop();
 
+  links.forEach(link => {
+    const href = link.getAttribute("href");
+
+    if (href === currentPage) {
+      link.classList.add(
+        "bg-blue-50",
+        "border-blue-200",
+        "text-blue-700",
+        "shadow-sm"
+      );
+    }
+  });
 // === SABİTLER ===
 const API_URL = "http://127.0.0.1:5000"; // backend/server.js portun
 const TOKEN_KEY = "adminToken";          // login.js'te kaydettiğin anahtar

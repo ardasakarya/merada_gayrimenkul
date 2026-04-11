@@ -1,3 +1,62 @@
+ const links = document.querySelectorAll(".menu-item");
+  const currentPage = window.location.pathname.split("/").pop();
+
+  links.forEach(link => {
+    const href = link.getAttribute("href");
+
+    if (href === currentPage) {
+      link.classList.add(
+        "bg-blue-50",
+        "border-blue-200",
+        "text-blue-700",
+        "shadow-sm"
+      );
+    }
+  });
+ const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("sidebarOverlay");
+  const openBtn = document.getElementById("openSidebarBtn");
+  const closeBtn = document.getElementById("closeSidebarBtn");
+
+  function openSidebar() {
+    sidebar.classList.remove("-translate-x-full");
+    overlay.classList.remove("hidden");
+    setTimeout(() => {
+      overlay.classList.remove("opacity-0");
+    }, 10);
+    document.body.classList.add("overflow-hidden");
+  }
+
+  function closeSidebar() {
+    sidebar.classList.add("-translate-x-full");
+    overlay.classList.add("opacity-0");
+    setTimeout(() => {
+      overlay.classList.add("hidden");
+    }, 300);
+    document.body.classList.remove("overflow-hidden");
+  }
+
+  if (openBtn) openBtn.addEventListener("click", openSidebar);
+  if (closeBtn) closeBtn.addEventListener("click", closeSidebar);
+  if (overlay) overlay.addEventListener("click", closeSidebar);
+
+  // Mobilde menü linkine basınca kapansın
+  document.querySelectorAll("#sidebar a").forEach(link => {
+    link.addEventListener("click", () => {
+      if (window.innerWidth < 1024) closeSidebar();
+    });
+  });
+
+  // Ekran büyürse normale dönsün
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 1024) {
+      overlay.classList.add("hidden", "opacity-0");
+      sidebar.classList.remove("-translate-x-full");
+      document.body.classList.remove("overflow-hidden");
+    } else {
+      sidebar.classList.add("-translate-x-full");
+    }
+  });
 (() => {
 const cfg = window.MERADA_CONFIG || {};
 const RAW_API =
